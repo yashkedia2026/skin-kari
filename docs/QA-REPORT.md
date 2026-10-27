@@ -45,6 +45,8 @@ Browser QA caught and resolved a local host/origin mismatch that blocked mutatio
 
 User screenshots revealed that Apple devices rendered the decorative eight-spoked text character as a green emoji. All instances now use one shared, font-independent SVG with the existing section colors and responsive sizes.
 
+The three routine symbols were subsequently replaced with the original apply-mask, 15-minute timer and after-care illustrations from the Hyaluronic Acid packaging. Production build, ESLint and TypeScript passed. Chrome at 1440, 390 and 320 px, and WebKit at 1024 and 390 px, loaded all three illustrations without text overlap, horizontal overflow or browser errors. All five homepage axe scans passed. Desktop/mobile routine previews and the full homepage screenshots were refreshed; extraction details are in `RITUAL-ARTWORK.md`.
+
 ## Verification limits and launch requirements
 
 - No real Shopify store credentials were supplied. Live products, merchant availability, shipping/tax/discount calculations and checkout must be tested on the configured merchant store before claiming a working purchase flow.

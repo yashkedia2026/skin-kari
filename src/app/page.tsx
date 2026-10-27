@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -237,26 +238,32 @@ export default async function Home() {
               n: "01",
               title: "Fresh face. Fresh start.",
               text: "Apply your sheet mask to a freshly cleansed face.",
-              icon: "◡",
+              image: "/images/ritual/apply-mask.webp",
             },
             {
               n: "02",
               title: "Take fifteen.",
               text: "Leave it on for 15 minutes, then gently remove the mask.",
-              icon: "15",
+              image: "/images/ritual/wait-fifteen.webp",
             },
             {
               n: "03",
               title: "Pat. Glow. Go.",
               text: "Pat the remaining serum into your face and neck.",
-              icon: <BrandSpark />,
+              image: "/images/ritual/pat-serum.webp",
             },
           ].map((step) => (
             <Reveal className="ritual-step" key={step.n}>
               <div className="ritual-step-top">
                 <span>{step.n}</span>
                 <span className="ritual-icon" aria-hidden="true">
-                  {step.icon}
+                  <Image
+                    src={step.image}
+                    alt=""
+                    width={512}
+                    height={512}
+                    sizes="(max-width: 600px) 88px, 112px"
+                  />
                 </span>
               </div>
               <h3>{step.title}</h3>
