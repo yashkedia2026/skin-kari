@@ -8,6 +8,7 @@ import {
   Waves,
 } from "lucide-react";
 import { Hero } from "@/components/hero";
+import { BrandSpark } from "@/components/brand-spark";
 import { ProductCard } from "@/components/product-card";
 import { Spotlight } from "@/components/spotlight";
 import { Reveal } from "@/components/motion";
@@ -25,13 +26,21 @@ export default async function Home() {
       <Hero />
       <div className="brand-ribbon" aria-hidden="true">
         <span>REAL SKIN</span>
-        <span>✳</span>
+        <span>
+          <BrandSpark />
+        </span>
         <span>COLOURFUL CARE</span>
-        <span>✳</span>
+        <span>
+          <BrandSpark />
+        </span>
         <span>A MOMENT FOR YOU</span>
-        <span>✳</span>
+        <span>
+          <BrandSpark />
+        </span>
         <span>BRIGHTER DAYS</span>
-        <span>✳</span>
+        <span>
+          <BrandSpark />
+        </span>
       </div>
       <section className="section product-discovery" id="meet-the-masks">
         <Reveal>
@@ -123,7 +132,9 @@ export default async function Home() {
       <section className="section story-section">
         <Reveal className="story-art">
           <span className="story-arch" />
-          <span className="story-sun">✳</span>
+          <span className="story-sun">
+            <BrandSpark />
+          </span>
           <p>
             ROOTED IN
             <br />
@@ -238,7 +249,7 @@ export default async function Home() {
               n: "03",
               title: "Pat. Glow. Go.",
               text: "Pat the remaining serum into your face and neck.",
-              icon: "✳",
+              icon: <BrandSpark />,
             },
           ].map((step) => (
             <Reveal className="ritual-step" key={step.n}>

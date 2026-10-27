@@ -6,6 +6,7 @@ import { getProduct, getProducts } from "@/lib/commerce";
 import { getEditorialProduct } from "@/data/products";
 import { ProductPurchase } from "@/components/product-purchase";
 import { ProductCard } from "@/components/product-card";
+import { BrandSpark } from "@/components/brand-spark";
 import { jsonLd, pageMetadata, siteUrl } from "@/lib/seo";
 type Props = { params: Promise<{ handle: string }> };
 export async function generateMetadata({ params }: Props) {
@@ -67,7 +68,7 @@ export default async function ProductPage({ params }: Props) {
           >
             <span className="detail-art-circle" />
             <span className="detail-art-flower" aria-hidden="true">
-              ✳
+              <BrandSpark />
             </span>
             {image && (
               <Image

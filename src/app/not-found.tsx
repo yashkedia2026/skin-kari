@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { BrandSpark } from "@/components/brand-spark";
 export default function NotFound() {
   return (
     <div className="status-page section">
-      <span aria-hidden="true">✳</span>
+      <span aria-hidden="true">
+        <BrandSpark />
+      </span>
       <p className="eyebrow">404 · A LITTLE DETOUR</p>
       <h1>
         This page took

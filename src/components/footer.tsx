@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { BrandSpark } from "@/components/brand-spark";
 export function Footer() {
   return (
     <footer className="site-footer">
@@ -33,7 +34,10 @@ export function Footer() {
         </div>
       </div>
       <div className="footer-wordmark" aria-hidden="true">
-        SKINKARI<span>✳</span>
+        SKINKARI
+        <span>
+          <BrandSpark />
+        </span>
       </div>
       <div className="footer-bottom">
         <span>

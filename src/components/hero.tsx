@@ -3,12 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
+import { BrandSpark } from "@/components/brand-spark";
 export function Hero() {
   return (
     <section className="hero">
       <div className="hero-copy">
         <p className="eyebrow">
-          <span className="tiny-spark">✳</span> INDIAN SKINCARE FOR REAL LIFE
+          <span className="tiny-spark">
+            <BrandSpark />
+          </span>{" "}
+          INDIAN SKINCARE FOR REAL LIFE
         </p>
         <motion.h1
           initial={false}
@@ -71,7 +75,7 @@ export function Hero() {
       <div className="hero-art">
         <div className="hero-arch" aria-hidden="true" />
         <span className="hero-art-star" aria-hidden="true">
-          ✳
+          <BrandSpark />
         </span>
         <span className="hero-vertical">A LITTLE CARE LOOKS GOOD ON YOU</span>
         <motion.div

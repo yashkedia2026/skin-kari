@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getProducts } from "@/lib/commerce";
 import { getEditorialProduct } from "@/data/products";
 import { ProductCard } from "@/components/product-card";
+import { BrandSpark } from "@/components/brand-spark";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Shop all face masks",
@@ -77,7 +78,9 @@ export default async function Shop({
         </p>
       )}
       <div className="shop-footer-note">
-        <span>✳</span>
+        <span>
+          <BrandSpark />
+        </span>
         <p>
           Same skin. A different kind of day.
           <br />

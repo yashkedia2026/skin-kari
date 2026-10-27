@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { getEditorialProduct } from "@/data/products";
+import { BrandSpark } from "@/components/brand-spark";
 import type { Product } from "@/lib/commerce/types";
 export function Spotlight({ products }: { products: Product[] }) {
   const [active, setActive] = useState(0);
@@ -64,7 +65,7 @@ export function Spotlight({ products }: { products: Product[] }) {
       <div className="spotlight-art">
         <div className="spotlight-circle" aria-hidden="true" />
         <span className="spotlight-star" aria-hidden="true">
-          ✳
+          <BrandSpark />
         </span>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div

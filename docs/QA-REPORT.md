@@ -33,6 +33,8 @@ The final suite ran against `next start`, not only the development server, using
 
 Final screenshots are saved in `docs/previews/`. Browser traces/report output stays in ignored `test-results/` and `playwright-report/`.
 
+After replacing the decorative text stars with inline SVGs, the production build, ESLint and TypeScript checks passed again. Eight targeted Chrome checks passed for layout, accessibility, 404 recovery and content without JavaScript. WebKit 27.2 also passed home, shop, product and 404 checks at 1024×768, 768×1024 and 390×844: no horizontal overflow or unexpected browser errors. All six WebKit axe scans (home and product at each size) passed. Visual inspection confirmed the orange/cream vector decorations in place of the green emoji boxes, including the tablet hero and story artwork. Existing preview screenshots were refreshed.
+
 ## Commerce coverage
 
 The 21 tests exercise configuration failures, untrusted cart input, quantity limits, cross-origin requests, local proxy origins, malformed/oversized bodies, demo serialization, unavailable products, product/variant pagination, Shopify contextual prices (including zero), exact cart subtotals, expired carts, HttpOnly cookies, provider errors and checkout hostname validation. Catalogue regression checks also ensure every supplied PDF has a product and Brightening Mask does not inherit unsupported instructions. Live Shopify responses are mocked; these are not merchant-store transaction tests.
@@ -41,11 +43,13 @@ The 21 tests exercise configuration failures, untrusted cart input, quantity lim
 
 Browser QA caught and resolved a local host/origin mismatch that blocked mutations, low-contrast small orange labels, a cart accessible-name mismatch, narrow-screen headline overflow and streamed missing-product responses returning HTTP 200. Code review also corrected stale cart response races, expired-cart recovery and use of authoritative Shopify cart-line prices.
 
+User screenshots revealed that Apple devices rendered the decorative eight-spoked text character as a green emoji. All instances now use one shared, font-independent SVG with the existing section colors and responsive sizes.
+
 ## Verification limits and launch requirements
 
 - No real Shopify store credentials were supplied. Live products, merchant availability, shipping/tax/discount calculations and checkout must be tested on the configured merchant store before claiming a working purchase flow.
 - No payment was attempted or card information collected.
 - Product photography, complete ingredients, merchant details and commercial/legal policies remain pending; see `EDITORIAL-TODO.md`.
-- Chrome desktop/mobile emulation is not physical-device or Safari/Firefox testing. Automated axe checks do not replace a full assistive-technology audit.
+- Chrome and Playwright WebKit viewport emulation are not physical-device or installed Safari/Firefox testing. Automated axe checks do not replace a full assistive-technology audit.
 - No field Core Web Vitals or production traffic measurements are available. Image optimization, local preloaded fonts, stable image dimensions and restrained motion are implemented, but no unmeasured performance score is claimed.
 - This report verifies the local production build. The user reported a successful prior Vercel deployment; deployment of this correction must be confirmed in Vercel. The storefront defaults to an unindexed demo.
