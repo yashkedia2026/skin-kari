@@ -40,9 +40,9 @@ test("discovery leads to four masks and the concern filter narrows the catalogue
 }) => {
   await ready(page, "/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "SAME SKIN.",
+    "Indian Skincare",
   );
-  await page.getByRole("link", { name: "Find your good-skin moment" }).click();
+  await page.getByRole("link", { name: "Explore our products" }).click();
   await expect(page).toHaveURL(/\/shop$/);
   const catalogue = page.getByRole("main");
   await expect(catalogue.getByRole("article")).toHaveCount(4);
@@ -306,14 +306,14 @@ test("the retired fifth mask is absent from discovery, filters, sitemap and prod
 }) => {
   await ready(page, "/");
   await assertDemo(page);
-  const spotlight = page.getByRole("region", {
-    name: "A mask for your kind of day.",
+  const showcase = page.getByRole("region", {
+    name: "Four rituals. Many realities.",
   });
-  await expect(spotlight.getByRole("button")).toHaveCount(4);
-  await expect(
-    spotlight.getByRole("button", { name: "Brightening", exact: true }),
-  ).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Meet all four" })).toBeVisible();
+  await expect(showcase.getByRole("article")).toHaveCount(4);
+  await expect(showcase.getByRole("link", { name: /Brightening/ })).toHaveCount(
+    0,
+  );
+  await expect(showcase.getByRole("link", { name: /^View / })).toHaveCount(4);
   await ready(page, "/shop?concern=Dullness");
   await expect(page.getByRole("main").getByRole("article")).toHaveCount(3);
   await expect(page.getByText("Brightening Mask", { exact: true })).toHaveCount(
@@ -326,15 +326,15 @@ test("the retired fifth mask is absent from discovery, filters, sitemap and prod
   expect(await sitemap.text()).not.toContain("/products/brightening-mask");
 });
 
-test("all ribbon messages remain readable inside the phone viewport", async ({
+test("all skin-concern choices remain readable inside the phone viewport", async ({
   page,
 }) => {
   for (const width of [320, 390, 430]) {
     await page.setViewportSize({ width, height: 844 });
     await ready(page, "/");
-    const ribbon = page.locator(".brand-ribbon");
-    await ribbon.scrollIntoViewIfNeeded();
-    const clipped = await ribbon.evaluate((element) => {
+    const choices = page.locator(".need-grid");
+    await choices.scrollIntoViewIfNeeded();
+    const clipped = await choices.evaluate((element) => {
       const container = element.getBoundingClientRect();
       const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
       const clippedText: string[] = [];
@@ -356,14 +356,16 @@ test("all ribbon messages remain readable inside the phone viewport", async ({
       }
       return clippedText;
     });
-    expect(clipped, `Clipped ribbon text at ${width}px`).toEqual([]);
+    expect(clipped, `Clipped skin-concern text at ${width}px`).toEqual([]);
     for (const text of [
-      "REAL SKIN",
-      "COLOURFUL CARE",
-      "A MOMENT FOR YOU",
-      "BRIGHTER DAYS",
+      "I’m dull",
+      "I’m dehydrated",
+      "My skin looks tired",
+      "I want plump, bouncy skin",
     ]) {
-      await expect(ribbon.getByText(text, { exact: true })).toBeVisible();
+      await expect(
+        choices.getByRole("heading", { name: text, exact: true }),
+      ).toBeVisible();
     }
   }
 });

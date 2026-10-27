@@ -1,0 +1,572 @@
+/* The brand navigation stays compact so the artwork leads the page. */
+.announcement.brand-demo-announcement {
+  min-height: 22px;
+  padding: 4px 16px;
+  background: #eeeae0;
+  color: #38362e;
+  border-bottom: 1px solid #10101012;
+  letter-spacing: 0.1em;
+}
+.brand-demo-announcement .demo-label {
+  padding: 0;
+  border: 0;
+  font-size: 9px;
+  font-weight: 600;
+}
+.site-header.brand-header {
+  display: grid;
+  grid-template-columns: 24% minmax(0, 1fr) auto;
+  height: clamp(76px, 6.4vw, 92px);
+  padding: 0 clamp(24px, 4.2vw, 72px);
+  gap: 0;
+  border-bottom: 1px solid #10101030;
+  background: var(--cream);
+  color: var(--ink);
+}
+.brand-header .wordmark {
+  flex-shrink: 0;
+  align-items: center;
+}
+.brand-header .wordmark > img {
+  width: clamp(145px, 15.8vw, 228px);
+  height: auto;
+}
+.brand-header .desktop-nav {
+  display: flex;
+  gap: clamp(17px, 2.8vw, 40px);
+  justify-content: flex-start;
+}
+.brand-header .desktop-nav a {
+  font-family: var(--display);
+  font-size: clamp(13px, 1.25vw, 18px);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 15px 0;
+}
+.brand-header .desktop-nav a::after {
+  bottom: 10px;
+  height: 2px;
+}
+.brand-header .header-actions {
+  flex-shrink: 0;
+  gap: 15px;
+}
+.brand-header .icon-button {
+  width: 40px;
+  min-height: 44px;
+  color: var(--ink);
+}
+.brand-header .icon-button svg {
+  width: 25px;
+  height: 25px;
+}
+.brand-header .brand-bag-trigger {
+  justify-content: center;
+  min-height: clamp(40px, 3.9vw, 56px);
+  min-width: clamp(100px, 10vw, 144px);
+  margin-left: 5px;
+  padding: 8px 19px;
+  border-radius: 40px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--display);
+  font-size: clamp(15px, 1.7vw, 24px);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.brand-header .brand-bag-trigger:hover {
+  background: var(--cream);
+  color: var(--ink);
+}
+.brand-header .mobile-menu-trigger {
+  display: none;
+}
+.brand-mobile-menu {
+  padding: 24px;
+  background: var(--cream);
+  overflow-y: auto;
+}
+.brand-mobile-menu .wordmark > img {
+  width: 170px;
+}
+.brand-mobile-menu nav {
+  margin-top: 32px;
+}
+.brand-mobile-menu nav a {
+  font-size: clamp(25px, 7vw, 34px);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  padding: 16px 0;
+}
+.mobile-menu-utilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 26px;
+  margin-top: 25px;
+}
+.mobile-menu-utilities button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 14px;
+}
+.mobile-menu-signoff {
+  padding-top: 30px;
+  font-size: 13px;
+}
+.brand-header-dialog {
+  width: min(580px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-y: auto;
+}
+.brand-header-dialog::backdrop {
+  background: #10101080;
+}
+.header-dialog-content {
+  padding: clamp(22px, 4vw, 36px);
+}
+.header-dialog-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.header-dialog-heading h2 {
+  font-family: var(--display);
+  font-size: clamp(29px, 5vw, 38px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.header-dialog-heading .icon-button {
+  flex-shrink: 0;
+  margin-top: -6px;
+  margin-right: -10px;
+}
+.header-search-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.brand-search-field {
+  display: flex;
+  min-width: 0;
+  min-height: 50px;
+  border: 1px solid var(--ink);
+  background: var(--cream);
+}
+.brand-search-field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 12px;
+  font-family: var(--body);
+  font-size: 16px;
+}
+.brand-search-field button {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--ink);
+  color: var(--cream);
+}
+.header-search-hint,
+.header-account-note {
+  margin: 17px 0;
+  color: #52514b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.header-account-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin-top: 24px;
+}
+.shop-search {
+  max-width: 520px;
+  margin: 24px auto 0;
+  text-align: left;
+}
+.shop-search label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+.shop-search-summary {
+  margin-top: 15px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.shop-search-summary a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.site-footer.brand-footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--cream);
+  color: var(--ink);
+  padding: clamp(20px, 2.3vw, 33px) clamp(24px, 4.2vw, 72px)
+    clamp(75px, 7.5vw, 110px);
+  border-top: 1px solid #10101030;
+}
+.brand-footer-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr 0.75fr 0.8fr 0.9fr 1.7fr;
+  gap: clamp(14px, 1.7vw, 25px);
+  align-items: start;
+}
+.brand-footer-intro .wordmark > img {
+  width: clamp(120px, 14vw, 200px);
+  max-width: 100%;
+  height: auto;
+}
+.brand-footer-intro > p {
+  margin-top: 9px;
+  font-family: var(--display);
+  font-size: clamp(15px, 1.6vw, 23px);
+  font-weight: 500;
+  line-height: 1.3;
+}
+.brand-footer-nav {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 3px;
+  min-width: 0;
+}
+.brand-footer-nav h2,
+.brand-footer-newsletter h2 {
+  margin-bottom: 4px;
+  font-family: var(--body);
+  font-size: clamp(12px, 1.2vw, 17px);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+.brand-footer-nav a,
+.brand-footer-nav > span {
+  font-size: clamp(12px, 1.2vw, 17px);
+  line-height: 1.45;
+}
+.brand-footer-nav > span {
+  cursor: default;
+}
+.brand-footer-nav a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.brand-footer-newsletter {
+  min-width: 0;
+  padding: 3px 0 0 clamp(14px, 1.7vw, 24px);
+  border-left: 1px solid #10101030;
+}
+.brand-footer-newsletter p {
+  font-size: clamp(11px, 1.15vw, 16px);
+  line-height: 1.25;
+}
+.newsletter-coming-soon {
+  display: flex;
+  min-width: 0;
+  margin-top: 6px;
+  border: 1px solid #10101070;
+}
+.newsletter-coming-soon input {
+  width: 100%;
+  min-width: 0;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #52514b;
+  font-size: clamp(12px, 1.15vw, 16px);
+  line-height: 1.3;
+  opacity: 1;
+}
+.newsletter-coming-soon input::placeholder {
+  color: #52514b;
+  opacity: 1;
+}
+.newsletter-coming-soon button {
+  display: grid;
+  place-items: center;
+  width: clamp(28px, 3vw, 42px);
+  flex-shrink: 0;
+  border: 0;
+  background: #080808;
+  color: #fff;
+  opacity: 1;
+  cursor: default;
+}
+.footer-social-marks {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  max-width: 250px;
+  margin-top: 9px;
+}
+.footer-social-marks > span {
+  display: flex;
+}
+.footer-social-marks svg {
+  display: block;
+  width: clamp(17px, 1.8vw, 25px);
+  height: clamp(17px, 1.8vw, 25px);
+}
+.brand-footer-newsletter small {
+  display: block;
+  margin-top: 7px;
+  font-size: clamp(8px, 0.75vw, 10px);
+  line-height: 1.3;
+  color: #52514b;
+}
+.brand-footer-bottom {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-top: clamp(18px, 2vw, 28px);
+  border-top: 1px solid #10101030;
+  padding: clamp(13px, 1.6vw, 23px) clamp(30px, 6.5vw, 94px) 0;
+  padding-right: clamp(45px, 8.5vw, 122px);
+  font-size: clamp(11px, 1.15vw, 16px);
+}
+.brand-footer-bottom p {
+  padding-left: 20px;
+  border-left: 1px solid #10101030;
+  font-size: clamp(12px, 1.2vw, 17px);
+  font-style: italic;
+  line-height: 1.4;
+}
+.footer-foliage {
+  position: absolute;
+  z-index: 0;
+  bottom: clamp(-50px, -3.5vw, -28px);
+  width: clamp(150px, 17vw, 245px);
+  height: auto;
+  pointer-events: none;
+  object-fit: contain;
+}
+.footer-foliage-left {
+  left: -18px;
+  transform: rotate(10deg);
+}
+.footer-foliage-right {
+  right: -18px;
+  transform: scaleX(-1) rotate(10deg);
+}
+@media (max-width: 1100px) {
+  .site-header.brand-header {
+    padding-inline: 24px;
+  }
+  .brand-header .desktop-nav {
+    gap: 18px;
+  }
+  .brand-header .desktop-nav a {
+    font-size: 13px;
+  }
+  .brand-header .header-actions {
+    gap: 0;
+  }
+  .brand-header .brand-bag-trigger {
+    min-width: 85px;
+    padding-inline: 14px;
+    margin-left: 5px;
+  }
+}
+@media (max-width: 800px) {
+  .site-header.brand-header {
+    display: flex;
+    height: 76px;
+  }
+  .brand-header .desktop-nav {
+    display: none;
+  }
+  .brand-header .mobile-menu-trigger {
+    display: inline-flex;
+  }
+  .brand-header .header-actions {
+    gap: 6px;
+  }
+  .brand-header .brand-bag-trigger {
+    margin-right: 2px;
+  }
+}
+@media (max-width: 800px) {
+  .brand-footer-grid {
+    grid-template-columns: 1.3fr repeat(4, 1fr);
+    gap: 25px 18px;
+  }
+  .brand-footer-newsletter {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid #10101025;
+    padding: 20px 0 0;
+    max-width: 360px;
+  }
+}
+@media (max-width: 600px) {
+  .brand-demo-announcement .demo-label {
+    font-size: 8px;
+  }
+  .site-header.brand-header {
+    height: 68px;
+    gap: 10px;
+    padding-inline: 16px;
+  }
+  .brand-header .wordmark > img {
+    width: 125px;
+  }
+  .brand-header .header-actions {
+    gap: 1px;
+  }
+  .brand-header .icon-button {
+    width: 35px;
+    min-width: 35px;
+    padding: 5px;
+  }
+  .brand-header .icon-button svg {
+    width: 22px;
+    height: 22px;
+  }
+  .brand-header .header-account-trigger {
+    display: none;
+  }
+  .brand-header .brand-bag-trigger {
+    min-width: 68px;
+    min-height: 38px;
+    margin-left: 3px;
+    margin-right: 2px;
+    padding: 8px 11px;
+    font-size: 14px;
+  }
+  .site-footer.brand-footer {
+    padding: 28px 22px 95px;
+  }
+  .brand-footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 26px 24px;
+  }
+  .brand-footer-intro {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .brand-footer-intro .wordmark > img {
+    width: 135px;
+  }
+  .brand-footer-intro > p {
+    font-size: 15px;
+    margin-top: 0;
+  }
+  .brand-footer-nav {
+    gap: 4px;
+  }
+  .brand-footer-nav a,
+  .brand-footer-nav > span {
+    font-size: 13px;
+    min-height: 29px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .brand-footer-nav h2,
+  .brand-footer-newsletter h2 {
+    font-size: 14px;
+  }
+  .brand-footer-newsletter {
+    max-width: none;
+  }
+  .brand-footer-newsletter p {
+    font-size: 13px;
+  }
+  .newsletter-coming-soon {
+    min-height: 44px;
+  }
+  .newsletter-coming-soon input {
+    font-size: 16px;
+  }
+  .newsletter-coming-soon button {
+    width: 44px;
+  }
+  .footer-social-marks {
+    max-width: 220px;
+    margin-top: 13px;
+  }
+  .footer-social-marks svg {
+    width: 22px;
+    height: 22px;
+  }
+  .brand-footer-newsletter small {
+    font-size: 10px;
+  }
+  .brand-footer-bottom {
+    flex-direction: column;
+    margin-top: 25px;
+    gap: 13px;
+    font-size: 10px;
+    padding-inline: 0;
+  }
+  .brand-footer-bottom p {
+    border: 0;
+    padding-left: 0;
+  }
+  .footer-foliage {
+    width: 110px;
+    bottom: -18px;
+  }
+}
+@media (max-width: 350px) {
+  .brand-header .wordmark > img {
+    width: 108px;
+  }
+  .brand-header .header-actions {
+    gap: 0;
+  }
+  .brand-header .brand-bag-trigger {
+    margin-inline: 0;
+  }
+  .brand-footer-intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

@@ -1,279 +1,301 @@
-import Link from "next/link";
 import Image from "next/image";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Droplets,
-  Sparkles,
-  Sun,
-  Waves,
-} from "lucide-react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Hero } from "@/components/hero";
-import { BrandSpark } from "@/components/brand-spark";
-import { ProductCard } from "@/components/product-card";
-import { Spotlight } from "@/components/spotlight";
+import { IngredientArt, type ArtKind } from "@/components/ingredient-art";
+import { BrandValueIcon } from "@/components/brand-value-icon";
 import { Reveal } from "@/components/motion";
 import { getProducts } from "@/lib/commerce";
+import { getEditorialProduct } from "@/data/products";
 import { pageMetadata } from "@/lib/seo";
+
 export const metadata = pageMetadata(
-  "Same skin. Brighter days.",
-  "Meet SKINKARI: Indian skincare for real life. Discover Vitamin C, Hyaluronic Acid, Collagen & Peptide and Detan sheet masks.",
+  "Indian Skincare for Real Life",
+  "Thoughtful ingredients and modern actives for real life in India. Discover SKINKARI Detan, Vitamin C, Hyaluronic Acid and Collagen & Peptide sheet masks.",
   "/",
 );
+
+const masks = [
+  {
+    handle: "detan-face-mask",
+    title: "Detan Mask",
+    description: "For sun-exposed, tired-looking skin.",
+    color: "green",
+  },
+  {
+    handle: "vitamin-c-radiance-face-mask",
+    title: "Vitamin C Mask",
+    description: "For dull-looking skin that needs a brighter boost.",
+    color: "orange",
+  },
+  {
+    handle: "hyaluronic-acid-face-mask",
+    title: "Hyaluronic Acid Mask",
+    description: "For skin that feels thirsty and needs hydration.",
+    color: "blue",
+  },
+  {
+    handle: "collagen-peptide-face-mask",
+    title: "Collagen & Peptide Mask",
+    description: "For skin that wants a plumper, bouncier feel.",
+    color: "pink",
+  },
+] as const;
+
 export default async function Home() {
   const products = await getProducts();
+  const featured = masks.flatMap((mask) => {
+    const product = products.find((item) => item.handle === mask.handle);
+    return product ? [{ ...mask, product }] : [];
+  });
   return (
-    <>
+    <div className="brand-home">
       <Hero />
-      <div className="brand-ribbon" aria-hidden="true">
-        {[
-          "REAL SKIN",
-          "COLOURFUL CARE",
-          "A MOMENT FOR YOU",
-          "BRIGHTER DAYS",
-        ].map((label) => (
-          <span className="brand-ribbon-item" key={label}>
-            <span>{label}</span>
-            <BrandSpark />
-          </span>
-        ))}
-      </div>
-      <section className="section product-discovery" id="meet-the-masks">
-        <Reveal>
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">MEET YOUR COLOUR OF CARE</p>
-              <h2>
-                Little masks.
-                <br className="mobile-break" />{" "}
-                <em>Big main-character energy.</em>
-              </h2>
-            </div>
-            <Link className="text-link" href="/shop">
-              Meet all four <ArrowUpRight size={18} />
-            </Link>
-          </div>
-        </Reveal>
-        <div className="product-grid">
-          {products.map((product, index) => (
-            <Reveal key={product.id} delay={index * 0.05}>
-              <ProductCard product={product} index={index} />
-            </Reveal>
-          ))}
-        </div>
-      </section>
-      <section className="section concern-section">
-        <div>
-          <p className="eyebrow">LET’S TALK ABOUT YOUR SKIN</p>
-          <h2>
-            What’s the
-            <br />
-            <em>feeling today?</em>
-          </h2>
-          <p>
-            A little dull? A little dry?
-            <br />
-            Start with what your skin is asking for.
-          </p>
-        </div>
-        <div className="concern-grid">
+      <section className="need-section" aria-labelledby="needs-heading">
+        <h2 id="needs-heading">What does your skin need today?</h2>
+        <div className="need-grid">
           {[
             {
-              name: "A little dull",
-              concern: "Dullness",
-              label: "Bring on the radiance",
-              icon: Sun,
+              title: "I’m dull",
+              name: "Vitamin C",
+              handle: "vitamin-c-radiance-face-mask",
+              kind: "sun",
               color: "orange",
             },
             {
-              name: "Feeling thirsty",
-              concern: "Dryness",
-              label: "A moment of hydration",
-              icon: Droplets,
+              title: "I’m dehydrated",
+              name: "Hyaluronic Acid",
+              handle: "hyaluronic-acid-face-mask",
+              kind: "water",
               color: "blue",
             },
             {
-              name: "Fine lines",
-              concern: "Fine lines",
-              label: "A softer, smoother look",
-              icon: Waves,
-              color: "pink",
-            },
-            {
-              name: "Uneven tone",
-              concern: "Uneven tone",
-              label: "Find your fresh start",
-              icon: Sparkles,
+              title: "My skin looks tired",
+              name: "Detan",
+              handle: "detan-face-mask",
+              kind: "leaf",
               color: "green",
             },
-          ].map(({ name, concern, label, icon: Icon, color }) => (
+            {
+              title: "I want plump, bouncy skin",
+              name: "Collagen & Peptides",
+              handle: "collagen-peptide-face-mask",
+              kind: "sparkles",
+              color: "pink",
+            },
+          ].map((item, index) => (
+            <Reveal key={item.handle} delay={index * 0.04}>
+              <Link
+                className={`need-card accent-${item.color}`}
+                href={`/products/${item.handle}`}
+              >
+                <IngredientArt kind={item.kind as ArtKind} />
+                <h3>
+                  {item.kind === "sparkles" ? (
+                    <>
+                      I want plump,
+                      <br />
+                      bouncy skin
+                    </>
+                  ) : (
+                    item.title
+                  )}
+                </h3>
+                <span>
+                  <ArrowRight size={19} aria-hidden="true" />
+                  {item.name}
+                </span>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+      <section
+        className="reference-ingredients"
+        aria-labelledby="ingredients-heading"
+      >
+        <div className="ingredients-intro">
+          <h2 id="ingredients-heading">
+            Good stuff.
+            <br />
+            No gimmicks.
+          </h2>
+          <p>
+            Every ingredient has a reason
+            <br className="wide-break" /> to be here.
+          </p>
+        </div>
+        <div className="ingredients-lineup">
+          {[
+            {
+              name: "Charcoal",
+              text: "Purifies pores",
+              kind: "charcoal",
+              handle: "detan-face-mask",
+            },
+            {
+              name: "Green tea",
+              text: "Soothes skin",
+              kind: "leaf",
+              handle: "detan-face-mask",
+            },
+            {
+              name: "Aloe",
+              text: "Hydrates skin",
+              kind: "aloe",
+              handle: "detan-face-mask",
+            },
+            {
+              name: "Vitamin C",
+              text: "Brightens skin",
+              kind: "citrus",
+              handle: "vitamin-c-radiance-face-mask",
+            },
+            {
+              name: "Peptides",
+              text: "Supports firmer skin",
+              kind: "peptides",
+              handle: "collagen-peptide-face-mask",
+            },
+            {
+              name: "Collagen",
+              text: "Helps maintain plump-looking skin",
+              kind: "collagen",
+              handle: "collagen-peptide-face-mask",
+            },
+          ].map((item) => (
             <Link
-              href={`/shop?concern=${encodeURIComponent(concern)}`}
-              className={`concern-card tone-${color}`}
-              key={name}
+              className="ingredient-item"
+              key={item.name}
+              href={`/products/${item.handle}`}
             >
-              <Icon size={34} strokeWidth={1.2} />
-              <div>
-                <h3>{name}</h3>
-                <span>{label}</span>
-              </div>
-              <ArrowUpRight size={22} />
+              <IngredientArt kind={item.kind as ArtKind} />
+              <h3>{item.name}</h3>
+              <p>{item.text}</p>
             </Link>
           ))}
         </div>
       </section>
-      <Spotlight products={products} />
-      <section className="section story-section">
-        <Reveal className="story-art">
-          <span className="story-arch" />
-          <span className="story-sun">
-            <BrandSpark />
-          </span>
-          <p>
-            ROOTED IN
+      <section
+        className="indian-skin-section"
+        id="why-indian-skin"
+        aria-labelledby="indian-skin-heading"
+      >
+        <div className="indian-skin-copy">
+          <h2 id="indian-skin-heading">
+            Made for
             <br />
-            <strong>COLOUR.</strong>
-            <br />
-            MADE FOR
-            <br />
-            <strong>REAL LIFE.</strong>
-          </p>
-          <span className="story-art-footer">
-            THE SKINKARI STATE OF MIND{" "}
-            <ArrowUpRight
-              className="inline-arrow"
-              aria-hidden="true"
-              focusable="false"
-            />
-          </span>
-        </Reveal>
-        <Reveal className="story-copy">
-          <p className="eyebrow">A LITTLE BIT OF US</p>
-          <h2>
-            For your skin.
-            <br />
-            For your day.
-            <br />
-            <em>For the real you.</em>
+            Indian skin.
           </h2>
           <p>
-            Some days are full-on. Some days are slow. Your skincare can meet
-            you right where you are.
-          </p>
-          <p>
-            SKINKARI brings together expressive Indian-inspired art and a simple
-            sheet-mask ritual. A little pause. A little colour. A moment that’s
-            yours.
-          </p>
-          <Link href="/about" className="text-link">
-            Get to know SKINKARI <ArrowUpRight size={19} />
-          </Link>
-        </Reveal>
-      </section>
-      <section className="ingredient-strip section">
-        <div>
-          <p className="eyebrow">ON THE PACK. IN THE SPOTLIGHT.</p>
-          <h2>
-            Get familiar
+            Different climates. Different routines.
             <br />
-            <em>with the ingredients.</em>
-          </h2>
-          <Link href="/ingredients" className="text-link">
-            Read the ingredient guide <ArrowUpRight size={18} />
-          </Link>
-        </div>
-        <div className="ingredient-tiles">
-          <Link
-            href="/products/vitamin-c-radiance-face-mask"
-            className="ingredient-tile citrus"
-          >
-            <span className="ingredient-symbol" aria-hidden="true">
-              ◉
-            </span>
-            <h3>Vitamin C</h3>
-            <p>The radiance edit</p>
-          </Link>
-          <Link
-            href="/products/hyaluronic-acid-face-mask"
-            className="ingredient-tile water"
-          >
-            <Droplets className="ingredient-symbol" strokeWidth={1} />
-            <h3>Hyaluronic acid</h3>
-            <p>The hydration edit</p>
-          </Link>
-          <Link
-            href="/products/detan-face-mask"
-            className="ingredient-tile leaf"
-          >
-            <span className="leaf-symbol" aria-hidden="true" />
-            <h3>Green tea</h3>
-            <p>The fresh-start edit</p>
-          </Link>
-        </div>
-      </section>
-      <section className="section ritual-section">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">SMALL RITUAL. BRIGHTER DAY.</p>
-            <h2>
-              Your pause,
-              <br />
-              <em>in three simple steps.</em>
-            </h2>
+            Same thoughtful care.
+          </p>
+          <div className="indian-skin-values">
+            <div>
+              <BrandValueIcon kind="sun" />
+              <span>
+                Real Indian
+                <br />
+                climates
+              </span>
+            </div>
+            <div>
+              <IngredientArt kind="leaf" />
+              <span>
+                Thoughtful
+                <br />
+                ingredients
+              </span>
+            </div>
+            <div>
+              <BrandValueIcon kind="flask" />
+              <span>
+                Considered
+                <br />
+                formulas
+              </span>
+            </div>
+            <div>
+              <BrandValueIcon kind="heart" />
+              <span>
+                Skin, not
+                <br />
+                standards
+              </span>
+            </div>
           </div>
-          <span className="ritual-time">
-            15 MINUTES
-            <br />
-            <strong>ALL YOURS.</strong>
-          </span>
         </div>
-        <p className="ritual-scope">
-          This routine is printed on the Vitamin C Radiance, Hyaluronic Acid,
-          Collagen &amp; Peptide and Detan packs.
-        </p>
-        <div className="ritual-grid">
-          {[
-            {
-              n: "01",
-              title: "Fresh face. Fresh start.",
-              text: "Apply your sheet mask to a freshly cleansed face.",
-              image: "/images/ritual/apply-mask.webp",
-            },
-            {
-              n: "02",
-              title: "Take fifteen.",
-              text: "Leave it on for 15 minutes, then gently remove the mask.",
-              image: "/images/ritual/wait-fifteen.webp",
-            },
-            {
-              n: "03",
-              title: "Pat. Glow. Go.",
-              text: "Pat the remaining serum into your face and neck.",
-              image: "/images/ritual/pat-serum.webp",
-            },
-          ].map((step) => (
-            <Reveal className="ritual-step" key={step.n}>
-              <div className="ritual-step-top">
-                <span>{step.n}</span>
-                <span className="ritual-icon" aria-hidden="true">
-                  <Image
-                    src={step.image}
-                    alt=""
-                    width={512}
-                    height={512}
-                    sizes="(max-width: 600px) 88px, 112px"
-                  />
-                </span>
-              </div>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </Reveal>
-          ))}
+        <div className="indian-skin-art">
+          <span className="story-graphic-sun" aria-hidden="true" />
+          <Image
+            src="/images/reference/story-woman.webp"
+            alt="Geometric Indian woman in profile with a closed eye and pink lips, framed by faceted emerald leaves"
+            width={1200}
+            height={800}
+            sizes="(max-width: 600px) 90vw, 43vw"
+          />
         </div>
-        <Link href="/shop" className="text-link">
-          Make a little time for you <ArrowRight size={18} />
-        </Link>
       </section>
-    </>
+      <section
+        className="ritual-showcase"
+        id="meet-the-masks"
+        aria-labelledby="masks-heading"
+      >
+        <div className="showcase-heading">
+          <h2 id="masks-heading">Four rituals. Many realities.</h2>
+          <p>Four masks. Four skin moments.</p>
+        </div>
+        <div className="showcase-grid">
+          {featured.map(({ product, title, description, color }, index) => {
+            const artwork = product.images[0];
+            const editorial = getEditorialProduct(product.handle);
+            return (
+              <Reveal
+                key={product.id}
+                className={`showcase-panel panel-${color}`}
+                delay={index * 0.04}
+              >
+                <article>
+                  <Link
+                    href={`/products/${product.handle}`}
+                    className="showcase-image-link"
+                    aria-label={`Explore ${product.title}`}
+                  >
+                    {artwork && (
+                      <Image
+                        src={artwork.url}
+                        alt={
+                          artwork.altText ||
+                          editorial?.imageAlt ||
+                          product.title
+                        }
+                        width={artwork.width || 1098}
+                        height={artwork.height || 1500}
+                        sizes="(max-width: 600px) 38vw, 19vw"
+                      />
+                    )}
+                  </Link>
+                  <h3>{product.source === "demo" ? title : product.title}</h3>
+                  <p>
+                    {product.source === "demo"
+                      ? description
+                      : product.description}
+                  </p>
+                  <Link
+                    href={`/products/${product.handle}`}
+                    className="button"
+                    aria-label={`View mask: ${product.title}`}
+                  >
+                    View mask <ArrowRight size={20} aria-hidden="true" />
+                  </Link>
+                </article>
+              </Reveal>
+            );
+          })}
+        </div>
+      </section>
+    </div>
   );
 }

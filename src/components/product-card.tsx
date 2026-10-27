@@ -20,16 +20,15 @@ export function ProductCard({
           <span>
             0{index + 1} / {editorial?.eyebrow || "Meet your mask"}
           </span>
-          <ArrowUpRight size={20} />
+          <ArrowUpRight size={20} aria-hidden="true" focusable="false" />
         </div>
-        <span className="product-orbit" aria-hidden="true" />
         {image && (
           <Image
             src={image.url}
             alt={image.altText || product.title}
             width={image.width || 1098}
             height={image.height || 1500}
-            sizes="(max-width: 800px) 45vw, (max-width: 1100px) 30vw, 24vw"
+            sizes="(max-width: 420px) 75vw, (max-width: 900px) 40vw, 22vw"
             className="product-pack"
           />
         )}

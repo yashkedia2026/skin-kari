@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { getProducts } from "@/lib/commerce";
 import { getEditorialProduct } from "@/data/products";
 import { ProductCard } from "@/components/product-card";
@@ -20,17 +20,40 @@ const concerns = [
 export default async function Shop({
   searchParams,
 }: {
-  searchParams: Promise<{ concern?: string }>;
+  searchParams: Promise<{ concern?: string | string[]; q?: string | string[] }>;
 }) {
-  const { concern } = await searchParams;
+  const params = await searchParams;
+  const concern = typeof params.concern === "string" ? params.concern : "";
+  const query =
+    typeof params.q === "string" ? params.q.trim().slice(0, 80) : "";
   const selected = concerns.includes(concern || "") ? concern : "All masks";
   const products = await getProducts();
-  const filtered =
-    selected === "All masks"
-      ? products
-      : products.filter((p) =>
-          getEditorialProduct(p.handle)?.concerns.includes(selected || ""),
-        );
+  const terms = query.toLocaleLowerCase("en-IN").split(/\s+/).filter(Boolean);
+  const filtered = products.filter((product) => {
+    const editorial = getEditorialProduct(product.handle);
+    const matchesConcern =
+      selected === "All masks" || editorial?.concerns.includes(selected);
+    const searchable = [
+      product.title,
+      product.description,
+      ...(editorial?.concerns ?? []),
+      ...(editorial?.benefits ?? []),
+      ...(
+        product.details?.featuredIngredients ??
+        editorial?.featuredIngredients ??
+        []
+      ).map((ingredient) => ingredient.name),
+    ]
+      .join(" ")
+      .toLocaleLowerCase("en-IN");
+    return matchesConcern && terms.every((term) => searchable.includes(term));
+  });
+  function filterHref(value: string) {
+    const search = new URLSearchParams();
+    if (value !== "All masks") search.set("concern", value);
+    if (query) search.set("q", query);
+    return `/shop${search.size ? `?${search}` : ""}`;
+  }
   return (
     <div className="shop-page section">
       <div className="shop-intro">
@@ -44,17 +67,48 @@ export default async function Shop({
           Discover a little care for your skin. Start with a feeling, find your
           mask.
         </p>
+        <form action="/shop" method="get" className="shop-search">
+          <label htmlFor="shop-product-search">
+            Search masks or ingredients
+          </label>
+          {selected !== "All masks" && (
+            <input type="hidden" name="concern" value={selected} />
+          )}
+          <div className="brand-search-field">
+            <input
+              id="shop-product-search"
+              name="q"
+              type="search"
+              maxLength={80}
+              defaultValue={query}
+              placeholder="Try Vitamin C"
+            />
+            <button type="submit" aria-label="Search masks">
+              <ArrowRight aria-hidden="true" />
+            </button>
+          </div>
+        </form>
+        {query && (
+          <p className="shop-search-summary">
+            Results for “{query}”.{" "}
+            <Link
+              href={
+                selected === "All masks"
+                  ? "/shop"
+                  : `/shop?concern=${encodeURIComponent(selected)}`
+              }
+            >
+              Clear search
+            </Link>
+          </p>
+        )}
       </div>
       <div className="shop-toolbar">
         <nav className="filter-pills" aria-label="Filter by skin concern">
           {concerns.map((c) => (
             <Link
               key={c}
-              href={
-                c === "All masks"
-                  ? "/shop"
-                  : `/shop?concern=${encodeURIComponent(c)}`
-              }
+              href={filterHref(c)}
               aria-current={selected === c ? "true" : undefined}
             >
               {c}
@@ -72,7 +126,7 @@ export default async function Shop({
       </div>
       {filtered.length === 0 && (
         <p className="empty-state">
-          No masks match this concern right now.{" "}
+          No masks match {query ? "your search" : "this concern"} right now.{" "}
           <Link href="/shop">Explore all masks</Link>.
         </p>
       )}

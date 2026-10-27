@@ -4,6 +4,17 @@ A custom Next.js App Router storefront for **SKINKARI — SAME SKIN. BRIGHTER DA
 
 The project opens in **demo mode** without credentials. The demo bag supports additions, quantity changes, removals and persistence. Prices are intentionally absent, and checkout is disabled. The Shopify integration is implemented and tested against mocked provider responses, but **live checkout has not been configured or verified**.
 
+The current redesign follows the client's supplied reference: warm cream and
+black, Oswald condensed headings, DM Sans body text, a Caveat handwritten note,
+two reconstructed geometric portraits, faceted foliage and four saturated
+product panels. Homepage order is hero, skin concerns, ingredients, Indian-skin
+story, four masks and footer. Both portraits and the leaf cluster were generated
+with the built-in image tool using the supplied reference; they are reconstructions,
+not original client vectors or packaging crops. Product packaging remains unchanged.
+The homepage uses the reference wording at the user's explicit request. See the
+[redesign report](docs/REDESIGN-REPORT.md) for fidelity and asset details.
+**This redesign remains local: no commit, push or deployment is authorized.**
+
 ## Run locally
 
 Use Node.js 22.20+ and npm. The lockfile fixes the dependency versions used for this build.
@@ -28,14 +39,15 @@ npm start
 
 ## Implemented
 
-- Four-product packaging-derived catalogue: names, featured ingredients, cautious benefit wording, 20 ml size, directions and warnings. No invented prices, reviews, certifications or stock counts.
-- Responsive illustrated homepage, concern filtering, interactive product spotlight, product details and variants, cart page and modal drawer.
+- Four-product packaging-derived catalogue: names, featured ingredients, 20 ml size, directions and warnings. Homepage promotional copy follows the supplied reference; catalogue editorial data remains separate. No invented prices, reviews, certifications or stock counts.
+- Reference-based responsive homepage with illustrated skin-concern links, ingredient row and four product panels; shop filtering/search, product details and variants, cart page and modal drawer.
 - Shopify Storefront API product/variant pagination, India market context, public editorial metafields, authoritative prices, availability checks, persistent carts and fresh checkout URLs.
 - Explicit demo mode with HttpOnly cookie persistence; configuration/provider errors never silently turn a live store into a demo.
 - About, ingredients, FAQs, contact, shipping/returns, privacy, terms, journal and two articles. Missing merchant contact/policies are disclosed instead of fabricated.
 - Motion animations with reduced-motion support. Native modal dialogs, semantic headings, visible focus states, keyboard navigation and a skip link.
 - Server-rendered product content, canonical metadata, social image, sitemap, robots, Organization/Breadcrumb/Product JSON-LD. Offers appear only from verified Shopify prices. No fake rating schema.
-- Local variable fonts and responsive optimized images. Primary WebP artwork is extracted from the supplied PDFs; it is temporary print artwork, not product photography.
+- Local Oswald (400/500/600/700), DM Sans and Caveat fonts with responsive optimized images. Original packaging crops and generated reference illustrations have separate asset directories and documented provenance. Detailed inline SVG ingredient and value symbols avoid platform-dependent emoji rendering.
+- Functional search and account-information dialogs. Account sign-in and newsletter subscription are explicitly unavailable. Reference footer labels and social marks appear as unavailable placeholders when no real destination or integration exists; they do not link to invented profiles or pages.
 
 ## Project map
 
@@ -47,6 +59,8 @@ src/data/products.ts        Packaging-backed editorial fixtures
 src/lib/commerce/           Typed demo/live commerce adapters and validation
 src/lib/seo.ts              Shared metadata, origin and indexing policy
 public/images/products/    Original packaging crops and optimized WebP assets
+public/images/editorial/   Preserved original packaging illustration crops
+public/images/reference/   Generated reference portraits and leaf cluster
 reference/products/        Preserved source PDFs
 reference/packaging-renders/ Extracted text and rendered packaging proof sheets
 scripts/                    Reproducible PDF/artwork extraction tools
@@ -60,7 +74,7 @@ Original PDFs in the workspace root are preserved. An unrelated financial docume
 
 Follow [Shopify setup](docs/SHOPIFY-SETUP.md). Set `STOREFRONT_MODE=live`, the store’s `*.myshopify.com` domain, Storefront access token and production origin in the host environment. Never prefix the token with `NEXT_PUBLIC_`. Set the optional exact checkout hostname if Shopify uses a custom checkout domain. Rebuild after changing modes or public environment variables.
 
-Create the four matching product handles listed in the setup guide and publish them to the appropriate storefront channel. Shopify owns product titles, descriptions, images, variants, prices, stock and optional `custom` editorial metafields. Known catalogue products fall back to the documented packaging editorial data for unspecified fields. The spotlight consumes the active catalogue; hero brand imagery and education pages remain curated repository content.
+Create the four matching product handles listed in the setup guide and publish them to the appropriate storefront channel. Shopify owns product titles, descriptions, images, variants, prices, stock and optional `custom` editorial metafields. Known catalogue products fall back to the documented packaging editorial data for unspecified fields. The product showcase consumes the active catalogue; hero brand imagery and education pages remain curated repository content.
 
 Checkout uses Shopify’s Cart API and redirects to Shopify’s fresh HTTPS checkout URL. Taxes, shipping and discounts are calculated there. This app has no payment form and does not store card details. Missing, expired, unavailable and sold-out states return safe errors. No cart secret is exposed to browser JavaScript.
 
@@ -80,9 +94,9 @@ For a production browser pass, build and serve with `npm start` before running t
 
 Read [the editorial checklist](docs/EDITORIAL-TODO.md), [packaging analysis](docs/PACKAGING-ANALYSIS.md), [design system](docs/DESIGN-SYSTEM.md), and [SEO plan](docs/SEO-PLAN.md).
 
-The main external requirements are real prices/variants/inventory, full ingredient lists, final photography, merchant identity/contact, approved shipping/return/privacy/terms content, and a configured/tested Shopify checkout. Reviews and social accounts remain absent until genuine data is provided.
+The main external requirements are real prices/variants/inventory, full ingredient lists, final photography, merchant identity/contact, approved shipping/return/privacy/terms content, and a configured/tested Shopify checkout. Original reference vectors remain unavailable; the generated illustrations are documented reconstructions, not an exact-source match. Customer accounts and newsletter subscriptions need real integrations. Reviews are absent; social marks remain unavailable placeholders until genuine profile URLs are supplied.
 
-`NEXT_PUBLIC_INDEXING_ENABLED=false` deliberately prevents indexing the demo. Only enable it with explicit live mode on the final HTTPS domain after content and checkout validation. Cart and unfinished policy/contact pages remain noindex; the sitemap excludes them. The frontend is ready to deploy to a Node-compatible Next.js host; this task has not published a production website.
+`NEXT_PUBLIC_INDEXING_ENABLED=false` deliberately prevents indexing the demo. Only enable it with explicit live mode on the final HTTPS domain after content and checkout validation. Cart and unfinished policy/contact pages remain noindex; the sitemap excludes them. The frontend can run on a Node-compatible Next.js host. The current redesign has not been pushed or deployed; publication requires the user's explicit instruction.
 
 ## Technical references
 

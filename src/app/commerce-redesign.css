@@ -1,0 +1,761 @@
+/* The supporting storefront uses the same packaging-led palette as the home page. */
+.tone-orange {
+  --tone-bg: #ffb022;
+  --tone-accent: #9b4200;
+  --tone-text: #101010;
+}
+.tone-blue {
+  --tone-bg: #0785ef;
+  --tone-accent: #075eab;
+  --tone-text: #101010;
+}
+.tone-pink {
+  --tone-bg: #ea338a;
+  --tone-accent: #ab175c;
+  --tone-text: #101010;
+}
+.tone-green {
+  --tone-bg: #00744f;
+  --tone-accent: #006343;
+  --tone-text: #fff;
+}
+
+.shop-page {
+  padding-top: clamp(36px, 5vw, 72px);
+}
+.shop-intro {
+  margin: 0 auto 36px;
+  max-width: 850px;
+}
+.shop-intro h1 {
+  margin: 14px 0 22px;
+  font-size: clamp(42px, 6vw, 82px);
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.shop-intro h1 em,
+.page-title em {
+  font: inherit;
+}
+.shop-intro > .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+.shop-intro > p:last-child {
+  max-width: 560px;
+  margin-inline: auto;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.shop-toolbar {
+  gap: 20px;
+  padding: 22px 0;
+  margin-bottom: 10px;
+  border-color: #10101030;
+}
+.shop-toolbar > span {
+  color: #404040;
+  font-size: 13px;
+}
+.filter-pills {
+  gap: 8px;
+}
+.filter-pills a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid #1010104d;
+  border-radius: 0;
+  font-size: 12px;
+  transition:
+    background 180ms,
+    color 180ms;
+}
+.filter-pills a:hover,
+.filter-pills a[aria-current] {
+  background: #101010;
+  color: #fff;
+  border-color: #101010;
+}
+.product-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+.product-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  background: var(--tone-bg);
+  color: var(--tone-text);
+}
+.product-card-art,
+.related-grid .product-card-art {
+  min-height: 0;
+  padding: 18px 18px 10px;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+}
+.card-topline,
+.related-grid .card-topline {
+  font-family: var(--body);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+  gap: 8px;
+}
+.card-topline > svg {
+  flex-shrink: 0;
+}
+.product-pack,
+.related-grid .product-pack {
+  width: min(78%, 240px);
+  height: auto;
+  aspect-ratio: 1098 / 1500;
+  max-height: none;
+  margin: 24px 0 18px;
+  transform: none;
+  filter: drop-shadow(0 8px 9px #10101024);
+}
+.product-card:nth-child(even) .product-pack {
+  transform: none;
+}
+.product-card-art:hover .product-pack {
+  transform: translateY(-5px);
+}
+.product-card-note {
+  max-width: 100%;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-align: center;
+}
+.product-card-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 14px 18px 20px;
+}
+.product-card-info > .eyebrow {
+  color: inherit;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+}
+.product-card h3,
+.related-grid .product-card h3 {
+  min-height: 0;
+  margin: 8px 0 12px;
+  font-size: clamp(24px, 2.1vw, 32px);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.18;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.product-card-info > p,
+.related-grid .product-card-info > p {
+  min-height: 0;
+  margin-bottom: 20px;
+  color: inherit;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.card-add,
+.related-grid .card-add {
+  gap: 10px;
+  min-height: 48px;
+  margin-top: auto;
+  padding: 12px 14px;
+  background: #101010;
+  color: #fff;
+  border: 1px solid #101010;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  transition: background 180ms;
+}
+.card-add svg {
+  flex-shrink: 0;
+}
+.card-add:hover {
+  background: #2d2d2d;
+  color: #fff;
+}
+.product-card .inline-error {
+  margin: 12px 0 0;
+  padding: 10px;
+  background: var(--cream);
+  color: #8b2014;
+}
+.shop-footer-note {
+  background: transparent;
+  border-block: 1px solid #10101030;
+  margin-top: 48px;
+  padding: 28px 0;
+}
+.shop-footer-note > span {
+  color: #00744f;
+  font-size: 44px;
+}
+.shop-footer-note > p,
+.shop-footer-note > a {
+  font-size: 14px;
+}
+
+.product-detail {
+  padding-top: 26px;
+  padding-bottom: 36px;
+}
+.breadcrumbs {
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #4b4b4b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.product-detail-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(30px, 5vw, 76px);
+}
+.product-detail-art {
+  min-height: 0;
+  aspect-ratio: 0.83;
+  padding: 36px 32px 64px;
+  background: var(--tone-bg);
+  color: var(--tone-text);
+}
+.product-detail-art > img {
+  width: 75%;
+  height: 100%;
+  max-height: 650px;
+  object-fit: contain;
+  transform: none;
+  filter: drop-shadow(0 12px 12px #1010102b);
+}
+.product-detail-art > p {
+  bottom: 26px;
+  left: 18px;
+  right: 18px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+}
+.product-detail-copy {
+  min-width: 0;
+  padding-top: 6px;
+}
+.product-detail-copy > .eyebrow {
+  color: var(--tone-accent);
+  font-size: 12px;
+  margin-bottom: 12px;
+  letter-spacing: 0.09em;
+}
+.product-detail-copy h1 {
+  max-width: none;
+  font-size: clamp(40px, 4.2vw, 64px);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  margin-bottom: 22px;
+}
+.product-description {
+  font-size: 15px;
+  line-height: 1.75;
+}
+.benefit-list {
+  gap: 11px;
+  margin: 24px 0;
+}
+.product-detail-copy .benefit-list li {
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.benefit-list svg {
+  color: var(--tone-accent);
+  margin-top: 2px;
+}
+.purchase-box {
+  padding: 23px 0;
+  border-color: #10101030;
+}
+.product-price {
+  flex-wrap: wrap;
+  font-size: 20px;
+  gap: 10px;
+}
+.product-price > span {
+  border-color: #10101040;
+  border-radius: 0;
+  font-size: 11px;
+}
+.purchase-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.quantity-picker {
+  border-color: #10101080;
+  border-radius: 0;
+}
+.quantity-picker button,
+.purchase-actions .quantity-picker button {
+  min-width: 42px;
+  min-height: 44px;
+}
+.quantity-picker span {
+  min-width: 26px;
+  font-size: 14px;
+}
+.purchase-actions .button {
+  flex: 1 1 170px;
+  width: auto;
+  min-height: 52px;
+  padding: 13px 18px;
+  font-size: 17px;
+}
+.purchase-note,
+.small-note,
+.artwork-caption {
+  color: #4c4c4c;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.variant-label {
+  font-size: 14px;
+}
+.variant-label select {
+  max-width: 100%;
+  border-color: #10101050;
+  border-radius: 0;
+}
+.product-accordions details {
+  font-size: 14px;
+  border-color: #10101030;
+}
+.product-accordions summary {
+  font-size: 15px;
+  padding-block: 21px;
+}
+.product-accordions details .packaging-directions {
+  display: grid;
+  gap: 16px;
+  list-style: none;
+  padding-left: 0;
+}
+.product-accordions .packaging-directions li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 0;
+}
+.packaging-directions img {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+.related-section {
+  padding-top: 30px;
+}
+.related-section .section-heading h2 {
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.related-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.cart-dialog::backdrop {
+  background: #10101070;
+  backdrop-filter: none;
+}
+.cart-panel {
+  padding: 28px;
+}
+.cart-heading h2,
+.cart-empty h3 {
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.cart-page > h1 {
+  font-size: clamp(38px, 5vw, 64px);
+  letter-spacing: 0;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.demo-note {
+  background: #ffedbd;
+  border-left: 3px solid #ffb022;
+  border-radius: 0;
+  font-size: 12px;
+}
+.cart-line {
+  gap: 18px;
+  padding-block: 24px;
+  border-color: #10101030;
+}
+.cart-product-image {
+  background: #eeeae0;
+  border-radius: 0;
+}
+.cart-line-detail {
+  min-width: 0;
+}
+.cart-line-detail > a,
+.cart-page .cart-line-detail > a {
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.25;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.cart-line-detail > small,
+.cart-line-detail > span,
+.cart-summary > p {
+  color: #4c4c4c;
+  font-size: 12px;
+}
+.cart-line-actions {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.cart-summary > div {
+  gap: 16px;
+  font-size: 15px;
+}
+.cart-summary .button {
+  font-size: 16px;
+  gap: 14px;
+}
+.cart-empty p {
+  font-size: 14px;
+}
+
+.editorial-page {
+  max-width: 1180px;
+  padding-block: clamp(40px, 6vw, 80px);
+}
+.page-eyebrow {
+  color: #00744f;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+.page-title {
+  max-width: 900px;
+  font-size: clamp(42px, 5.7vw, 78px);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.page-intro {
+  font-size: 17px;
+  line-height: 1.7;
+  max-width: 740px;
+}
+.prose h2,
+.prose h3 {
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.prose h2 {
+  font-size: 32px;
+}
+.prose h3 {
+  font-size: 25px;
+}
+.prose p,
+.prose li {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.info-grid {
+  gap: 24px;
+}
+.info-card {
+  /* Existing editorial pages supply pastel inline colours; keep their content
+     while aligning the card surfaces with the new cream-and-colour system. */
+  background: var(--cream) !important;
+  border: 1px solid #10101030;
+  border-top: 6px solid #00744f;
+  border-radius: 0;
+  padding: 28px;
+  min-width: 0;
+}
+.info-card:nth-child(4n + 2) {
+  border-top-color: #ffb022;
+}
+.info-card:nth-child(4n + 3) {
+  border-top-color: #0785ef;
+}
+.info-card:nth-child(4n + 4) {
+  border-top-color: #ea338a;
+}
+.info-card:has(a[href="/products/vitamin-c-radiance-face-mask"]) {
+  border-top-color: #ffb022;
+}
+.info-card:has(a[href="/products/hyaluronic-acid-face-mask"]) {
+  border-top-color: #0785ef;
+}
+.info-card:has(a[href="/products/collagen-peptide-face-mask"]) {
+  border-top-color: #ea338a;
+}
+.info-card:has(a[href="/products/detan-face-mask"]) {
+  border-top-color: #00744f;
+}
+.info-card h2,
+.info-card h3 {
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.info-card p,
+.info-card li {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.info-card .page-eyebrow {
+  color: #4b4b4b;
+  font-size: 11px;
+}
+.faq-list summary {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.faq-list details p {
+  font-size: 15px;
+  line-height: 1.75;
+}
+.status-page h1 {
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.status-page > span,
+.loading-flower {
+  color: #00744f;
+}
+
+@media (max-width: 1000px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .product-card h3,
+  .related-grid .product-card h3 {
+    font-size: 29px;
+  }
+  .related-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .related-grid .product-card-art {
+    padding-inline: 12px;
+  }
+  .related-grid .product-card-info {
+    padding-inline: 14px;
+  }
+  .related-grid .product-card h3 {
+    font-size: 24px;
+  }
+  .product-detail-grid {
+    gap: 30px;
+  }
+  .product-detail-art {
+    padding: 30px 20px 60px;
+  }
+  .product-detail-art > img {
+    width: 84%;
+  }
+}
+
+@media (max-width: 700px) {
+  .shop-intro {
+    text-align: left;
+  }
+  .shop-intro > p:last-child {
+    margin-inline: 0;
+  }
+  .shop-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .shop-toolbar > span {
+    padding-top: 0;
+  }
+  .shop-footer-note {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 18px;
+    padding-block: 24px;
+  }
+  .shop-footer-note > span {
+    font-size: 36px;
+  }
+  .shop-footer-note > a {
+    grid-column: 2;
+    margin: 0;
+  }
+  .product-detail-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .product-detail-art {
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+    aspect-ratio: 0.95;
+    padding: 28px 24px 58px;
+  }
+  .product-detail-art > img {
+    width: 65%;
+    max-height: 450px;
+  }
+  .product-detail-copy h1 {
+    font-size: clamp(38px, 9vw, 54px);
+  }
+  .product-detail-copy .benefit-list li {
+    font-size: 14px;
+  }
+  .related-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .related-grid .product-card:last-child {
+    display: flex;
+  }
+  .related-section .section-heading {
+    align-items: flex-start;
+  }
+  .related-section .section-heading > .text-link {
+    font-size: 13px;
+  }
+  .info-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-intro {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid,
+  .related-grid {
+    gap: 14px;
+  }
+  .product-card-art,
+  .related-grid .product-card-art {
+    padding: 14px 12px 6px;
+  }
+  .card-topline,
+  .related-grid .card-topline {
+    font-size: 10px;
+  }
+  .card-topline > svg {
+    width: 16px;
+    height: 16px;
+  }
+  .product-card-info,
+  .related-grid .product-card-info {
+    padding: 12px 12px 16px;
+  }
+  .product-card h3,
+  .related-grid .product-card h3 {
+    font-size: 25px;
+  }
+  .product-card-info > .eyebrow {
+    font-size: 10px;
+  }
+  .product-pack,
+  .related-grid .product-pack {
+    width: 86%;
+    margin: 18px 0 14px;
+  }
+  .card-add,
+  .related-grid .card-add {
+    font-size: 14px;
+    padding: 11px 10px;
+  }
+  .cart-panel {
+    padding: 22px 18px;
+  }
+  .cart-heading h2 {
+    font-size: 28px;
+  }
+  .cart-line,
+  .cart-page .cart-line {
+    gap: 14px;
+  }
+  .cart-product-image,
+  .cart-page .cart-product-image {
+    width: 68px;
+    height: 94px;
+  }
+  .cart-line-detail > a,
+  .cart-page .cart-line-detail > a {
+    font-size: 20px;
+  }
+  .info-card {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 420px) {
+  .shop-page .product-grid,
+  .related-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .product-card-art,
+  .related-grid .product-card-art {
+    padding: 18px 22px 10px;
+  }
+  .product-card-info,
+  .related-grid .product-card-info {
+    padding: 14px 22px 22px;
+  }
+  .product-card h3,
+  .related-grid .product-card h3 {
+    font-size: 30px;
+  }
+  .product-pack,
+  .related-grid .product-pack {
+    width: min(68%, 220px);
+  }
+  .product-card-info > p,
+  .related-grid .product-card-info > p {
+    font-size: 13px;
+  }
+  .card-add,
+  .related-grid .card-add {
+    font-size: 16px;
+    padding: 13px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card-art:hover .product-pack {
+    transform: none;
+  }
+}

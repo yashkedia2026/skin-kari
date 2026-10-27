@@ -6,7 +6,6 @@ import { getProduct, getProducts } from "@/lib/commerce";
 import { getEditorialProduct } from "@/data/products";
 import { ProductPurchase } from "@/components/product-purchase";
 import { ProductCard } from "@/components/product-card";
-import { BrandSpark } from "@/components/brand-spark";
 import { jsonLd, pageMetadata, siteUrl } from "@/lib/seo";
 type Props = { params: Promise<{ handle: string }> };
 export async function generateMetadata({ params }: Props) {
@@ -29,6 +28,13 @@ export default async function ProductPage({ params }: Props) {
   const all = await getProducts();
   const benefits = product.details?.benefits || editorial?.benefits || [];
   const directions = product.details?.directions || editorial?.directions || [];
+  const showPackagingDirections =
+    editorial?.directions.length === 3 &&
+    directions.length === 3 &&
+    directions.every(
+      (direction, index) => direction === editorial.directions[index],
+    );
+  const directionArtwork = ["apply-mask", "wait-fifteen", "pat-serum"];
   const ingredients =
     product.details?.featuredIngredients ||
     editorial?.featuredIngredients ||
@@ -54,7 +60,9 @@ export default async function ProductPage({ params }: Props) {
       : undefined;
   return (
     <>
-      <div className="product-detail section">
+      <div
+        className={`product-detail section tone-${editorial?.color || "orange"}`}
+      >
         <nav className="breadcrumbs" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
           <span>/</span>
@@ -66,10 +74,6 @@ export default async function ProductPage({ params }: Props) {
           <div
             className={`product-detail-art tone-${editorial?.color || "orange"}`}
           >
-            <span className="detail-art-circle" />
-            <span className="detail-art-flower" aria-hidden="true">
-              <BrandSpark />
-            </span>
             {image && (
               <Image
                 src={image.url}
@@ -128,9 +132,26 @@ export default async function ProductPage({ params }: Props) {
                     : "Directions for use"}
                 </summary>
                 {directions.length ? (
-                  <ol>
-                    {directions.map((d) => (
-                      <li key={d}>{d}</li>
+                  <ol
+                    className={
+                      showPackagingDirections
+                        ? "packaging-directions"
+                        : undefined
+                    }
+                  >
+                    {directions.map((d, index) => (
+                      <li key={d}>
+                        {showPackagingDirections && (
+                          <Image
+                            src={`/images/ritual/${directionArtwork[index]}.webp`}
+                            alt=""
+                            width={72}
+                            height={72}
+                            sizes="72px"
+                          />
+                        )}
+                        <span>{d}</span>
+                      </li>
                     ))}
                   </ol>
                 ) : (
@@ -177,9 +198,7 @@ export default async function ProductPage({ params }: Props) {
         <div className="section-heading">
           <div>
             <p className="eyebrow">MORE COLOURS OF CARE</p>
-            <h2>
-              Another day.<em> Another mask.</em>
-            </h2>
+            <h2>More masks. More moments.</h2>
           </div>
           <Link href="/shop" className="text-link">
             View all masks{" "}

@@ -1,0 +1,1080 @@
+:root {
+  --cream: #faf8f1;
+  --ink: #101010;
+  --orange: #b85c00;
+  --line: #10101026;
+  --green-panel: #00744f;
+  --orange-panel: #ffb022;
+  --blue-panel: #0075d4;
+  --pink-panel: #d51b72;
+  --section: clamp(22px, 4.2vw, 64px);
+}
+body {
+  background: var(--cream);
+  color: var(--ink);
+}
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+h1 em,
+h2 em {
+  font-family: var(--display);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: inherit;
+}
+.button {
+  border-radius: 2px;
+  background: #080808;
+  border-color: #080808;
+  color: #fff;
+  font-family: var(--display);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+}
+.button:hover:not(:disabled) {
+  background: #292929;
+}
+.text-link {
+  color: var(--ink);
+}
+.text-link svg {
+  flex-shrink: 0;
+}
+.brand-home {
+  overflow: clip;
+}
+.brand-home h2,
+.brand-home h3 {
+  text-transform: uppercase;
+}
+.ingredient-art {
+  display: block;
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.reference-hero {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 45% 55%;
+  min-height: 560px;
+  border-bottom: 1px solid var(--line);
+  padding: 0 var(--section) 0 5.8vw;
+  isolation: isolate;
+}
+.reference-hero-copy {
+  padding: 38px 0 30px;
+  z-index: 2;
+  align-self: start;
+}
+.brand-kicker {
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.reference-hero h1 {
+  font-size: clamp(54px, 5.8vw, 88px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+.reference-hero-description {
+  font-size: clamp(15px, 1.55vw, 23px);
+  line-height: 1.5;
+  margin: 16px 0 24px;
+  max-width: 510px;
+}
+.reference-cta {
+  min-height: 59px;
+  padding: 15px 32px;
+  gap: 26px;
+  font-size: 24px;
+}
+.hero-values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 450px;
+  margin-top: 28px;
+}
+.hero-values > div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  gap: 10px;
+  padding: 0 12px;
+}
+.hero-values > div + div {
+  border-left: 1px solid var(--line);
+}
+.hero-values svg {
+  width: 55px;
+  height: 55px;
+  stroke-width: 2.5;
+}
+.hero-values span {
+  font-family: var(--display);
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 500;
+}
+.reference-hero-art {
+  --callout-width: 92px;
+  --connector-length: max(
+    18px,
+    calc(50cqw - var(--callout-width) - var(--connector-gap))
+  );
+  --connector-gap: 6px;
+  container-type: inline-size;
+  isolation: isolate;
+  position: relative;
+  min-width: 0;
+  min-height: 560px;
+}
+.hero-corner-leaves {
+  position: absolute;
+  bottom: -60px;
+  right: -12%;
+  width: 17%;
+  height: auto;
+  transform: scaleX(-1) rotate(-15deg);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-portrait {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Align the visible artwork, compensating for its transparent bottom gutter. */
+  bottom: -3.7%;
+  height: 103.7%;
+  width: 70%;
+  object-fit: cover;
+  object-position: bottom;
+  z-index: 1;
+  clip-path: polygon(0 0, 100% 0, 100% 75%, 82% 100%, 15% 100%, 0 75%);
+}
+.hero-ingredient,
+.hero-climate {
+  --callout-icon-size: 92px;
+  --callout-art-width: 92px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 3px;
+  font-family: var(--display);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 500;
+  width: var(--callout-width);
+  text-align: center;
+}
+.hero-ingredient > *,
+.hero-climate > * {
+  position: relative;
+  z-index: 2;
+}
+.hero-ingredient .ingredient-art {
+  width: var(--callout-art-width);
+  height: var(--callout-icon-size);
+}
+.hero-aloe {
+  top: 8%;
+  left: 0;
+}
+.hero-charcoal {
+  top: 33%;
+  left: 0;
+}
+.hero-citrus {
+  top: 58%;
+  left: 0;
+}
+.hero-climate {
+  --callout-art-width: 67px;
+  right: 0;
+}
+.hero-climate .ingredient-art {
+  width: var(--callout-art-width);
+  height: var(--callout-icon-size);
+}
+.hero-ingredient::before,
+.hero-climate::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--callout-icon-size) / 2);
+  height: 5px;
+  transform: translateY(-50%);
+  background:
+    radial-gradient(circle at 2px 50%, #4c4c4280 0 2px, transparent 2.5px),
+    linear-gradient(#4c4c4280, #4c4c4280) center / 100% 1px no-repeat;
+  pointer-events: none;
+  /* Extend underneath the portrait so the visible line meets its silhouette. */
+  z-index: 0;
+}
+.hero-ingredient::before {
+  left: calc(100% + var(--connector-gap));
+  width: var(--connector-length);
+}
+.hero-climate::before {
+  right: calc(100% + var(--connector-gap));
+  width: var(--connector-length);
+  transform: translateY(-50%) scaleX(-1);
+}
+.climate-sun {
+  top: 8%;
+}
+.climate-water {
+  top: 33%;
+}
+.climate-urban {
+  top: 58%;
+}
+.hero-handwritten {
+  font-family: var(--font-handwriting), cursive;
+  font-weight: 600;
+  font-size: clamp(20px, 1.7vw, 24px);
+  line-height: 1.12;
+  position: absolute;
+  right: 0;
+  bottom: 56px;
+  transform: rotate(-7deg);
+  z-index: 3;
+  text-align: center;
+}
+.geometric-trim {
+  position: absolute;
+  width: 40px;
+  height: 230px;
+  z-index: -1;
+  background: repeating-conic-gradient(
+      from 45deg,
+      #ffb022 0deg 90deg,
+      #ea338a 90deg 180deg,
+      #00744f 180deg 270deg,
+      #0785ef 270deg 360deg
+    )
+    0 0 / 58px 58px;
+}
+.trim-left {
+  left: 0;
+  bottom: 0;
+  clip-path: polygon(0 0, 100% 18%, 100% 100%, 0 100%);
+}
+.trim-right {
+  right: 0;
+  top: 0;
+  height: 150px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 78%);
+}
+.need-section {
+  padding: 22px var(--section) 28px;
+  border-bottom: 1px solid var(--line);
+}
+.need-section > h2 {
+  font-size: clamp(30px, 3.9vw, 58px);
+  text-align: center;
+  line-height: 1.15;
+  margin-bottom: 22px;
+}
+.need-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.need-grid > div {
+  min-width: 0;
+}
+.need-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 190px;
+  border: 1px solid #10101016;
+  padding: 16px 21px 20px;
+  transition:
+    transform 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+}
+.need-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  background: #fffdf6;
+}
+.need-card .ingredient-art {
+  height: 63px;
+  width: 63px;
+  margin-bottom: 8px;
+  transition: transform 0.25s;
+}
+.need-card:hover .ingredient-art {
+  transform: rotate(-7deg);
+}
+.need-card h3 {
+  font-size: clamp(20px, 1.9vw, 28px);
+  line-height: 1.2;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.need-card > span {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  margin-top: auto;
+  font-family: var(--display);
+  font-size: clamp(17px, 1.65vw, 25px);
+  line-height: 1.2;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.need-card > span svg {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.need-card:hover > span svg {
+  transform: translateX(3px);
+}
+.accent-orange {
+  --accent: #a94f00;
+}
+.accent-blue {
+  --accent: #0067b8;
+}
+.accent-green {
+  --accent: #00704c;
+}
+.accent-pink {
+  --accent: #bb1460;
+}
+.reference-ingredients {
+  padding: 30px var(--section);
+  display: grid;
+  grid-template-columns: 1.2fr 3fr;
+  gap: 30px;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+.ingredients-intro h2 {
+  font-size: clamp(35px, 4.3vw, 64px);
+  line-height: 1.08;
+  margin-bottom: 10px;
+}
+.ingredients-intro > p {
+  font-size: 21px;
+  line-height: 1.4;
+}
+.ingredients-lineup {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.ingredient-item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  padding: 0 12px;
+  border-left: 1px solid var(--line);
+  min-width: 0;
+}
+.ingredient-item .ingredient-art {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 10px;
+  transition: transform 0.3s;
+}
+.ingredient-item:hover .ingredient-art {
+  transform: translateY(-5px) rotate(-5deg);
+}
+.ingredient-item h3 {
+  font-size: 21px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.ingredient-item p {
+  font-size: 16px;
+  line-height: 1.45;
+  max-width: 120px;
+}
+.indian-skin-section {
+  display: grid;
+  grid-template-columns: 57% 43%;
+  min-height: 390px;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 100px;
+}
+.indian-skin-copy {
+  padding: 30px 30px 30px var(--section);
+}
+.indian-skin-copy h2 {
+  font-size: clamp(42px, 4.6vw, 68px);
+  line-height: 1.08;
+  margin-bottom: 12px;
+}
+.indian-skin-copy > p {
+  font-size: 22px;
+  line-height: 1.45;
+}
+.indian-skin-values {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 26px;
+}
+.indian-skin-values > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 12px;
+  gap: 12px;
+}
+.indian-skin-values > div + div {
+  border-left: 1px solid var(--line);
+}
+.indian-skin-values svg {
+  width: 60px;
+  height: 60px;
+  stroke-width: 2.5;
+}
+.indian-skin-values span {
+  font-family: var(--display);
+  text-transform: uppercase;
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 500;
+}
+.indian-skin-art {
+  position: relative;
+  overflow: hidden;
+  min-height: 390px;
+  isolation: isolate;
+}
+.indian-skin-art > img:not(.story-leaf) {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  right: 0;
+  object-fit: contain;
+  object-position: bottom right;
+  /* The source has transparent right/bottom gutters outside the visible leaves. */
+  transform: translate(5.5%, 0.8%);
+}
+.story-graphic-sun {
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: absolute;
+  top: 5%;
+  left: 19%;
+  background: #ffb022;
+  z-index: -1;
+}
+.story-graphic-sun::after {
+  content: "";
+  height: 22%;
+  width: 100%;
+  position: absolute;
+  bottom: 25%;
+  left: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 13px,
+    var(--cream) 13px 15px
+  );
+}
+.showcase-heading {
+  text-align: center;
+  padding: 20px var(--section) 14px;
+}
+.showcase-heading h2 {
+  font-size: clamp(32px, 3.9vw, 58px);
+  line-height: 1.1;
+}
+.showcase-heading p {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 5px;
+}
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.showcase-panel {
+  min-width: 0;
+}
+.showcase-panel article {
+  padding: 20px 28px 22px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  height: 100%;
+}
+.panel-green {
+  background: var(--green-panel);
+  color: #fff;
+}
+.panel-orange {
+  background: var(--orange-panel);
+  color: var(--ink);
+}
+.panel-blue {
+  background: var(--blue-panel);
+  color: #fff;
+}
+.panel-pink {
+  background: var(--pink-panel);
+  color: #fff;
+}
+.showcase-image-link {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 17px;
+}
+.showcase-image-link img {
+  height: clamp(150px, 15vw, 230px);
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(3px 6px 4px #00000015);
+  transition: transform 0.35s;
+}
+.showcase-image-link:hover img {
+  transform: translateY(-6px) rotate(-2deg);
+}
+.showcase-panel h3 {
+  font-size: clamp(21px, 2vw, 30px);
+  line-height: 1.18;
+  min-height: 1.18em;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+.showcase-panel p {
+  font-size: 22px;
+  line-height: 1.4;
+  margin: 8px 0 18px;
+  max-width: 255px;
+}
+.showcase-panel .button {
+  width: 100%;
+  max-width: 260px;
+  margin-top: auto;
+  min-height: 56px;
+  font-size: 23px;
+  padding: 12px 16px;
+  gap: 18px;
+}
+@media (min-width: 1600px) {
+  .brand-home {
+    max-width: 1800px;
+    margin: auto;
+    border-inline: 1px solid var(--line);
+  }
+}
+@media (max-width: 1100px) {
+  .reference-hero-art {
+    --callout-width: 72px;
+  }
+  .reference-hero,
+  .reference-hero-art {
+    min-height: 440px;
+  }
+  .brand-kicker {
+    font-size: 15px;
+  }
+  .reference-hero-copy {
+    padding-block: 24px;
+  }
+  .reference-hero-description {
+    margin: 15px 0 18px;
+  }
+  .reference-cta {
+    min-height: 48px;
+    font-size: 17px;
+    padding: 12px 19px;
+  }
+  .hero-values {
+    margin-top: 22px;
+  }
+  .hero-values svg {
+    width: 33px;
+    height: 33px;
+  }
+  .hero-values span {
+    font-size: 14px;
+  }
+  .hero-ingredient,
+  .hero-climate {
+    font-size: 13px;
+  }
+  .hero-ingredient .ingredient-art {
+    width: var(--callout-art-width);
+    height: var(--callout-icon-size);
+  }
+  .hero-ingredient {
+    --callout-icon-size: 59px;
+    --callout-art-width: 59px;
+  }
+  .hero-climate {
+    --callout-icon-size: 59px;
+    --callout-art-width: 52px;
+  }
+  .hero-climate .ingredient-art {
+    width: var(--callout-art-width);
+    height: var(--callout-icon-size);
+  }
+  .hero-handwritten {
+    right: -2%;
+    font-size: 18px;
+  }
+  .geometric-trim {
+    width: 29px;
+  }
+  .reference-ingredients {
+    gap: 15px;
+    grid-template-columns: 1fr 3fr;
+  }
+  .ingredients-intro h2 {
+    font-size: clamp(30px, 3.8vw, 42px);
+  }
+  .ingredients-intro > p {
+    font-size: 13px;
+  }
+  .ingredient-item {
+    padding-inline: 8px;
+  }
+  .ingredient-item .ingredient-art {
+    width: 50px;
+    height: 50px;
+  }
+  .ingredient-item h3 {
+    font-size: 15px;
+  }
+  .ingredient-item p {
+    font-size: 10px;
+  }
+  .indian-skin-section,
+  .indian-skin-art {
+    min-height: 330px;
+  }
+  .indian-skin-copy > p {
+    font-size: 15px;
+  }
+  .indian-skin-values span {
+    font-size: 15px;
+  }
+  .indian-skin-values svg {
+    width: 36px;
+    height: 36px;
+  }
+  .showcase-panel article {
+    padding: 20px 20px 22px;
+  }
+  .showcase-panel p {
+    font-size: 14px;
+  }
+  .showcase-panel .button {
+    font-size: 16px;
+  }
+}
+@media (max-width: 800px) {
+  .reference-hero {
+    grid-template-columns: 46% 54%;
+    padding-inline: 30px;
+  }
+  .reference-hero h1 {
+    font-size: clamp(44px, 6.6vw, 55px);
+  }
+  .reference-hero-description {
+    font-size: 14px;
+  }
+  .wide-break {
+    display: none;
+  }
+  .hero-values > div {
+    padding-inline: 7px;
+  }
+  .hero-handwritten {
+    font-size: 22px;
+    right: 5%;
+  }
+  .hero-ingredient {
+    --callout-icon-size: 48px;
+  }
+  .hero-climate {
+    --callout-icon-size: 43px;
+  }
+  .hero-climate {
+    font-size: 11px;
+  }
+  .hero-ingredient {
+    font-size: 12px;
+  }
+  .need-card {
+    padding: 13px 12px;
+    min-height: 175px;
+  }
+  .need-card h3 {
+    font-size: 19px;
+  }
+  .need-card > span {
+    font-size: 16px;
+  }
+  .reference-ingredients {
+    grid-template-columns: 1fr;
+    padding-block: 26px;
+    gap: 22px;
+  }
+  .ingredients-intro {
+    display: flex;
+    align-items: end;
+    gap: 24px;
+  }
+  .ingredients-intro h2 {
+    margin-bottom: 0;
+  }
+  .ingredients-intro > p {
+    max-width: 215px;
+    font-size: 15px;
+  }
+  .ingredient-item:first-child {
+    border-left: 0;
+  }
+  .ingredient-item .ingredient-art {
+    width: 60px;
+    height: 60px;
+  }
+  .ingredient-item h3 {
+    font-size: 17px;
+  }
+  .ingredient-item p {
+    font-size: 11px;
+  }
+  .indian-skin-copy {
+    padding-right: 15px;
+  }
+  .indian-skin-values > div {
+    padding-inline: 6px;
+  }
+  .indian-skin-values span {
+    font-size: 13px;
+  }
+  .showcase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .showcase-panel h3 {
+    font-size: 25px;
+    min-height: 1.2em;
+  }
+  .showcase-image-link img {
+    height: 250px;
+  }
+}
+@media (max-width: 800px) {
+  .reference-hero {
+    display: flex;
+    flex-direction: column;
+    padding: 0 22px;
+  }
+  .reference-hero-copy {
+    padding: 30px 0 12px;
+  }
+  .brand-kicker {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+  }
+  .reference-hero h1 {
+    font-size: clamp(48px, 12.5vw, 74px);
+    line-height: 1.07;
+  }
+  .reference-hero-description {
+    font-size: 15px;
+    max-width: 350px;
+    margin: 17px 0 20px;
+  }
+  .reference-cta {
+    min-height: 50px;
+    font-size: 18px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .hero-values {
+    margin-top: 24px;
+    max-width: none;
+  }
+  .hero-values svg {
+    width: 31px;
+    height: 31px;
+  }
+  .hero-values span {
+    font-size: 14px;
+  }
+  .reference-hero-art {
+    --callout-width: 62px;
+    --connector-gap: 4px;
+    --portrait-width: 0.64;
+    height: calc(
+      min(100vw - 44px, 560px) * var(--portrait-width) * 1.0875 + 75px
+    );
+    min-height: 0;
+    width: min(100%, 560px);
+    margin-top: 10px;
+    margin-inline: auto;
+  }
+  .hero-portrait {
+    width: calc(var(--portrait-width) * 100%);
+    height: auto;
+    bottom: 75px;
+  }
+  .hero-corner-leaves {
+    width: 110px;
+    right: -40px;
+    bottom: -3px;
+  }
+  .hero-ingredient {
+    --callout-icon-size: 53px;
+    --callout-art-width: 53px;
+  }
+  .hero-aloe {
+    top: calc((100% - 75px) * 0.12);
+  }
+  .hero-charcoal {
+    top: calc((100% - 75px) * 0.42);
+  }
+  .hero-citrus {
+    top: calc((100% - 75px) * 0.72);
+  }
+  .hero-climate {
+    --callout-icon-size: 53px;
+    --callout-art-width: 48px;
+    font-size: 12px;
+  }
+  .climate-sun {
+    top: calc((100% - 75px) * 0.12);
+    flex-direction: column;
+  }
+  .climate-water {
+    top: calc((100% - 75px) * 0.42);
+  }
+  .climate-urban {
+    top: calc((100% - 75px) * 0.72);
+  }
+  .hero-handwritten {
+    font-size: 25px;
+    bottom: 10px;
+    left: 2%;
+    right: auto;
+    max-width: 75%;
+    text-align: left;
+    transform: rotate(-4deg);
+  }
+  .trim-left {
+    height: 180px;
+    width: 17px;
+  }
+  .trim-right {
+    height: 95px;
+    width: 17px;
+  }
+}
+@media (max-width: 600px) {
+  .need-section {
+    padding: 24px 18px;
+  }
+  .need-section > h2 {
+    font-size: 31px;
+    max-width: 340px;
+    margin: 0 auto 20px;
+    line-height: 1.15;
+  }
+  .need-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .need-card {
+    min-height: 186px;
+    padding: 13px 13px 17px;
+  }
+  .need-card .ingredient-art {
+    width: 54px;
+    height: 54px;
+  }
+  .need-card h3 {
+    font-size: 20px;
+  }
+  .need-card > span {
+    font-size: 17px;
+    gap: 5px;
+  }
+  .need-card > span svg {
+    width: 15px;
+  }
+  .reference-ingredients {
+    padding: 25px 22px;
+  }
+  .ingredients-intro {
+    align-items: center;
+    gap: 20px;
+  }
+  .ingredients-intro h2 {
+    font-size: 35px;
+    flex-shrink: 0;
+  }
+  .ingredients-intro p {
+    font-size: 13px;
+    max-width: 145px;
+  }
+  .ingredients-lineup {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px 0;
+  }
+  .ingredient-item {
+    padding-inline: 8px;
+  }
+  .ingredient-item:nth-child(4) {
+    border-left: 0;
+  }
+  .ingredient-item h3 {
+    font-size: 17px;
+  }
+  .ingredient-item p {
+    font-size: 11px;
+  }
+  .indian-skin-section {
+    grid-template-columns: 1fr;
+  }
+  .indian-skin-copy {
+    padding: 27px 22px 15px;
+  }
+  .indian-skin-copy h2 {
+    font-size: 45px;
+  }
+  .indian-skin-copy > p {
+    font-size: 15px;
+  }
+  .indian-skin-values {
+    margin-top: 23px;
+  }
+  .indian-skin-values svg {
+    width: 32px;
+    height: 32px;
+  }
+  .indian-skin-values span {
+    font-size: 14px;
+  }
+  .indian-skin-art {
+    height: auto;
+    aspect-ratio: 1.45;
+    min-height: 0;
+    margin-left: 14%;
+  }
+  .indian-skin-art > img:not(.story-leaf) {
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    right: 0;
+  }
+  .story-graphic-sun {
+    width: 38%;
+    top: 6%;
+  }
+  .showcase-heading {
+    padding: 24px 18px 19px;
+  }
+  .showcase-heading h2 {
+    font-size: 32px;
+  }
+  .showcase-heading p {
+    font-size: 13px;
+    margin-top: 9px;
+  }
+  .showcase-panel article {
+    padding: 19px 14px 20px;
+  }
+  .showcase-image-link img {
+    height: clamp(155px, 46vw, 240px);
+  }
+  .showcase-image-link {
+    margin-bottom: 14px;
+  }
+  .showcase-panel h3 {
+    font-size: 22px;
+    min-height: 2.36em;
+  }
+  .showcase-panel p {
+    font-size: 13px;
+    margin: 8px 0 17px;
+  }
+  .showcase-panel .button {
+    font-size: 16px;
+    padding: 10px;
+    gap: 7px;
+    min-height: 44px;
+  }
+  .showcase-panel .button svg {
+    width: 17px;
+  }
+}
+@media (max-width: 360px) {
+  .reference-hero-art {
+    --callout-width: 54px;
+    --portrait-width: 0.6;
+  }
+  .reference-hero h1 {
+    font-size: 45px;
+  }
+  .hero-climate {
+    font-size: 10px;
+  }
+  .hero-climate,
+  .hero-ingredient {
+    --callout-icon-size: 43px;
+    --callout-art-width: 43px;
+  }
+  .hero-handwritten {
+    font-size: 22px;
+  }
+  .ingredients-intro {
+    display: block;
+  }
+  .ingredients-intro p {
+    margin-top: 12px;
+    max-width: none;
+  }
+  .need-card h3 {
+    font-size: 19px;
+  }
+  .need-card > span {
+    font-size: 16px;
+  }
+  .indian-skin-values span {
+    font-size: 12px;
+  }
+  .showcase-panel h3 {
+    font-size: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .need-card:hover,
+  .need-card:hover .ingredient-art,
+  .ingredient-item:hover .ingredient-art,
+  .showcase-image-link:hover img {
+    transform: none;
+  }
+}

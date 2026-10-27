@@ -7,11 +7,37 @@ import { MotionProvider } from "@/components/motion";
 import { indexingEnabled, jsonLd, siteUrl } from "@/lib/seo";
 import { isDemoMode } from "@/lib/commerce";
 import "./globals.css";
+import "./redesign.css";
+import "./commerce-redesign.css";
+import "@/components/navigation-redesign.css";
 const displayFont = localFont({
-  src: "../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2",
+  src: [
+    {
+      path: "../../node_modules/@fontsource/oswald/files/oswald-latin-400-normal.woff2",
+      weight: "400",
+    },
+    {
+      path: "../../node_modules/@fontsource/oswald/files/oswald-latin-500-normal.woff2",
+      weight: "500",
+    },
+    {
+      path: "../../node_modules/@fontsource/oswald/files/oswald-latin-600-normal.woff2",
+      weight: "600",
+    },
+    {
+      path: "../../node_modules/@fontsource/oswald/files/oswald-latin-700-normal.woff2",
+      weight: "700",
+    },
+  ],
   variable: "--font-display-source",
   display: "swap",
-  weight: "200 800",
+});
+const handwritingFont = localFont({
+  src: "../../node_modules/@fontsource/caveat/files/caveat-latin-600-normal.woff2",
+  variable: "--font-handwriting",
+  display: "swap",
+  weight: "600",
+  preload: false,
 });
 const bodyFont = localFont({
   src: "../../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2",
@@ -40,7 +66,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-IN"
-      className={`${displayFont.variable} ${bodyFont.variable}`}
+      className={`${displayFont.variable} ${bodyFont.variable} ${handwritingFont.variable}`}
     >
       <body>
         <a className="skip-link" href="#main">
