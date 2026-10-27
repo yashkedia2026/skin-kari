@@ -35,7 +35,7 @@ async function assertAccessible(page: Page) {
     .toEqual([]);
 }
 
-test("discovery leads to five masks and the concern filter narrows the catalogue", async ({
+test("discovery leads to four masks and the concern filter narrows the catalogue", async ({
   page,
 }) => {
   await ready(page, "/");
@@ -45,7 +45,7 @@ test("discovery leads to five masks and the concern filter narrows the catalogue
   await page.getByRole("link", { name: "Find your good-skin moment" }).click();
   await expect(page).toHaveURL(/\/shop$/);
   const catalogue = page.getByRole("main");
-  await expect(catalogue.getByRole("article")).toHaveCount(5);
+  await expect(catalogue.getByRole("article")).toHaveCount(4);
   const filters = page.getByRole("navigation", {
     name: "Filter by skin concern",
   });
@@ -60,7 +60,7 @@ test("discovery leads to five masks and the concern filter narrows the catalogue
     "true",
   );
   await filters.getByRole("link", { name: "All masks", exact: true }).click();
-  await expect(catalogue.getByRole("article")).toHaveCount(5);
+  await expect(catalogue.getByRole("article")).toHaveCount(4);
   await catalogue.getByRole("link", { name: vitaminC, exact: true }).click();
   await expect(page).toHaveURL(productPath);
   await expect(
@@ -300,53 +300,70 @@ test("product content remains readable without JavaScript", async ({
   await context.close();
 });
 
-test("Brightening Mask appears in discovery, filters, its product page and the demo bag", async ({
+test("the retired fifth mask is absent from discovery, filters, sitemap and product routes", async ({
   page,
+  request,
 }) => {
   await ready(page, "/");
   await assertDemo(page);
   const spotlight = page.getByRole("region", {
     name: "A mask for your kind of day.",
   });
-  await spotlight
-    .getByRole("button", { name: "Brightening", exact: true })
-    .click();
+  await expect(spotlight.getByRole("button")).toHaveCount(4);
   await expect(
-    spotlight.getByRole("heading", { name: "Brightening Mask", exact: true }),
-  ).toBeVisible();
-  await ready(page, "/shop?concern=Dullness");
-  const card = page.getByRole("article").filter({
-    has: page.getByRole("heading", { name: "Brightening Mask", exact: true }),
-  });
-  await expect(card).toBeVisible();
-  await card
-    .getByRole("link", { name: "Brightening Mask", exact: true })
-    .click();
-  await expect(page).toHaveURL("/products/brightening-mask");
-  await expect(
-    page.getByRole("heading", { level: 1, name: "Brightening Mask" }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(/A bio-cellulose sheet mask with Vitamin C/),
-  ).toBeVisible();
-  await page.getByText("Directions for use", { exact: true }).click();
-  await expect(
-    page.getByText(
-      /Directions and wear time for this mask are awaiting confirmation/,
-    ),
-  ).toBeVisible();
-  await expect(
-    page.getByText("Your 15-minute ritual", { exact: true }),
+    spotlight.getByRole("button", { name: "Brightening", exact: true }),
   ).toHaveCount(0);
-  await assertAccessible(page);
-  await page
-    .getByRole("button", { name: "Add to demo bag", exact: true })
-    .click();
-  const drawer = page.getByRole("dialog", { name: "Your good-skin bag." });
-  await expect(
-    drawer.getByRole("link", { name: "Brightening Mask", exact: true }),
-  ).toBeVisible();
-  await expect(
-    drawer.getByRole("button", { name: "Checkout unavailable in demo" }),
-  ).toBeDisabled();
+  await expect(page.getByRole("link", { name: "Meet all four" })).toBeVisible();
+  await ready(page, "/shop?concern=Dullness");
+  await expect(page.getByRole("main").getByRole("article")).toHaveCount(3);
+  await expect(page.getByText("Brightening Mask", { exact: true })).toHaveCount(
+    0,
+  );
+  const response = await ready(page, "/products/brightening-mask");
+  expect(response?.status()).toBe(404);
+  const sitemap = await request.get("/sitemap.xml");
+  expect(sitemap.status()).toBe(200);
+  expect(await sitemap.text()).not.toContain("/products/brightening-mask");
+});
+
+test("all ribbon messages remain readable inside the phone viewport", async ({
+  page,
+}) => {
+  for (const width of [320, 390, 430]) {
+    await page.setViewportSize({ width, height: 844 });
+    await ready(page, "/");
+    const ribbon = page.locator(".brand-ribbon");
+    await ribbon.scrollIntoViewIfNeeded();
+    const clipped = await ribbon.evaluate((element) => {
+      const container = element.getBoundingClientRect();
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      const clippedText: string[] = [];
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (!node.textContent?.trim()) continue;
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        if (
+          [...range.getClientRects()].some(
+            (rect) =>
+              rect.left < Math.max(0, container.left) - 1 ||
+              rect.right > Math.min(window.innerWidth, container.right) + 1 ||
+              rect.top < container.top - 1 ||
+              rect.bottom > container.bottom + 1,
+          )
+        )
+          clippedText.push(node.textContent);
+      }
+      return clippedText;
+    });
+    expect(clipped, `Clipped ribbon text at ${width}px`).toEqual([]);
+    for (const text of [
+      "REAL SKIN",
+      "COLOURFUL CARE",
+      "A MOMENT FOR YOU",
+      "BRIGHTER DAYS",
+    ]) {
+      await expect(ribbon.getByText(text, { exact: true })).toBeVisible();
+    }
+  }
 });

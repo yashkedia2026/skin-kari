@@ -4,7 +4,7 @@ This project is a custom Next.js storefront with Shopify as its commerce backend
 
 ## 1. Prepare the store
 
-Create or use the merchant’s Shopify store. Add the Headless sales channel, create a storefront and grant the Storefront API access needed to read products/variants and create/update carts. Publish the five products to that channel. The current adapter uses a **public Storefront access token on the server**, sent with `X-Shopify-Storefront-Access-Token`; do not paste an Admin API token or a private Storefront token into that field. The official [headless overview](https://shopify.dev/docs/storefronts/headless/overview) explains channel setup and token types, and the [Storefront API reference](https://shopify.dev/docs/api/storefront/latest) documents authentication.
+Create or use the merchant’s Shopify store. Add the Headless sales channel, create a storefront and grant the Storefront API access needed to read products/variants and create/update carts. Publish the four products to that channel. The current adapter uses a **public Storefront access token on the server**, sent with `X-Shopify-Storefront-Access-Token`; do not paste an Admin API token or a private Storefront token into that field. The official [headless overview](https://shopify.dev/docs/storefronts/headless/overview) explains channel setup and token types, and the [Storefront API reference](https://shopify.dev/docs/api/storefront/latest) documents authentication.
 
 This integration does not need an Admin API credential. Product and metafield editing happens in Shopify admin; the website reads the approved content.
 
@@ -26,7 +26,7 @@ When mode is omitted, the application defaults to demo only if both Shopify cred
 
 Checkout redirects accept HTTPS URLs only, on the configured `myshopify.com` domain or the exact optional checkout domain. Confirm the actual hostname returned by your store before launch; do not use a wildcard allowlist.
 
-## 3. Create the five products
+## 3. Create the four products
 
 Use these handles so Shopify products match the editorial colour, artwork and packaging content in `src/data/products.ts`:
 
@@ -36,11 +36,10 @@ Use these handles so Shopify products match the editorial colour, artwork and pa
 | `hyaluronic-acid-face-mask`    | Hyaluronic Acid Face Mask    | Blue   |
 | `collagen-peptide-face-mask`   | Collagen & Peptide Face Mask | Pink   |
 | `detan-face-mask`              | Detan Face Mask              | Green  |
-| `brightening-mask`             | Brightening Mask             | Orange |
 
 Supply merchant-approved titles, plain product descriptions, product imagery with alt text, variant names/options, actual prices and currency, inventory settings, SKUs and any applicable tax/shipping settings. Live prices and availability come from Shopify variants, not the fixture file. Keep each product published to the intended Headless channel.
 
-All five supplied packs say one sheet mask / 20 ml. A single default variant is sufficient if that is the actual merchandise. Add multipacks or discovery bundles only when the merchant has created and approved the real Shopify products/variants and their prices. Brightening Mask is a separate product, as clarified by the user, and must have its own Shopify product and variant.
+Each approved catalogue product is labelled one sheet mask / 20 ml. A single default variant is sufficient if that is the actual merchandise. Add multipacks or discovery bundles only when the merchant has created and approved the real Shopify products/variants and their prices. Brightening Mask is excluded from the approved storefront; keep that reference product unpublished to this storefront channel.
 
 Do not copy the fixture art into Shopify as if it were finished product photography. It is extracted print artwork; replace it with approved images of the actual saleable products.
 
@@ -56,7 +55,7 @@ Create **product** metafield definitions using the exact namespace/key pairs bel
 | `custom.featured_ingredients` | `json`                        | Array of objects with nonempty `name` and `description` strings. These are highlights, not full INCI. |
 | `custom.net_content`          | `single_line_text_field`      | Approved net content, initially `20 ml`.                                                              |
 
-Example direction values for Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan, transcribed from their packs. Do not copy these to Brightening Mask; its front-only PDF supplies no directions or wear time:
+Example direction values for Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan, transcribed from their packs:
 
 ```json
 [
@@ -87,7 +86,7 @@ Example featured-ingredient value for the Vitamin C pack:
 
 The adapter validates these shapes and exposes valid values as product detail overrides. Missing or malformed metafields leave the packaging-derived defaults in place. Confirm each override appears correctly on its live product page. The brand palette, editorial collection mapping, homepage text, ingredient guide, FAQs and journal remain repository-managed; coordinate those pages when packaging or formulas change.
 
-The four supplied full INCI sections are blank, and Brightening Mask's front-only artwork has no full list. Obtain final full lists for all five products and add a clearly named, separately modelled full-ingredients field and page section before commercial launch; do not overload `custom.featured_ingredients` with an INCI string. Brightening Mask also needs confirmed directions, cautions, storage guidance and other missing back-label details. Its bio-cellulose material label applies only to that product.
+The four supplied full INCI sections are blank. Obtain final full lists for all four products and add a clearly named, separately modelled full-ingredients field and page section before commercial launch; do not overload `custom.featured_ingredients` with an INCI string.
 
 ## 5. Configure checkout in Shopify
 
@@ -101,7 +100,7 @@ Account login and a customer-account portal are not included in this initial imp
 
 Use an approved development/test payment setup and test orders before accepting real payments. Record the environment and evidence for each check.
 
-1. Load all five product pages server-side. Verify Shopify titles, descriptions, images, variant IDs, INR prices and availability against admin.
+1. Load all four product pages server-side. Verify Shopify titles, descriptions, images, variant IDs, INR prices and availability against admin.
 2. Change an approved metafield in Shopify. Confirm the product page reflects it, then restore the intended value. Check missing and malformed metafield fallback in a test product.
 3. Add each real variant, update quantities, remove a line, empty the bag, and reload. Confirm bag persistence and the displayed subtotal against Shopify.
 4. Try an unavailable variant and a quantity greater than available inventory. Confirm the shopper receives a useful response and is not shown a false successful purchase.

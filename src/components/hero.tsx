@@ -69,7 +69,7 @@ export function Hero() {
             <i />
             <i />
           </span>{" "}
-          FIVE MASKS. YOUR MANY MOODS.
+          FOUR MASKS. YOUR MANY MOODS.
         </div>
       </div>
       <div className="hero-art">

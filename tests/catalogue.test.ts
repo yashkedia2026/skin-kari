@@ -8,11 +8,11 @@ import {
   readDemoCart,
 } from "../src/lib/commerce/demo";
 
-test("every supplied product PDF is represented in the catalogue", () => {
+test("the four approved product PDFs are represented in the catalogue", () => {
   const sources = readdirSync(
     new URL("../reference/products/", import.meta.url),
   )
-    .filter((file) => file.endsWith(".pdf"))
+    .filter((file) => file.endsWith(".pdf") && file !== "BRIGHTENING MASK.pdf")
     .sort();
   assert.deepEqual(
     products.map((product) => product.packaging.source).sort(),
@@ -22,27 +22,30 @@ test("every supplied product PDF is represented in the catalogue", () => {
     new Set(products.map((product) => product.handle)).size,
     products.length,
   );
+  assert.equal(products.length, 4);
 });
 
-test("Brightening Mask stays distinct and does not inherit unsupported directions or prices", () => {
-  const editorial = products.find(
-    (product) => product.handle === "brightening-mask",
-  );
-  assert.ok(editorial);
-  assert.equal(editorial.packaging.material, "Bio-cellulose");
-  assert.deepEqual(editorial.directions, []);
-  assert.deepEqual(editorial.caution, []);
+test("the removed mask is dropped from saved bags and cannot be added again", () => {
   const catalogue = getDemoProducts();
-  const product = catalogue.find(
-    (product) => product.handle === editorial.handle,
+  const removedVariant = "demo:brightening-mask:default";
+  const retainedVariant = catalogue[0].variants[0].id;
+  const cookie = Buffer.from(
+    JSON.stringify([
+      [removedVariant, 1],
+      [retainedVariant, 2],
+    ]),
+  ).toString("base64url");
+  const cart = readDemoCart(cookie, catalogue);
+  assert.equal(cart.lines.length, 1);
+  assert.equal(cart.lines[0].merchandiseId, retainedVariant);
+  assert.equal(cart.totalQuantity, 2);
+  assert.throws(
+    () =>
+      mutateDemoCart(
+        cart,
+        { action: "add", merchandiseId: removedVariant, quantity: 1 },
+        catalogue,
+      ),
+    { code: "PRODUCT_NOT_FOUND", status: 404 },
   );
-  assert.ok(product);
-  const cart = mutateDemoCart(
-    readDemoCart(undefined, catalogue),
-    { action: "add", merchandiseId: product.variants[0].id, quantity: 1 },
-    catalogue,
-  );
-  assert.equal(cart.lines[0].productHandle, "brightening-mask");
-  assert.equal(cart.lines[0].unitPrice, null);
-  assert.equal(cart.subtotal, null);
 });

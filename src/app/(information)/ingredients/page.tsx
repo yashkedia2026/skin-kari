@@ -1,10 +1,11 @@
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { products } from "@/data/products";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "Meet the Ingredients",
-  "Explore the featured ingredients named on SKINKARI’s Vitamin C, Hyaluronic Acid, Collagen & Peptide, Detan and Brightening sheet-mask packaging.",
+  "Explore the featured ingredients named on SKINKARI’s Vitamin C, Hyaluronic Acid, Collagen & Peptide and Detan sheet-mask packaging.",
   "/ingredients",
 );
 
@@ -17,8 +18,6 @@ const introductions: Record<string, string> = {
     "Collagen and peptides give the pink mask its name, with squalane also featured on the pack. Its focus: hydration and smoother-looking skin.",
   "detan-face-mask":
     "Activated charcoal, green tea extract, aloe vera and niacinamide are named on the green pack. Its focus: the appearance of dullness and uneven tone.",
-  "brightening-mask":
-    "Vitamin C, niacinamide and licorice feature on the Brightening Mask pack. This bio-cellulose sheet mask focuses on even-looking tone, reduced dullness and a radiant glow.",
 };
 
 export default function IngredientsPage() {
@@ -31,7 +30,7 @@ export default function IngredientsPage() {
         <em>your mask.</em>
       </h1>
       <p className="page-intro">
-        Five colourful packs. A few familiar names. Here’s a closer look at the
+        Four colourful packs. A few familiar names. Here’s a closer look at the
         featured ingredients printed on each one.
       </p>
       <div className="info-grid">
@@ -50,7 +49,12 @@ export default function IngredientsPage() {
               ))}
             </ul>
             <Link className="text-link" href={`/products/${product.handle}`}>
-              Meet the mask <span aria-hidden="true">↗</span>
+              Meet the mask{" "}
+              <ArrowUpRight
+                className="inline-arrow"
+                aria-hidden="true"
+                focusable="false"
+              />
             </Link>
           </section>
         ))}
@@ -70,7 +74,12 @@ export default function IngredientsPage() {
           your skin.
         </p>
         <Link className="text-link" href="/journal/reading-your-mask-pack">
-          A little guide to reading your pack <span aria-hidden="true">↗</span>
+          A little guide to reading your pack{" "}
+          <ArrowUpRight
+            className="inline-arrow"
+            aria-hidden="true"
+            focusable="false"
+          />
         </Link>
       </div>
     </article>

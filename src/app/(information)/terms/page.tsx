@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 
@@ -42,7 +43,12 @@ export default function TermsPage() {
           use.
         </p>
         <Link className="text-link" href="/shipping-returns">
-          Shipping &amp; returns information <span aria-hidden="true">↗</span>
+          Shipping &amp; returns information{" "}
+          <ArrowUpRight
+            className="inline-arrow"
+            aria-hidden="true"
+            focusable="false"
+          />
         </Link>
       </div>
     </article>

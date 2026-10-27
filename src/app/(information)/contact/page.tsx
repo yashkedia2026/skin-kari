@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 
@@ -40,7 +41,12 @@ export default function ContactPage() {
         </p>
       </div>
       <Link className="button" href="/faqs">
-        Read the FAQs <span aria-hidden="true">↗</span>
+        Read the FAQs{" "}
+        <ArrowUpRight
+          className="inline-arrow"
+          aria-hidden="true"
+          focusable="false"
+        />
       </Link>
     </article>
   );

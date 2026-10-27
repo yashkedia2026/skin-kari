@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { articles } from "./_articles";
@@ -36,7 +37,12 @@ export default function JournalPage() {
             </h2>
             <p>{article.description}</p>
             <Link className="text-link" href={`/journal/${article.slug}`}>
-              Take a moment <span aria-hidden="true">↗</span>
+              Take a moment{" "}
+              <ArrowUpRight
+                className="inline-arrow"
+                aria-hidden="true"
+                focusable="false"
+              />
             </Link>
           </article>
         ))}

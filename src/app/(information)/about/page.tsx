@@ -1,9 +1,10 @@
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "About SKINKARI",
-  "Meet SKINKARI: Indian skincare for real life. Five expressive sheet masks and a little room for yourself.",
+  "Meet SKINKARI: Indian skincare for real life. Four expressive sheet masks and a little room for yourself.",
   "/about",
 );
 
@@ -30,11 +31,10 @@ export default function AboutPage() {
           small ritual to make your own, following your mask’s directions.
         </p>
         <p>
-          Our five masks each have their own personality. Orange brings Vitamin
+          Our four masks each have their own personality. Orange brings Vitamin
           C Radiance. Blue is Hyaluronic Acid. Pink introduces Collagen &amp;
-          Peptide. Green is Detan. Brightening adds a bio-cellulose sheet mask
-          with Vitamin C, niacinamide and licorice. Together, they make a
-          colourful little collection for your bathroom shelf.
+          Peptide. Green is Detan. Together, they make a colourful little
+          collection for your bathroom shelf.
         </p>
       </div>
       <div className="info-grid">
@@ -52,13 +52,17 @@ export default function AboutPage() {
           <p>
             Vitamin C Radiance, Hyaluronic Acid, Collagen &amp; Peptide and
             Detan share three steps: apply, leave on for fifteen minutes, then
-            gently remove and pat in the remaining serum. Brightening Mask’s
-            directions are still to come.
+            gently remove and pat in the remaining serum.
           </p>
         </section>
       </div>
       <Link className="button" href="/shop">
-        Find your mask <span aria-hidden="true">↗</span>
+        Find your mask{" "}
+        <ArrowUpRight
+          className="inline-arrow"
+          aria-hidden="true"
+          focusable="false"
+        />
       </Link>
     </article>
   );

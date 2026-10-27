@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { BrandSpark } from "@/components/brand-spark";
 export default function NotFound() {
   return (
@@ -13,7 +14,8 @@ export default function NotFound() {
       </h1>
       <p>Let’s get you back to the good-skin days.</p>
       <Link href="/shop" className="button">
-        Explore the masks ↗
+        Explore the masks{" "}
+        <ArrowUpRight size={19} aria-hidden="true" focusable="false" />
       </Link>
     </div>
   );

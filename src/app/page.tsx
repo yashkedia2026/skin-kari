@@ -17,7 +17,7 @@ import { getProducts } from "@/lib/commerce";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Same skin. Brighter days.",
-  "Meet SKINKARI: Indian skincare for real life. Discover Vitamin C, Hyaluronic Acid, Collagen & Peptide, Detan and Brightening sheet masks.",
+  "Meet SKINKARI: Indian skincare for real life. Discover Vitamin C, Hyaluronic Acid, Collagen & Peptide and Detan sheet masks.",
   "/",
 );
 export default async function Home() {
@@ -26,22 +26,17 @@ export default async function Home() {
     <>
       <Hero />
       <div className="brand-ribbon" aria-hidden="true">
-        <span>REAL SKIN</span>
-        <span>
-          <BrandSpark />
-        </span>
-        <span>COLOURFUL CARE</span>
-        <span>
-          <BrandSpark />
-        </span>
-        <span>A MOMENT FOR YOU</span>
-        <span>
-          <BrandSpark />
-        </span>
-        <span>BRIGHTER DAYS</span>
-        <span>
-          <BrandSpark />
-        </span>
+        {[
+          "REAL SKIN",
+          "COLOURFUL CARE",
+          "A MOMENT FOR YOU",
+          "BRIGHTER DAYS",
+        ].map((label) => (
+          <span className="brand-ribbon-item" key={label}>
+            <span>{label}</span>
+            <BrandSpark />
+          </span>
+        ))}
       </div>
       <section className="section product-discovery" id="meet-the-masks">
         <Reveal>
@@ -55,13 +50,11 @@ export default async function Home() {
               </h2>
             </div>
             <Link className="text-link" href="/shop">
-              Meet all five <ArrowUpRight size={18} />
+              Meet all four <ArrowUpRight size={18} />
             </Link>
           </div>
         </Reveal>
-        <div
-          className={`product-grid ${products.length === 5 ? "product-grid-five" : ""}`}
-        >
+        <div className="product-grid">
           {products.map((product, index) => (
             <Reveal key={product.id} delay={index * 0.05}>
               <ProductCard product={product} index={index} />
@@ -145,7 +138,14 @@ export default async function Home() {
             <br />
             <strong>REAL LIFE.</strong>
           </p>
-          <span className="story-art-footer">THE SKINKARI STATE OF MIND ↗</span>
+          <span className="story-art-footer">
+            THE SKINKARI STATE OF MIND{" "}
+            <ArrowUpRight
+              className="inline-arrow"
+              aria-hidden="true"
+              focusable="false"
+            />
+          </span>
         </Reveal>
         <Reveal className="story-copy">
           <p className="eyebrow">A LITTLE BIT OF US</p>
@@ -229,8 +229,7 @@ export default async function Home() {
         </div>
         <p className="ritual-scope">
           This routine is printed on the Vitamin C Radiance, Hyaluronic Acid,
-          Collagen &amp; Peptide and Detan packs. Brightening Mask directions
-          are awaiting confirmation.
+          Collagen &amp; Peptide and Detan packs.
         </p>
         <div className="ritual-grid">
           {[

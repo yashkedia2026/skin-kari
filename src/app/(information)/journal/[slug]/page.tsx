@@ -1,3 +1,4 @@
+import { ArrowUpRight, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { pageMetadata } from "@/lib/seo";
@@ -28,7 +29,12 @@ export default async function JournalArticlePage({ params }: Props) {
   return (
     <article className="editorial-page">
       <Link className="text-link" href="/journal">
-        <span aria-hidden="true">←</span> Back to the journal
+        <ArrowLeft
+          className="inline-arrow"
+          aria-hidden="true"
+          focusable="false"
+        />{" "}
+        Back to the journal
       </Link>
       <p className="page-eyebrow">{article.category}</p>
       <h1 className="page-title">{article.title}</h1>
@@ -41,7 +47,12 @@ export default async function JournalArticlePage({ params }: Props) {
         )}
       </div>
       <Link className="button" href="/shop">
-        Explore the masks <span aria-hidden="true">↗</span>
+        Explore the masks{" "}
+        <ArrowUpRight
+          className="inline-arrow"
+          aria-hidden="true"
+          focusable="false"
+        />
       </Link>
     </article>
   );
@@ -54,8 +65,7 @@ function MaskRitual() {
         A sheet mask makes a little space in the day. If you’re meeting SKINKARI
         for the first time, there’s no elaborate sequence to memorise. Vitamin C
         Radiance, Hyaluronic Acid, Collagen &amp; Peptide and Detan share the
-        three directions below. Brightening Mask’s directions and wear time have
-        not yet been supplied; this routine does not apply to that mask.
+        three directions below.
       </p>
       <h2>01. Start with a freshly cleansed face.</h2>
       <p>
@@ -109,9 +119,8 @@ function ReadingYourPack() {
       <p>
         The orange pack is Vitamin C Radiance Face Mask. Blue is Hyaluronic Acid
         Face Mask. Pink is Collagen &amp; Peptide Face Mask, and green is Detan
-        Face Mask. Brightening Mask has its own illustrated white pack, labelled
-        bio-cellulose. Each of the five packs is labelled as one sheet mask with
-        20 ml.
+        Face Mask. Each of the four packs is labelled as one sheet mask with 20
+        ml.
       </p>
       <h2>Featured ingredients are a shortlist.</h2>
       <p>
@@ -119,7 +128,6 @@ function ReadingYourPack() {
         blue pack names hyaluronic acid, ceramides, panthenol and aloe vera. On
         pink, you’ll see collagen, peptides and squalane. Green features
         activated charcoal, green tea extract, aloe vera and niacinamide.
-        Brightening Mask names vitamin C, niacinamide and licorice.
       </p>
       <p>
         Those front-of-pack names are highlights. They do not tell you every
@@ -129,8 +137,7 @@ function ReadingYourPack() {
       <h2>Look for the complete ingredient list.</h2>
       <p>
         The full ingredient-list area is blank in the four supplied
-        front-and-back artworks. Brightening Mask’s artwork shows only the front
-        and no full ingredient list. Until the complete lists are confirmed, our{" "}
+        front-and-back artworks. Until the complete lists are confirmed, our{" "}
         <Link href="/ingredients">ingredient guide</Link> stays with the
         featured names. If you need to check for a particular ingredient, a
         featured shortlist cannot answer that question.
@@ -140,8 +147,7 @@ function ReadingYourPack() {
         Vitamin C Radiance, Hyaluronic Acid, Collagen &amp; Peptide and Detan
         specify 15 minutes, followed by gentle removal and patting the excess
         serum onto your face and neck. Storage and use warnings are also printed
-        on their backs. These details have not been supplied for Brightening
-        Mask; follow its final product pack when available.
+        on their backs.
       </p>
       <p>
         Read the final product pack before use. The artwork supplied for this

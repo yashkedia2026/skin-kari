@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 
@@ -49,7 +50,12 @@ export default function ShippingReturnsPage() {
           running in demo mode.
         </p>
         <Link className="text-link" href="/contact">
-          Customer care information <span aria-hidden="true">↗</span>
+          Customer care information{" "}
+          <ArrowUpRight
+            className="inline-arrow"
+            aria-hidden="true"
+            focusable="false"
+          />
         </Link>
       </div>
     </article>

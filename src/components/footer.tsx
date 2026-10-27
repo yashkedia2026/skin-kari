@@ -46,7 +46,14 @@ export function Footer() {
         <div>
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
-          <span>Made for real life ↗</span>
+          <span>
+            Made for real life{" "}
+            <ArrowUpRight
+              className="inline-arrow"
+              aria-hidden="true"
+              focusable="false"
+            />
+          </span>
         </div>
       </div>
     </footer>

@@ -9,16 +9,17 @@ Verified locally on 27 October 2026 with Node 22.20.0 and the dependency version
 | TypeScript (`npm run typecheck`)              | Passed                                                                                                        |
 | Formatting (`npm run format:check`)           | Passed                                                                                                        |
 | Commerce and API tests (`npm test`)           | 21 passed                                                                                                     |
-| Production browser suite (`npm run test:e2e`) | 19 passed; 1 intentionally skipped desktop check for the mobile-only navigation                               |
+| Production browser suite (`npm run test:e2e`) | 21 passed; 1 intentionally skipped desktop check for the mobile-only navigation                               |
+| WebKit production regression checks           | 4 passed: layout, accessibility, removed product, and phone ribbon readability                                |
 | Automated axe accessibility                   | No WCAG A/AA violations found on homepage, product detail or open bag at either tested viewport               |
-| Supporting content/link smoke check           | 18 pages and 22 rendered internal destinations passed; see `CONTENT-QA.md`                                    |
+| Supporting content/link smoke check           | 17 pages and 21 rendered internal destinations passed; see `CONTENT-QA.md`                                    |
 | Dependency reproducibility                    | Exact manifest versions match the npm lockfile                                                                |
 
 ## Browser coverage
 
 The final suite ran against `next start`, not only the development server, using installed Chrome with a 1440×1000 desktop viewport and 390×844 mobile viewport. It verified:
 
-- Five-mask discovery, concern filtering and navigation to the matching product.
+- Four-mask discovery, concern filtering and navigation to the matching product.
 - Product quantity selection, add-to-bag, quantity increase/decrease, removal and empty-cart recovery.
 - Cookie persistence across reloads and navigation between the drawer and full cart.
 - No invented demo price/subtotal and disabled live checkout.
@@ -29,7 +30,8 @@ The final suite ran against `next start`, not only the development server, using
 - Native dialog Escape dismissal and restoration of keyboard focus.
 - Readable, server-rendered product content and working native usage disclosures with JavaScript disabled.
 - Reduced-motion behaviour during the browser suite.
-- Brightening Mask discovery through the spotlight and Dullness filter, its product details, missing-direction notice, accessibility and demo-cart addition on desktop and mobile.
+- Brightening Mask removed from discovery, the Dullness filter and sitemap; its former product route returns HTTP 404.
+- All four ribbon messages fit completely at 320, 390 and 430 px. Text line bounds are checked against the ribbon and viewport, catching internal clipping that document-width checks would miss.
 
 Final screenshots are saved in `docs/previews/`. Browser traces/report output stays in ignored `test-results/` and `playwright-report/`.
 
@@ -37,7 +39,7 @@ After replacing the decorative text stars with inline SVGs, the production build
 
 ## Commerce coverage
 
-The 21 tests exercise configuration failures, untrusted cart input, quantity limits, cross-origin requests, local proxy origins, malformed/oversized bodies, demo serialization, unavailable products, product/variant pagination, Shopify contextual prices (including zero), exact cart subtotals, expired carts, HttpOnly cookies, provider errors and checkout hostname validation. Catalogue regression checks also ensure every supplied PDF has a product and Brightening Mask does not inherit unsupported instructions. Live Shopify responses are mocked; these are not merchant-store transaction tests.
+The 21 tests exercise configuration failures, untrusted cart input, quantity limits, cross-origin requests, local proxy origins, malformed/oversized bodies, demo serialization, unavailable products, product/variant pagination, Shopify contextual prices (including zero), exact cart subtotals, expired carts, HttpOnly cookies, provider errors and checkout hostname validation. Catalogue regression checks verify the four approved products, removal of the retired mask from saved bags, and rejection of stale add-to-bag requests for it. Live Shopify responses are mocked; these are not merchant-store transaction tests.
 
 ## Issues caught and corrected
 
@@ -46,6 +48,8 @@ Browser QA caught and resolved a local host/origin mismatch that blocked mutatio
 User screenshots revealed that Apple devices rendered the decorative eight-spoked text character as a green emoji. All instances now use one shared, font-independent SVG with the existing section colors and responsive sizes.
 
 The three routine symbols were subsequently replaced with the original apply-mask, 15-minute timer and after-care illustrations from the Hyaluronic Acid packaging. Production build, ESLint and TypeScript passed. Chrome at 1440, 390 and 320 px, and WebKit at 1024 and 390 px, loaded all three illustrations without text overlap, horizontal overflow or browser errors. All five homepage axe scans passed. Desktop/mobile routine previews and the full homepage screenshots were refreshed; extraction details are in `RITUAL-ARTWORK.md`.
+
+The latest correction restores the four-product catalogue at the user's request while preserving those illustration fixes. Remaining text arrows were replaced with SVGs across links, the story graphic, footer and recovery pages. The clipped single-line ribbon became a responsive grid with two rows on phones. A Chrome/WebKit text-range audit at 320, 390 and 430 px found no clipped text across home, shop, Hyaluronic product detail, About, Ingredients, FAQs, Shipping & Returns and the footer. Four focused WebKit checks passed against the final production build, including axe on the homepage, product page and open bag; phone screenshots confirm the corrected ribbon and arrows.
 
 ## Verification limits and launch requirements
 

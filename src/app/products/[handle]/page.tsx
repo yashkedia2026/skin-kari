@@ -182,7 +182,8 @@ export default async function ProductPage({ params }: Props) {
             </h2>
           </div>
           <Link href="/shop" className="text-link">
-            View all masks ↗
+            View all masks{" "}
+            <ArrowUpRight size={19} aria-hidden="true" focusable="false" />
           </Link>
         </div>
         <div className="product-grid related-grid">

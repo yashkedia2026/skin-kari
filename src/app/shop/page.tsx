@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { getProducts } from "@/lib/commerce";
 import { getEditorialProduct } from "@/data/products";
 import { ProductCard } from "@/components/product-card";
@@ -6,7 +7,7 @@ import { BrandSpark } from "@/components/brand-spark";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Shop all face masks",
-  "Explore five SKINKARI sheet masks. Shop by dullness, dryness, fine lines or uneven tone, using benefits stated on the packaging.",
+  "Explore four SKINKARI sheet masks. Shop by dullness, dryness, fine lines or uneven tone, using benefits stated on the packaging.",
   "/shop",
 );
 const concerns = [
@@ -33,7 +34,7 @@ export default async function Shop({
   return (
     <div className="shop-page section">
       <div className="shop-intro">
-        <p className="eyebrow">FIVE MASKS. SO MANY GOOD-SKIN MOMENTS.</p>
+        <p className="eyebrow">FOUR MASKS. SO MANY GOOD-SKIN MOMENTS.</p>
         <h1>
           A little care.
           <br />
@@ -64,9 +65,7 @@ export default async function Shop({
           {filtered.length} {filtered.length === 1 ? "mask" : "masks"}
         </span>
       </div>
-      <div
-        className={`product-grid ${filtered.length === 5 ? "product-grid-five" : ""}`}
-      >
+      <div className="product-grid">
         {filtered.map((product, index) => (
           <ProductCard key={product.id} product={product} index={index} />
         ))}
@@ -87,7 +86,8 @@ export default async function Shop({
           Explore each mask’s ingredients and directions before choosing.
         </p>
         <Link href="/ingredients" className="text-link">
-          Ingredient guide ↗
+          Ingredient guide{" "}
+          <ArrowUpRight size={18} aria-hidden="true" focusable="false" />
         </Link>
       </div>
     </div>

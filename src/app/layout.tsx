@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | SKINKARI",
   },
   description:
-    "Indian skincare for real life. Discover five colourful sheet masks and find a little care for your kind of day.",
+    "Indian skincare for real life. Discover four colourful sheet masks and find a little care for your kind of day.",
   robots: indexingEnabled
     ? { index: true, follow: true }
     : { index: false, follow: false },

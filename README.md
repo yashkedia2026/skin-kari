@@ -28,7 +28,7 @@ npm start
 
 ## Implemented
 
-- Five-product packaging-derived catalogue: names, featured ingredients, cautious benefit wording and 20 ml size. Directions and warnings are supplied for four masks; Brightening Mask's front-only artwork leaves these pending. No invented prices, reviews, certifications or stock counts.
+- Four-product packaging-derived catalogue: names, featured ingredients, cautious benefit wording, 20 ml size, directions and warnings. No invented prices, reviews, certifications or stock counts.
 - Responsive illustrated homepage, concern filtering, interactive product spotlight, product details and variants, cart page and modal drawer.
 - Shopify Storefront API product/variant pagination, India market context, public editorial metafields, authoritative prices, availability checks, persistent carts and fresh checkout URLs.
 - Explicit demo mode with HttpOnly cookie persistence; configuration/provider errors never silently turn a live store into a demo.
@@ -54,13 +54,13 @@ tests/                      Commerce/API and browser/accessibility tests
 docs/                       Analysis, design, merchant setup, SEO and QA notes
 ```
 
-Original PDFs in the workspace root are preserved. An unrelated financial document is not used as a brand/content source. All five product PDFs appear in the catalogue. Brightening Mask is a separate product from Vitamin C Radiance, using its own supplied artwork; its bio-cellulose label applies only to that mask. Its directions, cautions and other missing back-label details still need confirmation.
+Original PDFs in the workspace root are preserved. An unrelated financial document is not used as a brand/content source. All five product PDFs are preserved as source material. The approved storefront contains Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan. Brightening Mask and its extracted artwork remain reference material, excluded from the catalogue at the user’s request.
 
 ## Connect Shopify
 
 Follow [Shopify setup](docs/SHOPIFY-SETUP.md). Set `STOREFRONT_MODE=live`, the store’s `*.myshopify.com` domain, Storefront access token and production origin in the host environment. Never prefix the token with `NEXT_PUBLIC_`. Set the optional exact checkout hostname if Shopify uses a custom checkout domain. Rebuild after changing modes or public environment variables.
 
-Create the five matching product handles, including `brightening-mask`, and publish them to the appropriate storefront channel. Shopify owns product titles, descriptions, images, variants, prices, stock and optional `custom` editorial metafields. Known catalogue products fall back to the documented packaging editorial data for unspecified fields. The spotlight consumes the active catalogue; hero brand imagery and education pages remain curated repository content.
+Create the four matching product handles listed in the setup guide and publish them to the appropriate storefront channel. Shopify owns product titles, descriptions, images, variants, prices, stock and optional `custom` editorial metafields. Known catalogue products fall back to the documented packaging editorial data for unspecified fields. The spotlight consumes the active catalogue; hero brand imagery and education pages remain curated repository content.
 
 Checkout uses Shopify’s Cart API and redirects to Shopify’s fresh HTTPS checkout URL. Taxes, shipping and discounts are calculated there. This app has no payment form and does not store card details. Missing, expired, unavailable and sold-out states return safe errors. No cart secret is exposed to browser JavaScript.
 

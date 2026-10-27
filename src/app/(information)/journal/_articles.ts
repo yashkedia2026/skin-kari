@@ -3,7 +3,7 @@ export const articles = [
     slug: "your-fifteen-minute-mask-ritual",
     title: "Your fifteen-minute mask ritual",
     description:
-      "The fifteen-minute directions for Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan. Brightening Mask directions are still to come.",
+      "The fifteen-minute directions for Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan.",
     category: "The everyday ritual",
     color: "#d7ebfa",
     number: "01",

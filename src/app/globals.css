@@ -57,6 +57,13 @@ img {
   display: block;
   flex-shrink: 0;
 }
+.inline-arrow {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+}
 button:focus-visible,
 a:focus-visible,
 summary:focus-visible,
@@ -482,20 +489,28 @@ p {
 .brand-ribbon {
   background: var(--orange);
   color: var(--cream);
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: center;
   gap: 30px;
-  white-space: nowrap;
-  overflow: hidden;
   padding: 20px 30px;
   font-size: 12px;
   letter-spacing: 0.12em;
   font-weight: 650;
 }
-.brand-ribbon span:nth-child(even) {
+.brand-ribbon-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+.brand-ribbon-item > span {
+  min-width: 0;
+  line-height: 1.5;
+}
+.brand-ribbon .brand-spark {
   font-size: 22px;
-  line-height: 0.7;
 }
 .section-heading {
   display: flex;
@@ -1925,6 +1940,7 @@ details[open] > summary:after {
     width: 17px;
   }
   .brand-ribbon {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     font-size: 10px;
     padding: 17px 20px;
   }
@@ -2300,10 +2316,15 @@ details[open] > summary:after {
     top: 25px;
   }
   .brand-ribbon {
-    justify-content: flex-start;
     font-size: 9px;
-    gap: 24px;
+    gap: 16px 24px;
     padding: 17px 20px;
+  }
+  .brand-ribbon-item {
+    gap: 8px;
+  }
+  .brand-ribbon .brand-spark {
+    font-size: 18px;
   }
   .section {
     padding: 55px var(--section);
@@ -2908,30 +2929,4 @@ details[open] > summary:after {
   font-size: 12px;
   max-width: 700px;
   line-height: 1.8;
-}
-@media (min-width: 1101px) {
-  .product-grid-five {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 18px;
-  }
-  .product-grid-five .product-card-art {
-    height: 350px;
-    min-height: 350px;
-  }
-  .product-grid-five .product-pack {
-    width: 80%;
-    max-height: 240px;
-  }
-  .product-grid-five .product-card h3 {
-    font-size: 20px;
-    min-height: 69px;
-  }
-  .product-grid-five .product-card-info > p {
-    min-height: 45px;
-  }
-}
-@media (min-width: 801px) and (max-width: 1100px) {
-  .product-grid-five {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 }
