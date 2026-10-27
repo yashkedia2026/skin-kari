@@ -73,8 +73,8 @@ export default async function ProductPage({ params }: Props) {
               <Image
                 src={image.url}
                 alt={image.altText || product.title}
-                width={570}
-                height={780}
+                width={image.width || 1098}
+                height={image.height || 1500}
                 sizes="(max-width: 800px) 85vw, 42vw"
                 loading="eager"
                 fetchPriority="high"
@@ -121,20 +121,38 @@ export default async function ProductPage({ params }: Props) {
                 </div>
               </details>
               <details>
-                <summary>Your 15-minute ritual</summary>
-                <ol>
-                  {directions.map((d) => (
-                    <li key={d}>{d}</li>
-                  ))}
-                </ol>
+                <summary>
+                  {editorial?.directions.length && !product.details?.directions
+                    ? "Your 15-minute ritual"
+                    : "Directions for use"}
+                </summary>
+                {directions.length ? (
+                  <ol>
+                    {directions.map((d) => (
+                      <li key={d}>{d}</li>
+                    ))}
+                  </ol>
+                ) : (
+                  <p>
+                    Directions and wear time for this mask are awaiting
+                    confirmation. Follow the final product pack before use.
+                  </p>
+                )}
               </details>
               <details>
                 <summary>A little care before you care</summary>
-                <ul>
-                  {caution.map((c) => (
-                    <li key={c}>{c}</li>
-                  ))}
-                </ul>
+                {caution.length ? (
+                  <ul>
+                    {caution.map((c) => (
+                      <li key={c}>{c}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>
+                    Product-specific precautions are awaiting confirmation. Read
+                    the final product pack before use.
+                  </p>
+                )}
               </details>
               <details>
                 <summary>Delivery & returns</summary>

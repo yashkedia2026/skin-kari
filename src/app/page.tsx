@@ -15,7 +15,7 @@ import { getProducts } from "@/lib/commerce";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Same skin. Brighter days.",
-  "Meet SKINKARI: Indian skincare for real life. Discover Vitamin C, Hyaluronic Acid, Collagen & Peptide and Detan sheet masks.",
+  "Meet SKINKARI: Indian skincare for real life. Discover Vitamin C, Hyaluronic Acid, Collagen & Peptide, Detan and Brightening sheet masks.",
   "/",
 );
 export default async function Home() {
@@ -28,7 +28,7 @@ export default async function Home() {
         <span>✳</span>
         <span>COLOURFUL CARE</span>
         <span>✳</span>
-        <span>YOUR 15-MINUTE MOMENT</span>
+        <span>A MOMENT FOR YOU</span>
         <span>✳</span>
         <span>BRIGHTER DAYS</span>
         <span>✳</span>
@@ -45,11 +45,13 @@ export default async function Home() {
               </h2>
             </div>
             <Link className="text-link" href="/shop">
-              Meet all four <ArrowUpRight size={18} />
+              Meet all five <ArrowUpRight size={18} />
             </Link>
           </div>
         </Reveal>
-        <div className="product-grid">
+        <div
+          className={`product-grid ${products.length === 5 ? "product-grid-five" : ""}`}
+        >
           {products.map((product, index) => (
             <Reveal key={product.id} delay={index * 0.05}>
               <ProductCard product={product} index={index} />
@@ -117,7 +119,7 @@ export default async function Home() {
           ))}
         </div>
       </section>
-      <Spotlight products={products.slice(0, 4)} />
+      <Spotlight products={products} />
       <section className="section story-section">
         <Reveal className="story-art">
           <span className="story-arch" />
@@ -213,6 +215,11 @@ export default async function Home() {
             <strong>ALL YOURS.</strong>
           </span>
         </div>
+        <p className="ritual-scope">
+          This routine is printed on the Vitamin C Radiance, Hyaluronic Acid,
+          Collagen &amp; Peptide and Detan packs. Brightening Mask directions
+          are awaiting confirmation.
+        </p>
         <div className="ritual-grid">
           {[
             {

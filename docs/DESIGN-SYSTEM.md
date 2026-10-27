@@ -2,7 +2,7 @@
 
 ## Source and direction
 
-The four packaging PDFs establish the visual identity: a multicoloured illustrated SKINकारी wordmark, geometric portrait collages, flowers, foliage, arches, sun motifs and expressive orange/blue/pink/green colour stories. The site extends that language using original artwork rather than unrelated stock imagery. The wordmark in the header is extracted from the supplied packaging.
+The five packaging PDFs establish the visual identity: a multicoloured illustrated SKINकारी wordmark, geometric portrait collages, flowers, foliage, arches, sun motifs and expressive orange/blue/pink/green colour stories. Brightening Mask adds a separate illustrated white sachet with an orange accent. The site extends that language using original artwork rather than unrelated stock imagery. The wordmark in the header is extracted from the supplied packaging.
 
 The layout alternates spacious cream editorial areas with full-colour product experiences. Forest green anchors navigation and the footer. Large, tightly spaced headings pair Bricolage Grotesque with occasional Georgia italics; DM Sans handles reading text. Variable Latin fonts are served locally and preloaded with Next Font.
 
@@ -38,8 +38,8 @@ Motion uses small transforms and opacity changes with no parallax, background vi
 
 ## Asset status
 
-Product graphics are temporary crops of the source packaging flats, with optimized WebP derivatives. They are not photographs or renders of finished production packs. The extracted supplementary Brightening mockup is retained as reference and not shown as a catalogue product. Replace assets with approved final images before launch; preserve accurate alt text and aspect ratios.
+Four product graphics are temporary crops of source packaging flats; Brightening Mask uses the front mockup from its own PDF. All five have optimized WebP derivatives. These assets do not establish finished production photography. Brightening Mask remains a separate catalogue product with its own artwork and the existing `brightening-reference` image filename. Replace assets with approved final images before launch; preserve accurate alt text and aspect ratios.
 
 ## Responsive intent
 
-Four product columns on wide screens, two on mobile; single-column product details below 600 px. Header links become a mobile menu at 800 px. Type scales fluidly, editorial grids stack, and concern choices stay usable without horizontal scrolling. Desktop/mobile browser tests check document overflow, navigation and cart behaviour. Real-device and assistive-technology review remains a launch task.
+The full collection uses five columns above 1100 px, three from 801–1100 px and two on smaller screens. Shorter filtered collections retain the standard four-column desktop grid. Product details become a single column below 600 px. Header links become a mobile menu at 800 px. Type scales fluidly, editorial grids stack, and concern choices stay usable without horizontal scrolling. Desktop/mobile browser tests check document overflow, navigation and cart behaviour. Real-device and assistive-technology review remains a launch task.

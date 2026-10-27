@@ -13,7 +13,14 @@ export function getDemoProducts(): Product[] {
     handle: product.handle,
     title: product.title,
     description: product.description,
-    images: [{ url: product.image, altText: product.imageAlt }],
+    images: [
+      {
+        url: product.image,
+        altText: product.imageAlt,
+        width: product.imageWidth || 1098,
+        height: product.imageHeight || 1500,
+      },
+    ],
     // Selectable for the demo interaction; this is not a claim about live inventory.
     availableForSale: true,
     variants: [

@@ -27,9 +27,9 @@ export function ProductCard({
           <Image
             src={image.url}
             alt={image.altText || product.title}
-            width={360}
-            height={490}
-            sizes="(max-width: 600px) 80vw, (max-width: 1000px) 45vw, 24vw"
+            width={image.width || 1098}
+            height={image.height || 1500}
+            sizes="(max-width: 800px) 45vw, (max-width: 1100px) 30vw, 24vw"
             className="product-pack"
           />
         )}

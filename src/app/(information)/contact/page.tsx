@@ -35,8 +35,8 @@ export default function ContactPage() {
         </p>
         <h2>A few answers, while you’re here</h2>
         <p>
-          For the fifteen-minute mask routine, pack sizes and details about the
-          current collection, visit our frequently asked questions.
+          For mask directions, pack sizes and details about the current
+          collection, visit our frequently asked questions.
         </p>
       </div>
       <Link className="button" href="/faqs">

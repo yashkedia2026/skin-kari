@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "About SKINKARI",
-  "Meet SKINKARI: Indian skincare for real life. Four expressive sheet masks and a little room for yourself.",
+  "Meet SKINKARI: Indian skincare for real life. Five expressive sheet masks and a little room for yourself.",
   "/about",
 );
 
@@ -25,15 +25,16 @@ export default function AboutPage() {
       <div className="prose">
         <h2>Same skin. A different kind of moment.</h2>
         <p>
-          Our starting point is simple: a sheet mask, a freshly cleansed face,
-          and fifteen minutes that belong to you. There is no perfect routine to
-          perform here. Just a small ritual to make your own.
+          Our starting point is simple: a sheet mask and a little time that
+          belongs to you. There is no perfect routine to perform here. Just a
+          small ritual to make your own, following your mask’s directions.
         </p>
         <p>
-          Our four masks each have their own personality. Orange brings Vitamin
+          Our five masks each have their own personality. Orange brings Vitamin
           C Radiance. Blue is Hyaluronic Acid. Pink introduces Collagen &amp;
-          Peptide. Green is Detan. Together, they make a colourful little
-          collection for your bathroom shelf.
+          Peptide. Green is Detan. Brightening adds a bio-cellulose sheet mask
+          with Vitamin C, niacinamide and licorice. Together, they make a
+          colourful little collection for your bathroom shelf.
         </p>
       </div>
       <div className="info-grid">
@@ -49,13 +50,15 @@ export default function AboutPage() {
           <p className="page-eyebrow">02 / Our ritual</p>
           <h2>Make a little room.</h2>
           <p>
-            Apply. Leave on for fifteen minutes. Gently remove, then pat in the
-            remaining serum. Three steps, straight from the pack.
+            Vitamin C Radiance, Hyaluronic Acid, Collagen &amp; Peptide and
+            Detan share three steps: apply, leave on for fifteen minutes, then
+            gently remove and pat in the remaining serum. Brightening Mask’s
+            directions are still to come.
           </p>
         </section>
       </div>
       <Link className="button" href="/shop">
-        Find your fifteen minutes <span aria-hidden="true">↗</span>
+        Find your mask <span aria-hidden="true">↗</span>
       </Link>
     </article>
   );

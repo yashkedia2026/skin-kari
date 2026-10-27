@@ -1,41 +1,42 @@
 # SKINKARI search-intent and technical SEO plan
 
-Prepared for the initial four-mask catalogue. This is an editorial and measurement plan, not a claim of keyword volume, search rankings or commercial demand. No search-volume dataset was supplied. Confirm priorities with first-party Search Console data once the live domain has accumulated impressions.
+Prepared for the five-mask catalogue. This is an editorial and measurement plan, not a claim of keyword volume, search rankings or commercial demand. No search-volume dataset was supplied. Confirm priorities with first-party Search Console data once the live domain has accumulated impressions.
 
 ## Search intent and page ownership
 
 Use one primary destination per intent. Product names should remain aligned with the packaging rather than being expanded into a list of keywords.
 
-| Intent                | Example language to research                                         | Primary destination                           | Content that earns the visit                                                                             |
-| --------------------- | -------------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Brand / navigation    | SKINKARI, Skinkari sheet masks                                       | `/`                                           | Brand, collection overview, direct shop navigation and the packaging-derived visual identity.            |
-| Collection / purchase | sheet masks India, Indian skincare sheet masks                       | `/shop`                                       | All four masks, their named ingredients and verified Shopify pricing/availability when live.             |
-| Product / purchase    | SKINKARI Vitamin C Radiance Face Mask, vitamin C sheet mask          | `/products/vitamin-c-radiance-face-mask`      | Exact name, packaging-supported cosmetic benefits, directions, featured ingredients and actual variants. |
-| Product / purchase    | SKINKARI hyaluronic acid face mask, hydration sheet mask             | `/products/hyaluronic-acid-face-mask`         | Hydration positioning from the pack; avoid turning it into treatment advice.                             |
-| Product / purchase    | SKINKARI collagen peptide face mask                                  | `/products/collagen-peptide-face-mask`        | Hydration and smoother-looking skin language supported by the packaging.                                 |
-| Product / purchase    | SKINKARI detan face mask                                             | `/products/detan-face-mask`                   | Qualified appearance-of-tan and dullness language; no SPF or sunburn-treatment claims.                   |
-| Ingredient discovery  | SKINKARI ingredients, ingredients in SKINKARI masks                  | `/ingredients`                                | Clear featured-ingredient groups and an explicit distinction from complete INCI.                         |
-| How to use            | how to use SKINKARI sheet mask, how long to leave on a SKINKARI mask | `/journal/your-fifteen-minute-mask-ritual`    | The three approved directions and the 15-minute wear time.                                               |
-| Label literacy        | how to read a sheet mask pack                                        | `/journal/reading-your-mask-pack`             | Names, highlighted ingredients, directions and the limits of the supplied artwork.                       |
-| Brand trust           | about SKINKARI                                                       | `/about`                                      | Brand positioning without fabricated founder history, awards, facilities or testimonials.                |
-| Support               | SKINKARI shipping, returns, customer care                            | Relevant policy/contact page after completion | Verified, usable merchant information. Pending pages are currently noindex.                              |
+| Intent                | Example language to research                                         | Primary destination                           | Content that earns the visit                                                                                   |
+| --------------------- | -------------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Brand / navigation    | SKINKARI, Skinkari sheet masks                                       | `/`                                           | Brand, collection overview, direct shop navigation and the packaging-derived visual identity.                  |
+| Collection / purchase | sheet masks India, Indian skincare sheet masks                       | `/shop`                                       | All five masks, their named ingredients and verified Shopify pricing/availability when live.                   |
+| Product / purchase    | SKINKARI Vitamin C Radiance Face Mask, vitamin C sheet mask          | `/products/vitamin-c-radiance-face-mask`      | Exact name, packaging-supported cosmetic benefits, directions, featured ingredients and actual variants.       |
+| Product / purchase    | SKINKARI hyaluronic acid face mask, hydration sheet mask             | `/products/hyaluronic-acid-face-mask`         | Hydration positioning from the pack; avoid turning it into treatment advice.                                   |
+| Product / purchase    | SKINKARI collagen peptide face mask                                  | `/products/collagen-peptide-face-mask`        | Hydration and smoother-looking skin language supported by the packaging.                                       |
+| Product / purchase    | SKINKARI detan face mask                                             | `/products/detan-face-mask`                   | Qualified appearance-of-tan and dullness language; no SPF or sunburn-treatment claims.                         |
+| Product / purchase    | SKINKARI brightening mask, bio-cellulose sheet mask                  | `/products/brightening-mask`                  | Separate Brightening product; front-supported even-looking tone, reduced dullness and radiant glow.            |
+| Ingredient discovery  | SKINKARI ingredients, ingredients in SKINKARI masks                  | `/ingredients`                                | Clear featured-ingredient groups and an explicit distinction from complete INCI.                               |
+| How to use            | how to use SKINKARI sheet mask, how long to leave on a SKINKARI mask | `/journal/your-fifteen-minute-mask-ritual`    | Directions and 15-minute wear time for Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan only. |
+| Label literacy        | how to read a sheet mask pack                                        | `/journal/reading-your-mask-pack`             | Names, highlighted ingredients, directions and the limits of the supplied artwork.                             |
+| Brand trust           | about SKINKARI                                                       | `/about`                                      | Brand positioning without fabricated founder history, awards, facilities or testimonials.                      |
+| Support               | SKINKARI shipping, returns, customer care                            | Relevant policy/contact page after completion | Verified, usable merchant information. Pending pages are currently noindex.                                    |
 
 Do not target acne treatment, eczema, melasma treatment, guaranteed tan removal, permanent skin lightening, SPF, clinically proven results, or quantified improvements without suitable evidence and editorial approval. Avoid city doorway pages, copied ingredient glossaries and pages generated solely to capture keyword variations.
 
 ## Content rules
 
 - The approved source record is `docs/PACKAGING-ANALYSIS.md`, with original PDFs in `reference/products/`. Preserve cosmetic qualifiers such as “helps” and “appearance.”
-- Keep each product description distinct: radiance/orange, hydration/blue, smoother-looking skin/pink and appearance of tan/dullness/green. Do not repeat the full product description in every homepage module.
+- Keep each product description distinct: Vitamin C Radiance/orange, Hyaluronic Acid/blue, Collagen & Peptide/pink, Detan/green and the separate Brightening Mask with its own bio-cellulose packaging. Do not repeat the full product description in every homepage module.
 - The journal currently contains two original articles based on package directions and label reading. No author credentials, publication dates, review ratings or clinical references have been invented.
 - Ingredient concentrations, full INCI and product-specific recommended frequency are absent. Add these only from approved final product documentation. Ingredient education beyond the packs needs suitable primary sources and review.
 - Use genuine reviews only after a working collection/moderation process exists. Do not add empty or fictional review counts to visible pages or structured data.
-- Treat the supplementary Brightening Mask as design reference until the merchant resolves its name and material differences. It must not create a duplicate product page or fifth SKU.
+- Brightening Mask is the fifth product, as clarified by the user. Keep its name, canonical URL and artwork distinct from Vitamin C Radiance. Its front-only source establishes bio-cellulose for this mask alone, and supplies no directions or cautions.
 
 ## Crawlable architecture
 
 Keep product titles, descriptions, ingredients and directions in the server-rendered response. Client-side animations and discovery selectors enhance content that already exists as semantic HTML. Product links must be real anchor links with descriptive text.
 
-The four-product collection fits on one page. If the catalogue grows, implement crawlable pagination with distinct URLs and links so crawlers do not depend on clicking a “load more” button. Google documents these tradeoffs in [Pagination and incremental page loading](https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading).
+The five-product collection fits on one page. If the catalogue grows, implement crawlable pagination with distinct URLs and links so crawlers do not depend on clicking a “load more” button. Google documents these tradeoffs in [Pagination and incremental page loading](https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading).
 
 Maintain stable descriptive handles. If an approved product is renamed, preserve its useful URL or add a permanent redirect and update links, sitemap and canonicals together. An unknown product handle must return a genuine 404. Do not redirect every removed product to the homepage.
 
@@ -45,7 +46,7 @@ The shared metadata helper supplies a unique title, description, canonical path,
 
 The application includes an explicit launch gate: `NEXT_PUBLIC_INDEXING_ENABLED=true` and `STOREFRONT_MODE=live` are needed for production indexing. Keep previews/demo deployments behind the hosting provider’s access controls when possible and retain noindex while reviewing.
 
-The XML sitemap lists homepage, shop, the four product URLs, about, ingredients, FAQs, journal and the two articles: 12 URLs for the initial catalogue. It is available during demo for inspection, while demo HTML remains noindex and robots.txt disallows crawling. Submit it only after the launch gate is enabled. Cart/API routes and unfinished contact/policy pages are excluded. No last-modified timestamp is invented; derive one from a meaningful content update or omit it.
+The XML sitemap lists homepage, shop, the five product URLs, about, ingredients, FAQs, journal and the two articles: 13 URLs for the current catalogue. It is available during demo for inspection, while demo HTML remains noindex and robots.txt disallows crawling. Submit it only after the launch gate is enabled. Cart/API routes and unfinished contact/policy pages are excluded. No last-modified timestamp is invented; derive one from a meaningful content update or omit it.
 
 Contact, shipping/returns, privacy and terms currently have page-level noindex because their merchant details are pending. Replace their notices with approved content, then deliberately review metadata and sitemap inclusion. Cart is a utility page and should remain noindex. Keep API routes out of the sitemap.
 
@@ -70,7 +71,7 @@ Validate the rendered live page with Google’s Rich Results Test and Search Con
 - Journal articles → ingredient guide, FAQs and collection where useful to the reader.
 - Footer → informational pages, policies and customer care. Social links only after the merchant provides verified destinations.
 
-Do not create a separate indexable landing page for every concern filter. Current concern selectors can lead to or filter the four real products. Any future concern page should have distinct approved content and enough relevant products to be useful.
+Do not create a separate indexable landing page for every concern filter. Current concern selectors can lead to or filter the five products. Any future concern page should have distinct approved content and enough relevant products to be useful.
 
 ## Mobile performance and accessibility
 

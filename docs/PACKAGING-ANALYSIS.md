@@ -1,26 +1,28 @@
 # SKINKARI packaging analysis
 
-Reviewed 27 October 2026. All four catalogue packaging PDFs were read with macOS PDFKit and their complete front/back artwork rendered and visually inspected before product content or visual direction was established. The original workspace files are untouched; copies are in `reference/products/`. Raw extracted text and full-page PNGs are in `reference/packaging-renders/`.
+Reviewed 27 October 2026. The five supplied product PDFs represent five separate catalogue products, including Brightening Mask. Four PDFs contain complete front/back artwork, read with macOS PDFKit and rendered for visual review. Brightening Mask is an image-only front view, also visually inspected. The original workspace files are untouched; copies are in `reference/products/`. Raw extracted text and full-page PNGs are in `reference/packaging-renders/`.
 
-A fifth, image-only `BRIGHTENING MASK.pdf` was also visually inspected. It is supplementary reference and is **not a fifth catalogue product**. `Photo.pdf` was initially listed but disappeared while the files were being inspected; the subsequent `BRIGHTENING MASK.pdf` has the same file size and appears to be the renamed reference. This identity has not been independently verified.
+The initial implementation incorrectly treated `BRIGHTENING MASK.pdf` as a supplementary concept and omitted it. The user's clarification corrects that interpretation: **Brightening Mask is the fifth catalogue product**, with its own name, image and product page. Its front-only source does not establish directions, cautions or back-label details. `Photo.pdf` was initially listed but disappeared while the files were being inspected; the subsequent `BRIGHTENING MASK.pdf` has the same file size and appears to be the renamed reference. This identity has not been independently verified.
 
 ## Source map
 
-| Catalogue product                      | Source PDF in `reference/products/`                      | Web artwork                                  |
-| -------------------------------------- | -------------------------------------------------------- | -------------------------------------------- |
-| Vitamin C Radiance Face Mask           | `VITAMIN C ACID FACE SHEET MASK_SKINKARI_231026.pdf`     | `/images/products/vitamin-c.png`             |
-| Hyaluronic Acid Face Mask              | `HYALURONIC ACID FACE SHEET MASK_SKINKARI_231026.pdf`    | `/images/products/hyaluronic-acid.png`       |
-| Collagen & Peptide Face Mask           | `COLLAGEN & PEPTIDE FACE SHEET MASK_SKINKARI_231026.pdf` | `/images/products/collagen-peptide.png`      |
-| Detan Face Mask                        | `DETAN FACE SHEET MASK_SKINKARI_231026.pdf`              | `/images/products/detan.png`                 |
-| Supplementary Brightening Mask concept | `BRIGHTENING MASK.pdf`                                   | `/images/products/brightening-reference.png` |
+| Catalogue product            | Source PDF in `reference/products/`                      | Web artwork                                  |
+| ---------------------------- | -------------------------------------------------------- | -------------------------------------------- |
+| Vitamin C Radiance Face Mask | `VITAMIN C ACID FACE SHEET MASK_SKINKARI_231026.pdf`     | `/images/products/vitamin-c.png`             |
+| Hyaluronic Acid Face Mask    | `HYALURONIC ACID FACE SHEET MASK_SKINKARI_231026.pdf`    | `/images/products/hyaluronic-acid.png`       |
+| Collagen & Peptide Face Mask | `COLLAGEN & PEPTIDE FACE SHEET MASK_SKINKARI_231026.pdf` | `/images/products/collagen-peptide.png`      |
+| Detan Face Mask              | `DETAN FACE SHEET MASK_SKINKARI_231026.pdf`              | `/images/products/detan.png`                 |
+| Brightening Mask             | `BRIGHTENING MASK.pdf`                                   | `/images/products/brightening-reference.png` |
 
-Each primary PDF is a one-page landscape artwork sheet, 841.8898 × 595.2756 PDF points, with the front on the left and back on the right. These are flat packaging artworks, not actual product photographs. Web front crops preserve printed artwork, text, and outline; the connected white exterior is made transparent. The four front images are 1098 × 1500 pixels. The extracted brand wordmark is `/images/products/brand-wordmark.png` (950 × 360 pixels), copied from the isolated Vitamin C back header, not redrawn. The supplementary concept crop is 747 × 846 pixels.
+Each of the four front/back PDFs is a one-page landscape artwork sheet, 841.8898 × 595.2756 PDF points, with the front on the left and back on the right. These are flat packaging artworks, not actual product photographs. Web front crops preserve printed artwork, text, and outline; the connected white exterior is made transparent. Those four front images are 1098 × 1500 pixels. The extracted brand wordmark is `/images/products/brand-wordmark.png` (950 × 360 pixels), copied from the isolated Vitamin C back header, not redrawn. The Brightening Mask crop is 747 × 846 pixels; its existing `brightening-reference` asset filename is retained for compatibility.
 
 Reproduce on macOS with PDFKit/AppKit using `swift scripts/extract-packaging.swift` and `swift scripts/crop-packaging.swift`. If the default Swift module cache is not writable, set `CLANG_MODULE_CACHE_PATH=/private/tmp/skinkari-clang-cache` and `SWIFT_MODULECACHE_PATH=/private/tmp/skinkari-swift-cache`. PDF text extraction has some broken `ti`/`ft` ligatures; the transcriptions below restore the letters visible in the rendered artwork.
 
 Matching `.webp` derivatives, preserving dimensions and transparency, are included for storefront performance. Recreate them after dependency installation using `node scripts/optimize-packaging.mjs` (Sharp, quality 90). PNGs remain the original rendered crops. All five reference PDF copies were verified byte-for-byte against the originals with SHA-256.
 
-## Shared packaging information
+## Packaging information shared by the four front/back artworks
+
+This section applies to Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan. Brightening Mask's independently visible front details are recorded in its own section below. Do not copy the four packs' directions, cautions or manufacturer details to Brightening Mask.
 
 - Brand: SKINKARI, with a large multicolour Latin/Devanagari wordmark and a `TM` mark.
 - Tagline: **SAME SKIN. BRIGHTER DAYS.**
@@ -143,7 +145,7 @@ No approved frequency of use, refrigeration instruction, overnight-use instructi
 
 **Visual observations:** dark forest green and leaf green, contrasted with turmeric yellow, orange, pink and cream; sun, geometric face, lotus, aloe segments, charcoal, leaves and decorative arch panels. Green is the product accent, but a vivid multi-colour botanical mosaic is essential to its identity.
 
-## Supplementary Brightening Mask reference
+## Brightening Mask
 
 `BRIGHTENING MASK.pdf` is a one-page 288 × 432 pt image-only document. Visual review shows a white sachet photo-style mockup with a colourful illustrated portrait, citrus, leaves, pink lotus, arch panels and tiles. It repeats the brand tagline and positioning.
 
@@ -156,12 +158,16 @@ Visible words include:
 - **1 SHEET MASK / BIO-CELLULOSE / 20 ml**
 - **CLEAN FORMULA / NO ADDED PARABENS / SUITS ALL SKIN TYPES**
 
-Its name differs from the main Vitamin C artwork and it adds **BIO-CELLULOSE**, which the four catalogue PDFs do not establish. No back, complete ingredients, directions, prices or commercial details are visible. It should remain supplementary design reference, or be displayed explicitly as a packaging concept. Do not infer a fifth SKU, update the catalogue name, or apply the material claim to all four masks without merchant clarification. The visual asset is not evidence that the pictured finished product is commercially available.
+**Catalogue identity:** Brightening Mask, at `/products/brightening-mask`, is a separate fifth product as clarified by the user. Its name and image remain distinct from Vitamin C Radiance Face Mask despite overlapping featured ingredients.
+
+**Supported product details:** Vitamin C, niacinamide and licorice; one bio-cellulose sheet mask, 20 ml; cosmetic wording about even-looking tone, reduced dullness and radiant glow. The **BIO-CELLULOSE** material claim belongs only to this product; the other four PDFs do not specify sheet material.
+
+No back, complete ingredient list, directions, wear time, cautions, storage guidance, manufacturer details, prices or commercial availability information are visible. The product page leaves directions and cautions pending rather than borrowing them from another mask. The front image does not independently establish final sale-ready stock or finished product photography.
 
 ## Design direction derived from packaging
 
 - Use expressive condensed uppercase display typography, simpler readable body type, generous space, and a dark ink/forest foundation.
-- Let the four product families carry orange, sky/cobalt blue, coral/rose pink, and leaf/forest green through cards and product details.
+- Let the five products carry the established orange, sky/cobalt blue, coral/rose pink, and leaf/forest green palette through cards and product details. Brightening Mask uses its own white sachet artwork with an orange accent, distinct from Vitamin C Radiance.
 - Extend the printed arches, sun rays, waves, petals, leaves and tiled geometric rhythms with lightweight CSS/SVG decoration.
 - Use the original extracted colourful wordmark where legibility permits. Preserve SKINKARI as accessible text.
 - Balance these saturated colours against warm paper/cream, not a predominantly beige “luxury” treatment.
@@ -170,18 +176,18 @@ Its name differs from the main Vitamin C artwork and it adds **BIO-CELLULOSE**, 
 
 ## Missing information and source inconsistencies
 
-1. Full INCI lists: all four printed `INGEDIENTS` sections are blank; the heading itself is misspelled.
+1. Full INCI lists for all five products: the four printed `INGEDIENTS` sections are blank and the heading itself is misspelled; Brightening Mask's front-only artwork has no full list.
 2. Prices/MRP/U.S.P., product IDs, variant IDs, SKUs, barcodes, live stock and merchant-approved sale status are absent.
 3. `Marketed by`, customer support email and phone are blank.
 4. Batch numbers, manufacturing dates, expiry dates and shelf life are absent. Dates must not be fabricated from the PDF filenames.
 5. Shipping destinations/costs/timelines, tax configuration, returns/refunds, privacy controller, legal entity, policy wording and social URLs require merchant input.
 6. No reviews, numerical ratings, clinical studies, certifications or quantified efficacy evidence were provided.
 7. No ingredient concentrations or full formulation details are supplied. Do not assume Vitamin C form, collagen source, peptide type, or fragrance status.
-8. Sheet material is not given in the four primary PDFs. Supplementary Brightening Mask says bio-cellulose but differs in name/artwork.
-9. Usage frequency is unspecified. Fifteen minutes is the shared wear time; it does not establish a guaranteed time to results.
+8. Sheet material is not given in the four front/back PDFs. Brightening Mask alone says bio-cellulose.
+9. Usage frequency is unspecified for all five products. Fifteen minutes is supplied only for Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan; it does not establish a guaranteed time to results. Brightening Mask needs confirmed directions, wear time, cautions and storage guidance.
 10. Hyaluronic front typography contains the wording errors noted above; request revised artwork.
-11. Actual final product photography/mockups matching all four approved SKUs are needed. Current main imagery is extracted print artwork; supplementary image is a different concept.
+11. Actual final product photography/mockups matching all five products are needed. Four current images are extracted print artwork; Brightening Mask uses its supplied front mockup.
 12. Ingredient educational copy beyond the exact packaging context needs credible primary sources and editorial approval. Do not transform an ingredient mention into a separate medical or universal efficacy promise.
-13. Confirm the final trademark/wordmark files, print artwork version, and naming of the supplementary Brightening concept before launch.
+13. Confirm the final trademark/wordmark files and print artwork versions for all five products before launch. Catalogue inclusion of Brightening Mask is resolved; its missing back-label content remains outstanding.
 
 The storefront may use conservative cosmetic descriptions based on the source text. The merchant must supply missing commercial information through Shopify and confirm final content before enabling live checkout.

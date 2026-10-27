@@ -2894,3 +2894,35 @@ details[open] > summary:after {
     height: 0.6em;
   }
 }
+
+.ritual-scope {
+  font-size: 12px;
+  max-width: 700px;
+  line-height: 1.8;
+}
+@media (min-width: 1101px) {
+  .product-grid-five {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .product-grid-five .product-card-art {
+    height: 350px;
+    min-height: 350px;
+  }
+  .product-grid-five .product-pack {
+    width: 80%;
+    max-height: 240px;
+  }
+  .product-grid-five .product-card h3 {
+    font-size: 20px;
+    min-height: 69px;
+  }
+  .product-grid-five .product-card-info > p {
+    min-height: 45px;
+  }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .product-grid-five {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

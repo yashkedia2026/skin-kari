@@ -1,12 +1,13 @@
 # Merchant content and launch checklist
 
-The current storefront uses the four supplied main packaging PDFs as its source of product information. Missing facts have not been fabricated. See `PACKAGING-ANALYSIS.md` for exact wording, provenance, extraction details and the supplementary Brightening Mask reference.
+The current storefront uses all five supplied product PDFs, including Brightening Mask as a separate fifth product. Four sources show front/back artwork; Brightening Mask shows only the front, so its directions, cautions and back-label details remain pending. See `PACKAGING-ANALYSIS.md` for exact wording, provenance and extraction details.
 
 ## Required before commercial launch
 
 | Needed                                                           | Why it matters                                                                                                                                       | Where it belongs                                                                                                 |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Final full INCI for each of the four masks                       | Front highlights are not complete ingredient lists; the supplied full-list fields are blank.                                                         | Approved product data and a separately modelled full-ingredients section; Shopify metafield + adapter extension. |
+| Final full INCI for each of the five masks                       | Front highlights are not complete ingredient lists; four full-list fields are blank, and Brightening Mask has no back artwork.                       | Approved product data and a separately modelled full-ingredients section; Shopify metafield + adapter extension. |
+| Brightening Mask directions, cautions and storage guidance       | Its source shows only the front. The other four products' instructions do not establish how to use this mask.                                        | Product data, Shopify metafields, FAQs and related editorial content.                                            |
 | Final approved packaging version                                 | Correct the Hyaluronic pack’s `PLUMED` / `PLUMS & SMOOTHS` and the `INGEDIENTS` heading; confirm product names and all required printed information. | Source PDFs, packaging analysis and replacement image assets.                                                    |
 | Actual product photography                                       | Current primary imagery is cropped flat print artwork, not finished product photography.                                                             | Shopify images, local fallbacks and product social images.                                                       |
 | Real prices, variant IDs, SKUs, market/currency and stock policy | Required for an honest purchase flow. No demo prices or inventory counts were invented.                                                              | Shopify product/variant and market settings.                                                                     |
@@ -22,9 +23,9 @@ The current storefront uses the four supplied main packaging PDFs as its source 
 - [ ] Full ingredients and any concentrations the merchant intends to communicate. Do not infer a Vitamin C form, collagen origin, peptide type, fragrance status or allergen absence.
 - [ ] Manufacturing/batch/expiry information and supported shelf life from final product documentation. PDF filenames are not manufacture or expiry dates.
 - [ ] Final MRP/U.S.P. and pricing treatment from the merchant. Do not create an offer from blank printed fields.
-- [ ] Product material. The four main PDFs do not name sheet material; the supplementary Brightening Mask reference says bio-cellulose but has a different name/artwork. Do not apply that claim across the collection.
-- [ ] Clarify whether the supplementary Brightening Mask is an alternate concept or an approved replacement. It is not currently a fifth catalogue product.
-- [ ] Any approved usage frequency. Only the shared three steps and 15-minute wear time are supplied. Do not add refrigeration, overnight use or a daily/weekly schedule without support.
+- [ ] Product material for Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan. Their PDFs do not name sheet material; only Brightening Mask says bio-cellulose. Do not apply that claim across the collection.
+- [ ] Brightening Mask's missing back-label details: full ingredients, directions, wear time, cautions, storage and manufacturer information. Its inclusion as a fifth product is confirmed by the user.
+- [ ] Any approved usage frequency. The three steps and 15-minute wear time are supplied only for Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan. Do not extend them to Brightening Mask or add refrigeration, overnight use or a daily/weekly schedule without support.
 - [ ] Review all cosmetic claims against final approved evidence, retaining qualifiers such as “helps” and “appearance.” Do not convert detan wording into SPF, sunburn treatment or guaranteed lightening.
 - [ ] Confirm the exact trademark/wordmark files and brand asset usage. The extracted wordmark is a temporary asset from supplied packaging.
 
@@ -40,10 +41,10 @@ The current storefront uses the four supplied main packaging PDFs as its source 
 
 ## Content currently implemented
 
-- Packaging-derived collection and product facts, four colour identities, named ingredient highlights and shared usage directions.
+- Five packaging-derived catalogue products, four colour families and named ingredient highlights. Brightening Mask has its own product page and artwork.
 - An About page built around “Indian skincare for real life,” with no invented company history.
 - An ingredient guide that explicitly distinguishes highlights from full formulas.
-- FAQs using the exact wear time and package cautions, with unknown frequency and commercial policies clearly described as pending.
+- FAQs using the supplied wear time and package cautions only for the four masks with back artwork; Brightening Mask's directions, unknown frequency and commercial policies remain pending.
 - Two original journal articles about the three-step mask ritual and reading a pack. No fake author, publication date or review data.
 - Contact and policy routes with clear pending-content notices. These pages are intentionally noindex until final merchant content is supplied.
 

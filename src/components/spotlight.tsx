@@ -24,7 +24,7 @@ export function Spotlight({ products }: { products: Product[] }) {
       aria-labelledby="spotlight-heading"
     >
       <div className="spotlight-copy">
-        <p className="eyebrow">THE 15-MINUTE PICK-ME-UP</p>
+        <p className="eyebrow">YOUR LITTLE PICK-ME-UP</p>
         <h2 id="spotlight-heading">
           A mask for
           <br />
@@ -78,8 +78,8 @@ export function Spotlight({ products }: { products: Product[] }) {
               <Image
                 src={p.image}
                 alt={p.imageAlt}
-                width={380}
-                height={520}
+                width={product.images[0]?.width || 1098}
+                height={product.images[0]?.height || 1500}
                 sizes="(max-width: 700px) 65vw, 30vw"
               />
             )}

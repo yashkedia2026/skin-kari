@@ -10,12 +10,19 @@ export interface EditorialProduct {
   background: string;
   image: string;
   imageAlt: string;
+  imageWidth?: number;
+  imageHeight?: number;
   concerns: string[];
   featuredIngredients: { name: string; description: string }[];
   benefits: string[];
   directions: string[];
   caution: string[];
-  packaging: { format: string; netContent: string; source: string };
+  packaging: {
+    format: string;
+    netContent: string;
+    source: string;
+    material?: string;
+  };
 }
 export const directions = [
   "Apply the mask on a freshly cleansed face.",
@@ -191,6 +198,48 @@ export const products: EditorialProduct[] = [
       format: "1 sheet mask",
       netContent: "20 ml",
       source: "DETAN FACE SHEET MASK_SKINKARI_231026.pdf",
+    },
+  },
+  {
+    handle: "brightening-mask",
+    title: "Brightening Mask",
+    shortName: "Brightening",
+    eyebrow: "Glow. Good. Repeat.",
+    description:
+      "A bio-cellulose sheet mask with Vitamin C, niacinamide and licorice. The packaging highlights a more even-looking tone, less visible dullness and a radiant glow.",
+    color: "orange",
+    accent: "#a73819",
+    background: "#ffe2b8",
+    image: "/images/products/brightening-reference.webp",
+    imageAlt:
+      "Brightening Mask packaging mockup with a colourful illustrated portrait, citrus, pink flowers and bio-cellulose sheet-mask label",
+    imageWidth: 747,
+    imageHeight: 846,
+    concerns: ["Dullness", "Uneven tone"],
+    featuredIngredients: [
+      { name: "Vitamin C", description: "Named on the Brightening Mask pack." },
+      {
+        name: "Niacinamide",
+        description: "A featured ingredient printed on the pack.",
+      },
+      {
+        name: "Licorice",
+        description: "Named on the front of the Brightening Mask pack.",
+      },
+    ],
+    benefits: [
+      "More even-looking tone",
+      "Helps reduce the appearance of dullness",
+      "Radiant-looking glow",
+    ],
+    // Only the front is supplied. Do not inherit other masks' directions or warnings.
+    directions: [],
+    caution: [],
+    packaging: {
+      format: "1 sheet mask",
+      netContent: "20 ml",
+      material: "Bio-cellulose",
+      source: "BRIGHTENING MASK.pdf",
     },
   },
 ];

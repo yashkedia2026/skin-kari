@@ -5,7 +5,7 @@ import { ProductCard } from "@/components/product-card";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Shop all face masks",
-  "Explore four SKINKARI sheet masks. Shop by dullness, dryness, fine lines or uneven tone, using benefits stated on the packaging.",
+  "Explore five SKINKARI sheet masks. Shop by dullness, dryness, fine lines or uneven tone, using benefits stated on the packaging.",
   "/shop",
 );
 const concerns = [
@@ -32,14 +32,15 @@ export default async function Shop({
   return (
     <div className="shop-page section">
       <div className="shop-intro">
-        <p className="eyebrow">FOUR COLOURS. SO MANY GOOD-SKIN MOMENTS.</p>
+        <p className="eyebrow">FIVE MASKS. SO MANY GOOD-SKIN MOMENTS.</p>
         <h1>
           A little care.
           <br />
           <em>Your kind of colour.</em>
         </h1>
         <p>
-          Discover your 15-minute ritual. Start with a feeling, find your mask.
+          Discover a little care for your skin. Start with a feeling, find your
+          mask.
         </p>
       </div>
       <div className="shop-toolbar">
@@ -62,7 +63,9 @@ export default async function Shop({
           {filtered.length} {filtered.length === 1 ? "mask" : "masks"}
         </span>
       </div>
-      <div className="product-grid">
+      <div
+        className={`product-grid ${filtered.length === 5 ? "product-grid-five" : ""}`}
+      >
         {filtered.map((product, index) => (
           <ProductCard key={product.id} product={product} index={index} />
         ))}

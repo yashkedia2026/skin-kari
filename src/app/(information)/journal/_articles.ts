@@ -3,7 +3,7 @@ export const articles = [
     slug: "your-fifteen-minute-mask-ritual",
     title: "Your fifteen-minute mask ritual",
     description:
-      "Three steps, straight from the SKINKARI pack: cleanse, mask for fifteen minutes, then gently pat in the remaining serum.",
+      "The fifteen-minute directions for Vitamin C Radiance, Hyaluronic Acid, Collagen & Peptide and Detan. Brightening Mask directions are still to come.",
     category: "The everyday ritual",
     color: "#d7ebfa",
     number: "01",

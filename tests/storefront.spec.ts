@@ -35,7 +35,7 @@ async function assertAccessible(page: Page) {
     .toEqual([]);
 }
 
-test("discovery leads to four masks and the concern filter narrows the catalogue", async ({
+test("discovery leads to five masks and the concern filter narrows the catalogue", async ({
   page,
 }) => {
   await ready(page, "/");
@@ -45,7 +45,7 @@ test("discovery leads to four masks and the concern filter narrows the catalogue
   await page.getByRole("link", { name: "Find your good-skin moment" }).click();
   await expect(page).toHaveURL(/\/shop$/);
   const catalogue = page.getByRole("main");
-  await expect(catalogue.getByRole("article")).toHaveCount(4);
+  await expect(catalogue.getByRole("article")).toHaveCount(5);
   const filters = page.getByRole("navigation", {
     name: "Filter by skin concern",
   });
@@ -60,7 +60,7 @@ test("discovery leads to four masks and the concern filter narrows the catalogue
     "true",
   );
   await filters.getByRole("link", { name: "All masks", exact: true }).click();
-  await expect(catalogue.getByRole("article")).toHaveCount(4);
+  await expect(catalogue.getByRole("article")).toHaveCount(5);
   await catalogue.getByRole("link", { name: vitaminC, exact: true }).click();
   await expect(page).toHaveURL(productPath);
   await expect(
@@ -298,4 +298,55 @@ test("product content remains readable without JavaScript", async ({
     }),
   ).toBeVisible();
   await context.close();
+});
+
+test("Brightening Mask appears in discovery, filters, its product page and the demo bag", async ({
+  page,
+}) => {
+  await ready(page, "/");
+  await assertDemo(page);
+  const spotlight = page.getByRole("region", {
+    name: "A mask for your kind of day.",
+  });
+  await spotlight
+    .getByRole("button", { name: "Brightening", exact: true })
+    .click();
+  await expect(
+    spotlight.getByRole("heading", { name: "Brightening Mask", exact: true }),
+  ).toBeVisible();
+  await ready(page, "/shop?concern=Dullness");
+  const card = page.getByRole("article").filter({
+    has: page.getByRole("heading", { name: "Brightening Mask", exact: true }),
+  });
+  await expect(card).toBeVisible();
+  await card
+    .getByRole("link", { name: "Brightening Mask", exact: true })
+    .click();
+  await expect(page).toHaveURL("/products/brightening-mask");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Brightening Mask" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/A bio-cellulose sheet mask with Vitamin C/),
+  ).toBeVisible();
+  await page.getByText("Directions for use", { exact: true }).click();
+  await expect(
+    page.getByText(
+      /Directions and wear time for this mask are awaiting confirmation/,
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Your 15-minute ritual", { exact: true }),
+  ).toHaveCount(0);
+  await assertAccessible(page);
+  await page
+    .getByRole("button", { name: "Add to demo bag", exact: true })
+    .click();
+  const drawer = page.getByRole("dialog", { name: "Your good-skin bag." });
+  await expect(
+    drawer.getByRole("link", { name: "Brightening Mask", exact: true }),
+  ).toBeVisible();
+  await expect(
+    drawer.getByRole("button", { name: "Checkout unavailable in demo" }),
+  ).toBeDisabled();
 });
