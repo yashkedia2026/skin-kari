@@ -246,7 +246,17 @@ for (const [handle, tone, brandColor] of products) {
       "collagen-peptide-face-mask": "/images/products/collagen-peptide.webp",
     };
     expect(source).toBe(expectedArtwork[handle]);
-    await expect(page.locator("video")).toHaveCount(0);
+    await expect(page.locator("video")).toHaveCount(3);
+    await expect(
+      page.getByText("Demo video preview", { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByText("Demo footage", { exact: true })).toHaveCount(
+      3,
+    );
+    for (const video of await page.locator("video").all()) {
+      await expect(video).not.toHaveAttribute("src");
+      await expect(video).not.toHaveAttribute("autoplay");
+    }
     await expect(
       page.getByRole("heading", { name: /video testimonials/i }),
     ).toHaveCount(0);

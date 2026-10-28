@@ -2,6 +2,10 @@ import { expect, test, type Page } from "@playwright/test";
 import { build } from "esbuild";
 import path from "node:path";
 import type { VideoTestimonial } from "../src/data/video-testimonials";
+import {
+  demoSkincareVideos,
+  type DemoSkincareVideo,
+} from "../src/data/demo-videos";
 
 // The installed tsx test runner already supplies esbuild. Bundle this isolated
 // component in memory: synthetic media fixtures never become storefront routes.
@@ -14,8 +18,8 @@ test.beforeAll(async () => {
       contents: `
         import { createRoot } from 'react-dom/client';
         import { VideoTestimonials } from './src/components/video-testimonials';
-        window.mountTestimonials = (videos) => createRoot(document.getElementById('root')).render(
-          <VideoTestimonials videos={videos} tone="green" />
+        window.mountTestimonials = (videos, demoVideos) => createRoot(document.getElementById('root')).render(
+          <VideoTestimonials videos={videos} demoVideos={demoVideos} tone="green" />
         );
       `,
       resolveDir: process.cwd(),
@@ -50,7 +54,11 @@ const fixture = (id: string): VideoTestimonial => ({
   ],
 });
 
-async function mount(page: Page, videos: VideoTestimonial[]) {
+async function mount(
+  page: Page,
+  videos: VideoTestimonial[],
+  demoVideos: readonly DemoSkincareVideo[] = [],
+) {
   await page.route("https://media.test/**", (route) => route.abort());
   await page.setContent(
     '<!doctype html><html lang="en"><head><title>Isolated video component test</title></head><body><main id="root"></main></body></html>',
@@ -85,12 +93,18 @@ async function mount(page: Page, videos: VideoTestimonial[]) {
     };
   });
   await page.addScriptTag({ content: script });
-  await page.evaluate((entries) => {
-    const fixtureWindow = window as typeof window & {
-      mountTestimonials: (videos: VideoTestimonial[]) => void;
-    };
-    fixtureWindow.mountTestimonials(entries);
-  }, videos);
+  await page.evaluate(
+    ({ entries, previews }) => {
+      const fixtureWindow = window as typeof window & {
+        mountTestimonials: (
+          videos: VideoTestimonial[],
+          demoVideos: readonly DemoSkincareVideo[],
+        ) => void;
+      };
+      fixtureWindow.mountTestimonials(entries, previews);
+    },
+    { entries: videos, previews: demoVideos },
+  );
 }
 
 test("empty and unapproved lists render no public section", async ({
@@ -102,6 +116,33 @@ test("empty and unapproved lists render no public section", async ({
   await mount(page, [{ ...fixture("pending"), approved: false }]);
   await expect(page.getByRole("heading")).toHaveCount(0);
   await expect(page.locator("video")).toHaveCount(0);
+});
+
+test("demo footage is disclosed separately and approved customer videos replace it", async ({
+  page,
+}) => {
+  await mount(
+    page,
+    [{ ...fixture("pending"), approved: false }],
+    demoSkincareVideos,
+  );
+  await expect(
+    page.getByRole("heading", { name: "A little care, on film.", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("Demo footage", { exact: true })).toHaveCount(3);
+  await expect(
+    page.getByRole("heading", { name: "Video testimonials", exact: true }),
+  ).toHaveCount(0);
+
+  await mount(page, [fixture("approved")], demoSkincareVideos);
+  await expect(
+    page.getByRole("heading", { name: "Video testimonials", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("Demo footage", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("article")).toHaveCount(1);
+  await expect(
+    page.getByRole("article", { name: "Test-only video approved" }),
+  ).toBeVisible();
 });
 
 test("video loading waits for a gesture and native controls expose caption tracks", async ({

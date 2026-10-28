@@ -22,26 +22,28 @@ Shopify remains authoritative for selling prices, inventory and cart costs. Each
 
 ## Video integration
 
-The reusable component is wired into product pages before related products. Its data registry is empty, so there is no public testimonial section, video request, invented customer, review or rating. Approved future entries support lazy thumbnails, playback on request, native HTML5 controls, captions, optional names/copy/transcripts, mobile scrolling and reduced motion. Playback pauses when another video starts, the card leaves view or the tab becomes hidden. See [video integration instructions](VIDEO-TESTIMONIALS.md).
+The reusable component is wired into product pages before related products. The authentic testimonial registry is empty; no customer, review or rating has been invented. At the user's subsequent request, demo product pages now display three clearly labelled skincare stock clips for client presentation. These are separate from the testimonial registry, show a preview disclosure and individual “Demo footage” labels, and are excluded from live Shopify pages. Approved genuine footage takes precedence when supplied. The clips are local, silent nine-second MP4s with matching thumbnails; all three videos together are about 1.2 MB. See [video sources](DEMO-VIDEO-SOURCES.md) and [replacement instructions](VIDEO-TESTIMONIALS.md).
+
+The component supports lazy thumbnails, playback on request, native HTML5 controls, captions, optional names/copy/transcripts, mobile scrolling and reduced motion. Playback pauses when another video starts, the card leaves view or the tab becomes hidden. No video data is fetched until play is requested.
 
 ## Verification
 
-| Check                      | Result                                                                                                                                                                                          |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm test`                 | 43 unit/API tests passed, including Shopify payloads, verification gates and cookie persistence.                                                                                                |
-| Initial `npm run test:e2e` | 59 browser tests passed; one mobile-only navigation test intentionally skipped on desktop.                                                                                                      |
-| Pack-image follow-up       | 24 pack browser tests and 27 storefront/navigation tests passed, with the same intentional desktop skip. The final image sizing refinement also passed all 12 affected visual/responsive tests. |
-| `npm run build`            | Passed production compilation, type checking and route generation.                                                                                                                              |
-| `npm run typecheck`        | Passed.                                                                                                                                                                                         |
-| `npm run lint`             | Passed.                                                                                                                                                                                         |
-| `npm run format:check`     | Passed.                                                                                                                                                                                         |
-| `git diff --check`         | Passed.                                                                                                                                                                                         |
+| Check                  | Result                                                                                                                                                                                          |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm test`             | 45 unit/API tests passed, including Shopify payloads, verification gates, cookie persistence and the demo-only video fallback.                                                                  |
+| `npm run test:e2e`     | 65 browser tests passed; one mobile-only navigation test intentionally skipped on desktop. Includes actual playback of all three demo clips on desktop and mobile.                              |
+| Pack-image follow-up   | 24 pack browser tests and 27 storefront/navigation tests passed, with the same intentional desktop skip. The final image sizing refinement also passed all 12 affected visual/responsive tests. |
+| `npm run build`        | Passed production compilation, type checking and route generation.                                                                                                                              |
+| `npm run typecheck`    | Passed.                                                                                                                                                                                         |
+| `npm run lint`         | Passed.                                                                                                                                                                                         |
+| `npm run format:check` | Passed.                                                                                                                                                                                         |
+| `git diff --check`     | Passed.                                                                                                                                                                                         |
 
 Browser coverage includes all five quantities, exact provisional MRPs, persistent carts and quantity changes, keyboard selection, all four product colours, responsive layouts, axe accessibility, homepage/navigation regressions, product metadata without fabricated offers or ratings, and the isolated video component. The browser run used the existing local development server. The production build was verified separately.
 
 The production build required execution outside the filesystem sandbox after the restricted Turbopack compiler stalled. No application workaround or deployment was introduced. A pre-existing navigation assertion was scoped to the visible main content so hidden Next.js content cannot cause a duplicate text match.
 
-Shopify request compatibility is verified using mocked provider responses. No real merchant checkout, payment or inventory configuration has been verified. Video tests use isolated test-only fixtures and media API stubs; decoding, audio and caption timing require the genuine client assets. Tests do not add sample testimonials to the public application.
+Shopify request compatibility is verified using mocked provider responses. No real merchant checkout, payment or inventory configuration has been verified. Component tests use isolated fixtures and media API stubs, and demo-video tests exercise actual local MP4 playback. Decoding, audio and caption timing of genuine customer footage still require the client assets. Test fixtures do not add customer testimonials to the application.
 
 Screenshots are saved in [previews/packs](previews/packs/) for all four masks on desktop (1440px) and mobile (390px), with full-page and focused selector views. Layout checks additionally cover 320px and 768px widths.
 
@@ -55,3 +57,5 @@ Screenshots are saved in [previews/packs](previews/packs/) for all four masks on
 Full-page captures load the existing lazy artwork before saving, restore the page to the top and omit the development toolbar. Matching `-selector.png` files show the pack controls at full size.
 
 The image follow-up refreshed the full-page captures and added `-image.png` previews for every product. Compare [a single mask](previews/packs/desktop-vitamin-c-radiance-face-mask-single-image.png) with [a desktop multipack](previews/packs/desktop-vitamin-c-radiance-face-mask-pack12-image.png) and [a mobile multipack](previews/packs/mobile-vitamin-c-radiance-face-mask-pack12-image.png).
+
+The demo-video follow-up adds [a desktop section preview](previews/videos/desktop-skincare-demo.png) and [a mobile carousel preview](previews/videos/mobile-skincare-demo.png). Browser tests verify no video requests before play, real MP4 decoding and time advancement, pause controls, mobile scrolling, accessibility and the replacement of demo footage by approved genuine videos. A mobile overflow caused by offscreen credit labels was fixed by containing each label within its card.

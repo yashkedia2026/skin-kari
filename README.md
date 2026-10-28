@@ -42,7 +42,7 @@ npm start
 - Four-product packaging-derived catalogue: names, featured ingredients, 20 ml size, directions and warnings. Homepage promotional copy follows the supplied reference; catalogue editorial data remains separate. No invented prices, reviews, certifications or stock counts.
 - Reference-based responsive homepage with illustrated skin-concern links, ingredient row and four product panels; shop filtering/search, product details and variants, cart page and modal drawer.
 - Product-coloured pack selectors for 1, 3, 6, 9 and 12 units of the same mask, with exact MRP and Shopify price calculations. No invented pack discounts or bundles.
-- Reusable, accessible HTML5 video testimonials with lazy media, playback controls and a mobile carousel. The public section stays hidden until authentic approved footage is added; see [video integration](docs/VIDEO-TESTIMONIALS.md).
+- Reusable, accessible HTML5 video testimonials with lazy media, playback controls and a mobile carousel. Demo product pages show clearly labelled skincare stock clips for client review; genuine testimonials remain unpublished until supplied. Live Shopify pages never use the demo fallback. See [video integration](docs/VIDEO-TESTIMONIALS.md).
 - Shopify Storefront API product/variant pagination, India market context, public editorial metafields, authoritative prices, availability checks, persistent carts and fresh checkout URLs.
 - Explicit demo mode with HttpOnly cookie persistence; configuration/provider errors never silently turn a live store into a demo.
 - About, ingredients, FAQs, contact, shipping/returns, privacy, terms, journal and two articles. Missing merchant contact/policies are disclosed instead of fabricated.
@@ -92,7 +92,7 @@ npm run test:e2e
 
 The suite uses installed Google Chrome on macOS or Playwright Chromium elsewhere. If neither is installed, run `npx playwright install chromium`. `PLAYWRIGHT_CHANNEL` and `PLAYWRIGHT_BASE_URL` can override these choices. Desktop (1440 px) and mobile (390 px) tests cover shopping, persistence, API failures, navigation, true 404s, overflow and axe accessibility checks. Reports are written to ignored `playwright-report/` and `test-results/` directories. Reduced-motion is exercised by default. Automated accessibility checks supplement, rather than replace, broader assistive-technology testing.
 
-Pack tests save full-page and selector screenshots for all four products to `docs/previews/packs/`. Video behavior is tested in an isolated browser harness; no test videos, names or reviews are included in public routes.
+Pack tests save full-page and selector screenshots for all four products to `docs/previews/packs/`. Video component behavior is tested in an isolated browser harness; actual demo clip playback and section screenshots are tested separately in `tests/demo-videos.spec.ts`. No synthetic test fixtures, customer names or reviews are included in public routes.
 
 For a production browser pass, build and serve with `npm start` before running the same tests. Actual Shopify checkout, real devices and field Core Web Vitals require the configured deployment.
 

@@ -10,6 +10,7 @@ import { ProductPackImage } from "@/components/product-pack-image";
 import { ProductCard } from "@/components/product-card";
 import { VideoTestimonials } from "@/components/video-testimonials";
 import { getProductTestimonials } from "@/data/video-testimonials";
+import { getDemoSkincareVideos } from "@/data/demo-videos";
 import purchaseStyles from "@/components/product-purchase.module.css";
 import { jsonLd, pageMetadata, siteUrl } from "@/lib/seo";
 type Props = { params: Promise<{ handle: string }> };
@@ -200,6 +201,7 @@ export default async function ProductPage({ params }: Props) {
       </div>
       <VideoTestimonials
         videos={getProductTestimonials(handle)}
+        demoVideos={getDemoSkincareVideos(product.source)}
         tone={editorial?.color || "orange"}
       />
       <section className="section related-section">
