@@ -29,19 +29,25 @@ export function getDemoProducts(): Product[] {
         title: "Single sheet mask",
         availableForSale: true,
         price: null,
+        // Client-provided reference only; final selling prices remain unconfirmed.
+        mrp: { amount: "499.00", currencyCode: "INR" },
       },
     ],
     source: "demo",
   }));
 }
 
-export function emptyCart(mode: "demo" | "live"): Cart {
+export function emptyCart(
+  mode: "demo" | "live",
+  checkoutEnabled = false,
+): Cart {
   return {
     id: mode === "demo" ? "demo-cart" : "",
     lines: [],
     totalQuantity: 0,
     subtotal: null,
     checkoutUrl: null,
+    checkoutEnabled: mode === "live" && checkoutEnabled,
     mode,
   };
 }
@@ -61,6 +67,7 @@ function demoLine(
     image: product.images[0]?.url,
     merchandiseId,
     unitPrice: null,
+    unitMrp: variant.mrp ?? null,
   };
 }
 

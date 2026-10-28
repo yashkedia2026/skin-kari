@@ -11,6 +11,8 @@ export type Product = {
     title: string;
     availableForSale: boolean;
     price: Money | null;
+    /** Demo: provisional MRP. Live: comparison price confirmed by the merchant as MRP. */
+    mrp?: Money | null;
     selectedOptions?: { name: string; value: string }[];
   }[];
   availableForSale: boolean;
@@ -36,11 +38,14 @@ export type Cart = {
     image?: string;
     merchandiseId: string;
     unitPrice: Money | null;
+    unitMrp?: Money | null;
   }[];
   totalQuantity: number;
   subtotal: Money | null;
   /** Checkout is retrieved fresh through POST action: checkout. */
   checkoutUrl: string | null;
+  /** Server permission; live credentials alone do not enable checkout. */
+  checkoutEnabled: boolean;
   mode: "demo" | "live";
   warnings?: string[];
 };

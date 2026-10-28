@@ -21,6 +21,7 @@ import {
   mutateLiveCart,
   normalizeCart,
   normalizeProduct,
+  shopifyProduct as getShopifyProduct,
   shopifyProducts,
   storefront,
   validCartCookie,
@@ -100,8 +101,16 @@ const liveEnvironment = {
   SHOPIFY_STOREFRONT_ACCESS_TOKEN: "test-token",
 };
 
-function withLiveEnvironment(t: TestContext) {
-  for (const [name, value] of Object.entries(liveEnvironment)) {
+function withLiveEnvironment(
+  t: TestContext,
+  checkoutVerified = false,
+  mrpVerified = false,
+) {
+  for (const [name, value] of Object.entries({
+    ...liveEnvironment,
+    SHOPIFY_CHECKOUT_VERIFIED: String(checkoutVerified),
+    SHOPIFY_MRP_VERIFIED: String(mrpVerified),
+  })) {
     const previous = process.env[name];
     process.env[name] = value;
     t.after(() => {
@@ -142,6 +151,63 @@ test("demo defaults require absent credentials; incomplete live configuration fa
     getCommerceConfig({ ...liveEnvironment, SHOPIFY_API_VERSION: "unstable" }),
   );
   assert.equal(getCommerceConfig(liveEnvironment).mode, "live");
+});
+
+test("live credentials do not enable checkout without an explicit verification flag", () => {
+  for (const flag of [undefined, "false", "1", "TRUE", " true "]) {
+    const config = getCommerceConfig({
+      ...liveEnvironment,
+      SHOPIFY_CHECKOUT_VERIFIED: flag,
+    });
+    assert.equal(config.mode === "live" && config.checkoutVerified, false);
+  }
+  const config = getCommerceConfig({
+    ...liveEnvironment,
+    SHOPIFY_CHECKOUT_VERIFIED: "true",
+  });
+  assert.equal(config.mode === "live" && config.checkoutVerified, true);
+});
+
+test("MRP verification is explicit and independent of checkout verification", () => {
+  for (const flag of [undefined, "false", "1", "TRUE", " true "]) {
+    const config = getCommerceConfig({
+      ...liveEnvironment,
+      SHOPIFY_CHECKOUT_VERIFIED: "true",
+      SHOPIFY_MRP_VERIFIED: flag,
+    });
+    assert.equal(config.mode === "live" && config.mrpVerified, false);
+  }
+  const config = getCommerceConfig({
+    ...liveEnvironment,
+    SHOPIFY_MRP_VERIFIED: "true",
+  });
+  assert.equal(config.mode === "live" && config.mrpVerified, true);
+  assert.equal(config.mode === "live" && config.checkoutVerified, false);
+});
+
+test("all demo masks expose only provisional MRP and every pack persists its exact quantity", () => {
+  const catalogue = getDemoProducts();
+  for (const mask of catalogue) {
+    const variant = mask.variants[0];
+    assert.equal(variant.price, null);
+    assert.deepEqual(variant.mrp, { amount: "499.00", currencyCode: "INR" });
+    for (const quantity of [1, 3, 6, 9, 12]) {
+      const cart = mutateDemoCart(
+        emptyCart("demo"),
+        parseCartAction({ action: "add", merchandiseId: variant.id, quantity }),
+        catalogue,
+      );
+      assert.equal(cart.totalQuantity, quantity);
+      assert.equal(cart.lines.length, 1);
+      assert.equal(cart.lines[0].merchandiseId, variant.id);
+      assert.equal(cart.lines[0].quantity, quantity);
+      assert.deepEqual(cart.lines[0].unitMrp, variant.mrp);
+      assert.equal(cart.lines[0].unitPrice, null);
+      assert.equal(cart.subtotal, null);
+      assert.equal(cart.checkoutEnabled, false);
+      assert.deepEqual(readDemoCart(writeDemoCart(cart), catalogue), cart);
+    }
+  }
 });
 
 test("cart actions reject coercion, unsafe quantities, unknown properties and unknown actions", () => {
@@ -325,6 +391,139 @@ test("Shopify products preserve merchant prices and parse public editorial metaf
   ]);
   assert.equal(normalized.details?.netContent, "20 ml");
   assert.equal(normalized.images[0].altText, "Real mask product image");
+  assert.equal(normalized.variants[0].mrp, null);
+});
+
+test("Shopify comparison prices become MRP only after merchant verification, with no demo fallback", () => {
+  const merchantMrp = { amount: "525.00", currencyCode: "INR" };
+  const merchantProduct = {
+    ...shopifyProduct,
+    variants: {
+      nodes: [
+        { ...shopifyProduct.variants.nodes[0], compareAtPrice: merchantMrp },
+      ],
+    },
+  };
+  assert.equal(normalizeProduct(merchantProduct).variants[0].mrp, null);
+  const normalized = normalizeProduct(merchantProduct, true);
+  assert.deepEqual(normalized.variants[0].mrp, merchantMrp);
+  assert.deepEqual(
+    normalized.variants[0].price,
+    shopifyProduct.variants.nodes[0].price,
+  );
+  assert.equal(normalizeProduct(shopifyProduct, true).variants[0].mrp, null);
+  const merchantCart = {
+    ...shopifyCart,
+    lines: {
+      nodes: [
+        {
+          ...shopifyCart.lines.nodes[0],
+          merchandise: {
+            ...shopifyCart.lines.nodes[0].merchandise,
+            compareAtPrice: merchantMrp,
+          },
+        },
+      ],
+    },
+  };
+  assert.equal(normalizeCart(merchantCart).lines[0].unitMrp, null);
+  assert.equal(
+    normalizeCart(merchantCart, undefined, true).lines[0].unitMrp,
+    null,
+  );
+  assert.deepEqual(
+    normalizeCart(merchantCart, undefined, false, true).lines[0].unitMrp,
+    merchantMrp,
+  );
+  assert.equal(
+    normalizeCart(shopifyCart, undefined, false, true).lines[0].unitMrp,
+    null,
+  );
+});
+
+test("product fetches and cart operations respect MRP verification independently from checkout", async (t) => {
+  for (const checkoutVerified of [false, true]) {
+    for (const mrpVerified of [false, true]) {
+      await t.test(
+        `checkout ${checkoutVerified}, MRP ${mrpVerified}`,
+        async (t) => {
+          withLiveEnvironment(t, checkoutVerified, mrpVerified);
+          const comparisonPrice = { amount: "525.00", currencyCode: "INR" };
+          const merchantProduct = {
+            ...shopifyProduct,
+            variants: {
+              nodes: [
+                {
+                  ...shopifyProduct.variants.nodes[0],
+                  compareAtPrice: comparisonPrice,
+                },
+              ],
+            },
+          };
+          const merchantCart = {
+            ...shopifyCart,
+            lines: {
+              nodes: [
+                {
+                  ...shopifyCart.lines.nodes[0],
+                  merchandise: {
+                    ...shopifyCart.lines.nodes[0].merchandise,
+                    compareAtPrice: comparisonPrice,
+                  },
+                },
+              ],
+            },
+          };
+          t.mock.method(
+            globalThis,
+            "fetch",
+            async (_url: string, init: RequestInit) => {
+              const { query } = JSON.parse(init.body as string);
+              if (query.includes("query Products("))
+                return Response.json({
+                  data: { products: { nodes: [merchantProduct] } },
+                });
+              if (query.includes("query Product("))
+                return Response.json({ data: { product: merchantProduct } });
+              if (query.includes("AvailableVariant"))
+                return Response.json({
+                  data: { node: { id: variantId, availableForSale: true } },
+                });
+              if (query.includes("cartCreate("))
+                return Response.json({
+                  data: {
+                    cartCreate: {
+                      cart: merchantCart,
+                      userErrors: [],
+                      warnings: [],
+                    },
+                  },
+                });
+              return Response.json({ data: { cart: merchantCart } });
+            },
+          );
+          const expectedMrp = mrpVerified ? comparisonPrice : null;
+          const product = await getShopifyProduct(shopifyProduct.handle);
+          assert.deepEqual(product?.variants[0].mrp, expectedMrp);
+          assert.deepEqual(
+            (await shopifyProducts())[0].variants[0].mrp,
+            expectedMrp,
+          );
+          const loaded = await getLiveCart(secretId);
+          const created = await mutateLiveCart(undefined, {
+            action: "add",
+            merchandiseId: variantId,
+            quantity: 2,
+          });
+          for (const { cart } of [loaded, created]) {
+            assert.deepEqual(cart.lines[0].unitMrp, expectedMrp);
+            assert.equal(cart.checkoutEnabled, checkoutVerified);
+            assert.equal(cart.lines[0].unitPrice?.amount, "299.00");
+          }
+        },
+      );
+    }
+  }
 });
 
 test("public cart excludes the Shopify secret and stale checkout URL", () => {
@@ -508,7 +707,7 @@ test("live cart rejects sold-out additions before creating a cart", async (t) =>
 });
 
 test("live checkout refreshes the cart and expired carts return an empty bag", async (t) => {
-  withLiveEnvironment(t);
+  withLiveEnvironment(t, true);
   let missing = false;
   t.mock.method(
     globalThis,
@@ -522,8 +721,122 @@ test("live checkout refreshes the cart and expired carts return an empty bag", a
   );
   assert.equal(await liveCheckout(secretId), shopifyCart.checkoutUrl);
   missing = true;
-  assert.deepEqual(await getLiveCart(secretId), { cart: emptyCart("live") });
+  assert.deepEqual(await getLiveCart(secretId), {
+    cart: emptyCart("live", true),
+  });
   await assert.rejects(liveCheckout(secretId), { code: "EMPTY_CART" });
+});
+
+test("unverified live checkout fails before requesting Shopify or revealing a URL", async (t) => {
+  withLiveEnvironment(t);
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async () => {
+    calls++;
+    return Response.json({ data: { cart: shopifyCart } });
+  });
+  await assert.rejects(liveCheckout(secretId), {
+    code: "CHECKOUT_NOT_VERIFIED",
+    status: 409,
+  });
+  assert.equal(calls, 0);
+  const { cart } = await getLiveCart(secretId);
+  assert.equal(cart.checkoutEnabled, false);
+  assert.equal(cart.checkoutUrl, null);
+});
+
+test("all five pack quantities pass unchanged to Shopify create, add and update mutations", async (t) => {
+  withLiveEnvironment(t);
+  for (const quantity of [1, 3, 6, 9, 12]) {
+    await t.test(`pack of ${quantity}`, async (t) => {
+      const mutations: { field: string; variables: Record<string, unknown> }[] =
+        [];
+      t.mock.method(
+        globalThis,
+        "fetch",
+        async (_url: string, init: RequestInit) => {
+          const { query, variables } = JSON.parse(init.body as string);
+          if (query.includes("AvailableVariant"))
+            return Response.json({
+              data: { node: { id: variantId, availableForSale: true } },
+            });
+          if (query.includes("query Cart("))
+            return Response.json({ data: { cart: shopifyCart } });
+          const field = query.includes("cartCreate(")
+            ? "cartCreate"
+            : query.includes("cartLinesAdd(")
+              ? "cartLinesAdd"
+              : "cartLinesUpdate";
+          mutations.push({ field, variables });
+          const actualQuantity =
+            field === "cartLinesAdd" ? quantity + 2 : quantity;
+          const cart = {
+            ...shopifyCart,
+            totalQuantity: actualQuantity,
+            cost: {
+              subtotalAmount: {
+                amount: (actualQuantity * 299).toFixed(2),
+                currencyCode: "INR",
+              },
+            },
+            lines: {
+              nodes: [
+                { ...shopifyCart.lines.nodes[0], quantity: actualQuantity },
+              ],
+            },
+          };
+          return Response.json({
+            data: { [field]: { cart, userErrors: [], warnings: [] } },
+          });
+        },
+      );
+      const created = await mutateLiveCart(undefined, {
+        action: "add",
+        merchandiseId: variantId,
+        quantity,
+      });
+      const added = await mutateLiveCart(secretId, {
+        action: "add",
+        merchandiseId: variantId,
+        quantity,
+      });
+      const updated = await mutateLiveCart(secretId, {
+        action: "update",
+        lineId: shopifyCart.lines.nodes[0].id,
+        quantity,
+      });
+      assert.deepEqual(mutations, [
+        {
+          field: "cartCreate",
+          variables: {
+            input: {
+              lines: [{ merchandiseId: variantId, quantity }],
+              buyerIdentity: { countryCode: "IN" },
+            },
+          },
+        },
+        {
+          field: "cartLinesAdd",
+          variables: {
+            cartId: secretId,
+            lines: [{ merchandiseId: variantId, quantity }],
+          },
+        },
+        {
+          field: "cartLinesUpdate",
+          variables: {
+            cartId: secretId,
+            lines: [{ id: shopifyCart.lines.nodes[0].id, quantity }],
+          },
+        },
+      ]);
+      assert.equal(created.cart.totalQuantity, quantity);
+      assert.equal(added.cart.totalQuantity, quantity + 2);
+      assert.equal(updated.cart.lines[0].quantity, quantity);
+      assert.equal(updated.cart.lines[0].unitPrice?.amount, "299.00");
+      assert.equal(updated.cart.subtotal?.amount, (quantity * 299).toFixed(2));
+      assert.equal(updated.cart.checkoutEnabled, false);
+    });
+  }
 });
 
 test("cart costs preserve Shopify's contextual zero unit price and exact subtotal", () => {
@@ -583,6 +896,48 @@ function apiRequest(body: unknown, cookie?: string) {
     },
   });
 }
+
+test("cart API blocks unverified live checkout even when called directly", async (t) => {
+  withLiveEnvironment(t);
+  apiEnvironment(t, "live");
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async () => {
+    calls++;
+    return Response.json({ data: { cart: shopifyCart } });
+  });
+  const cookie = `skinkari_cart=${encodeURIComponent(secretId)}`;
+  const response = await POST(apiRequest({ action: "checkout" }, cookie));
+  assert.equal(response.status, 409);
+  const body = await response.json();
+  assert.equal(body.code, "CHECKOUT_NOT_VERIFIED");
+  assert.equal(body.checkoutUrl, undefined);
+  assert.equal(response.cookies.get("skinkari_cart"), undefined);
+  assert.equal(calls, 0);
+  const loaded = await GET(
+    new NextRequest("https://store.test/api/cart", { headers: { cookie } }),
+  );
+  assert.equal((await loaded.json()).checkoutEnabled, false);
+});
+
+test("verified live carts expose checkout permission while retaining fresh URL retrieval", async (t) => {
+  withLiveEnvironment(t, true);
+  apiEnvironment(t, "live");
+  t.mock.method(globalThis, "fetch", async () =>
+    Response.json({ data: { cart: shopifyCart } }),
+  );
+  const cookie = `skinkari_cart=${encodeURIComponent(secretId)}`;
+  const loaded = await GET(
+    new NextRequest("https://store.test/api/cart", { headers: { cookie } }),
+  );
+  const cart = await loaded.json();
+  assert.equal(cart.checkoutEnabled, true);
+  assert.equal(cart.checkoutUrl, null);
+  const response = await POST(apiRequest({ action: "checkout" }, cookie));
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), {
+    checkoutUrl: shopifyCart.checkoutUrl,
+  });
+});
 
 test("cart route persists HttpOnly demo state across GET, update and removal, and blocks checkout", async (t) => {
   apiEnvironment(t, "demo");

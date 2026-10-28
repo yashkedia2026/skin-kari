@@ -15,6 +15,7 @@ type Connection<T> = {
   pageInfo?: { hasNextPage: boolean; endCursor: string | null };
 };
 type ShopifyVariant = Product["variants"][number] & {
+  compareAtPrice?: Money | null;
   image?: { url: string };
   product?: { handle: string; title: string };
 };
@@ -51,7 +52,7 @@ type MutationPayload = {
   warnings?: { message: string }[];
 };
 
-const VARIANT_FIELDS = `id title availableForSale price { amount currencyCode } selectedOptions { name value }`;
+const VARIANT_FIELDS = `id title availableForSale price { amount currencyCode } compareAtPrice { amount currencyCode } selectedOptions { name value }`;
 const PRODUCT_FIELDS = `
   id handle title description availableForSale
   images(first: 20) { nodes { url altText width height } }
@@ -146,7 +147,10 @@ function listValue(value: string | undefined): string[] | undefined {
   }
 }
 
-export function normalizeProduct(product: ShopifyProduct): Product {
+export function normalizeProduct(
+  product: ShopifyProduct,
+  mrpVerified = false,
+): Product {
   const fields = Object.fromEntries(
     (product.metafields || [])
       .filter((field) => field !== null)
@@ -188,11 +192,19 @@ export function normalizeProduct(product: ShopifyProduct): Product {
       altText: image.altText || `${product.title} product image`,
     })),
     variants: product.variants.nodes.map(
-      ({ id, title, availableForSale, price, selectedOptions }) => ({
+      ({
         id,
         title,
         availableForSale,
         price,
+        compareAtPrice,
+        selectedOptions,
+      }) => ({
+        id,
+        title,
+        availableForSale,
+        price,
+        mrp: mrpVerified ? (compareAtPrice ?? null) : null,
         selectedOptions,
       }),
     ),
@@ -243,6 +255,8 @@ async function allVariants(product: ShopifyProduct): Promise<ShopifyProduct> {
 }
 
 export async function shopifyProducts(): Promise<Product[]> {
+  const config = getCommerceConfig();
+  const mrpVerified = config.mode === "live" && config.mrpVerified;
   const products: Product[] = [];
   let after: string | null = null;
   do {
@@ -256,7 +270,7 @@ export async function shopifyProducts(): Promise<Product[]> {
     products.push(
       ...(await Promise.all(
         data.products.nodes.map(async (product) =>
-          normalizeProduct(await allVariants(product)),
+          normalizeProduct(await allVariants(product), mrpVerified),
         ),
       )),
     );
@@ -273,6 +287,8 @@ export async function shopifyProducts(): Promise<Product[]> {
 }
 
 export async function shopifyProduct(handle: string): Promise<Product | null> {
+  const config = getCommerceConfig();
+  const mrpVerified = config.mode === "live" && config.mrpVerified;
   const data = await storefront<{ product: ShopifyProduct | null }>(
     `
     query Product($handle: String!) @inContext(country: IN) { product(handle: $handle) { ${PRODUCT_FIELDS} } }
@@ -280,13 +296,15 @@ export async function shopifyProduct(handle: string): Promise<Product | null> {
     { handle },
   );
   return data.product
-    ? normalizeProduct(await allVariants(data.product))
+    ? normalizeProduct(await allVariants(data.product), mrpVerified)
     : null;
 }
 
 export function normalizeCart(
   cart: ShopifyCart,
   warnings?: { message: string }[],
+  checkoutEnabled = false,
+  mrpVerified = false,
 ): Cart {
   if (cart.lines.pageInfo?.hasNextPage)
     throw new CommerceError(
@@ -305,10 +323,12 @@ export function normalizeCart(
       image: line.merchandise.image?.url,
       merchandiseId: line.merchandise.id,
       unitPrice: line.cost.amountPerQuantity,
+      unitMrp: mrpVerified ? (line.merchandise.compareAtPrice ?? null) : null,
     })),
     totalQuantity: cart.totalQuantity,
     subtotal: cart.cost.subtotalAmount,
     checkoutUrl: null,
+    checkoutEnabled,
     mode: "live",
     ...(warnings?.length
       ? { warnings: warnings.map((warning) => warning.message) }
@@ -343,11 +363,21 @@ async function rawCart(id: string): Promise<ShopifyCart | null> {
 export async function getLiveCart(
   id: string | undefined,
 ): Promise<{ cart: Cart; cartId?: string }> {
-  if (!id) return { cart: emptyCart("live") };
+  const config = getCommerceConfig();
+  const checkoutEnabled = config.mode === "live" && config.checkoutVerified;
+  if (!id) return { cart: emptyCart("live", checkoutEnabled) };
   const cart = await rawCart(id);
   return cart
-    ? { cart: normalizeCart(cart), cartId: cart.id }
-    : { cart: emptyCart("live") };
+    ? {
+        cart: normalizeCart(
+          cart,
+          undefined,
+          checkoutEnabled,
+          config.mode === "live" && config.mrpVerified,
+        ),
+        cartId: cart.id,
+      }
+    : { cart: emptyCart("live", checkoutEnabled) };
 }
 
 async function variantAvailable(id: string): Promise<void> {
@@ -476,10 +506,31 @@ export async function mutateLiveCart(
       message:
         "Your previous bag expired. We started a new bag with this item.",
     });
-  return { cart: normalizeCart(result.cart, warnings), cartId: result.cart.id };
+  const config = getCommerceConfig();
+  return {
+    cart: normalizeCart(
+      result.cart,
+      warnings,
+      config.mode === "live" && config.checkoutVerified,
+      config.mode === "live" && config.mrpVerified,
+    ),
+    cartId: result.cart.id,
+  };
 }
 
 export async function liveCheckout(id: string | undefined): Promise<string> {
+  const config = getCommerceConfig();
+  if (config.mode !== "live")
+    throw new CommerceError(
+      "Live checkout is not available.",
+      "LIVE_STORE_DISABLED",
+    );
+  if (!config.checkoutVerified)
+    throw new CommerceError(
+      "Checkout is not open yet. Pricing and store setup are being confirmed.",
+      "CHECKOUT_NOT_VERIFIED",
+      409,
+    );
   if (!id)
     throw new CommerceError(
       "Add a mask to your bag before checking out.",
@@ -492,12 +543,6 @@ export async function liveCheckout(id: string | undefined): Promise<string> {
       "Your bag is empty or has expired. Please add your masks again.",
       "EMPTY_CART",
       409,
-    );
-  const config = getCommerceConfig();
-  if (config.mode !== "live")
-    throw new CommerceError(
-      "Live checkout is not available.",
-      "LIVE_STORE_DISABLED",
     );
   return safeCheckoutUrl(cart.checkoutUrl, config);
 }

@@ -2,7 +2,7 @@
 
 A custom Next.js App Router storefront for **SKINKARI — SAME SKIN. BRIGHTER DAYS.**, grounded in the supplied product packaging. This is a standalone headless application, not a Shopify theme.
 
-The project opens in **demo mode** without credentials. The demo bag supports additions, quantity changes, removals and persistence. Prices are intentionally absent, and checkout is disabled. The Shopify integration is implemented and tested against mocked provider responses, but **live checkout has not been configured or verified**.
+The project opens in **demo mode** without credentials. The demo bag supports additions, quantity changes, removals and persistence. The client-provided ₹499 per-mask MRP is provisional for all four masks; selling prices remain unset and checkout is disabled. The Shopify integration is implemented and tested against mocked provider responses, but **live checkout has not been configured or verified**.
 
 The current redesign follows the client's supplied reference: warm cream and
 black, Oswald condensed headings, DM Sans body text, a Caveat handwritten note,
@@ -41,6 +41,8 @@ npm start
 
 - Four-product packaging-derived catalogue: names, featured ingredients, 20 ml size, directions and warnings. Homepage promotional copy follows the supplied reference; catalogue editorial data remains separate. No invented prices, reviews, certifications or stock counts.
 - Reference-based responsive homepage with illustrated skin-concern links, ingredient row and four product panels; shop filtering/search, product details and variants, cart page and modal drawer.
+- Product-coloured pack selectors for 1, 3, 6, 9 and 12 units of the same mask, with exact MRP and Shopify price calculations. No invented pack discounts or bundles.
+- Reusable, accessible HTML5 video testimonials with lazy media, playback controls and a mobile carousel. The public section stays hidden until authentic approved footage is added; see [video integration](docs/VIDEO-TESTIMONIALS.md).
 - Shopify Storefront API product/variant pagination, India market context, public editorial metafields, authoritative prices, availability checks, persistent carts and fresh checkout URLs.
 - Explicit demo mode with HttpOnly cookie persistence; configuration/provider errors never silently turn a live store into a demo.
 - About, ingredients, FAQs, contact, shipping/returns, privacy, terms, journal and two articles. Missing merchant contact/policies are disclosed instead of fabricated.
@@ -76,7 +78,9 @@ Follow [Shopify setup](docs/SHOPIFY-SETUP.md). Set `STOREFRONT_MODE=live`, the s
 
 Create the four matching product handles listed in the setup guide and publish them to the appropriate storefront channel. Shopify owns product titles, descriptions, images, variants, prices, stock and optional `custom` editorial metafields. Known catalogue products fall back to the documented packaging editorial data for unspecified fields. The product showcase consumes the active catalogue; hero brand imagery and education pages remain curated repository content.
 
-Checkout uses Shopify’s Cart API and redirects to Shopify’s fresh HTTPS checkout URL. Taxes, shipping and discounts are calculated there. This app has no payment form and does not store card details. Missing, expired, unavailable and sold-out states return safe errors. No cart secret is exposed to browser JavaScript.
+Checkout remains blocked server-side until `SHOPIFY_CHECKOUT_VERIFIED=true` is explicitly set after pricing and Shopify configuration verification. Once enabled, it uses Shopify’s Cart API and redirects to Shopify’s fresh HTTPS checkout URL. Taxes, shipping and discounts are calculated there. This app has no payment form and does not store card details. Missing, expired, unavailable and sold-out states return safe errors. No cart secret is exposed to browser JavaScript.
+
+Live comparison prices are shown as MRP only after `SHOPIFY_MRP_VERIFIED=true` confirms that the merchant uses Shopify `compareAtPrice` for each variant's actual per-mask MRP. This gate defaults to false and is independent of checkout verification. Without confirmation, the page says “MRP awaiting confirmation”; demo ₹499 values never enter live pricing.
 
 ## Browser checks
 
@@ -87,6 +91,8 @@ npm run test:e2e
 ```
 
 The suite uses installed Google Chrome on macOS or Playwright Chromium elsewhere. If neither is installed, run `npx playwright install chromium`. `PLAYWRIGHT_CHANNEL` and `PLAYWRIGHT_BASE_URL` can override these choices. Desktop (1440 px) and mobile (390 px) tests cover shopping, persistence, API failures, navigation, true 404s, overflow and axe accessibility checks. Reports are written to ignored `playwright-report/` and `test-results/` directories. Reduced-motion is exercised by default. Automated accessibility checks supplement, rather than replace, broader assistive-technology testing.
+
+Pack tests save full-page and selector screenshots for all four products to `docs/previews/packs/`. Video behavior is tested in an isolated browser harness; no test videos, names or reviews are included in public routes.
 
 For a production browser pass, build and serve with `npm start` before running the same tests. Actual Shopify checkout, real devices and field Core Web Vitals require the configured deployment.
 

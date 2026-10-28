@@ -5,7 +5,12 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { getProduct, getProducts } from "@/lib/commerce";
 import { getEditorialProduct } from "@/data/products";
 import { ProductPurchase } from "@/components/product-purchase";
+import { ProductPackSelectionProvider } from "@/components/product-pack-selection";
+import { ProductPackImage } from "@/components/product-pack-image";
 import { ProductCard } from "@/components/product-card";
+import { VideoTestimonials } from "@/components/video-testimonials";
+import { getProductTestimonials } from "@/data/video-testimonials";
+import purchaseStyles from "@/components/product-purchase.module.css";
 import { jsonLd, pageMetadata, siteUrl } from "@/lib/seo";
 type Props = { params: Promise<{ handle: string }> };
 export async function generateMetadata({ params }: Props) {
@@ -70,123 +75,122 @@ export default async function ProductPage({ params }: Props) {
           <span>/</span>
           <span>{product.title}</span>
         </nav>
-        <div className="product-detail-grid">
-          <div
-            className={`product-detail-art tone-${editorial?.color || "orange"}`}
-          >
-            {image && (
-              <Image
-                src={image.url}
-                alt={image.altText || product.title}
-                width={image.width || 1098}
-                height={image.height || 1500}
-                sizes="(max-width: 800px) 85vw, 42vw"
-                loading="eager"
-                fetchPriority="high"
-              />
-            )}
-            <p>
-              {editorial?.packaging.format} {editorial && "·"}{" "}
-              {product.details?.netContent || editorial?.packaging.netContent}
-            </p>
-          </div>
-          <div className="product-detail-copy">
-            <p className="eyebrow">
-              {editorial?.eyebrow || "A moment for your skin"}
-            </p>
-            <h1>{product.title}</h1>
-            <p className="product-description">{product.description}</p>
-            <ul className="benefit-list">
-              {benefits.map((b) => (
-                <li key={b}>
-                  <Check size={17} />
-                  {b}
-                </li>
-              ))}
-            </ul>
-            <ProductPurchase key={product.id} product={product} />
-            <div className="product-accordions">
-              <details open>
-                <summary>The ingredient edit</summary>
-                <div>
-                  {ingredients.length ? (
-                    <>
-                      <p>{ingredients.map((i) => i.name).join(" · ")}</p>
-                      <p className="small-note">
-                        Featured ingredients from the packaging. The complete
-                        ingredient list is pending confirmation.
+        <ProductPackSelectionProvider key={product.id}>
+          <div className="product-detail-grid">
+            <ProductPackImage
+              image={image}
+              title={product.title}
+              tone={editorial?.color || "orange"}
+              netContent={
+                product.details?.netContent || editorial?.packaging.netContent
+              }
+            />
+            <div className="product-detail-copy">
+              <p className="eyebrow">
+                {editorial?.eyebrow || "A moment for your skin"}
+              </p>
+              <h1>{product.title}</h1>
+              <p className="product-description">{product.description}</p>
+              <ProductPurchase key={product.id} product={product} />
+              {benefits.length > 0 && (
+                <h2 className={purchaseStyles.benefitHeading}>
+                  The good-skin benefits
+                </h2>
+              )}
+              <ul className="benefit-list">
+                {benefits.map((b) => (
+                  <li key={b}>
+                    <Check size={17} />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+              <div className="product-accordions">
+                <details open>
+                  <summary>The ingredient edit</summary>
+                  <div>
+                    {ingredients.length ? (
+                      <>
+                        <p>{ingredients.map((i) => i.name).join(" · ")}</p>
+                        <p className="small-note">
+                          Featured ingredients from the packaging. The complete
+                          ingredient list is pending confirmation.
+                        </p>
+                      </>
+                    ) : (
+                      <p>
+                        The complete ingredient list is pending confirmation.
                       </p>
-                    </>
+                    )}
+                    <Link href="/ingredients" className="text-link">
+                      Explore the ingredients <ArrowUpRight size={16} />
+                    </Link>
+                  </div>
+                </details>
+                <details>
+                  <summary>
+                    {editorial?.directions.length &&
+                    !product.details?.directions
+                      ? "Your 15-minute ritual"
+                      : "Directions for use"}
+                  </summary>
+                  {directions.length ? (
+                    <ol
+                      className={
+                        showPackagingDirections
+                          ? "packaging-directions"
+                          : undefined
+                      }
+                    >
+                      {directions.map((d, index) => (
+                        <li key={d}>
+                          {showPackagingDirections && (
+                            <Image
+                              src={`/images/ritual/${directionArtwork[index]}.webp`}
+                              alt=""
+                              width={72}
+                              height={72}
+                              sizes="72px"
+                            />
+                          )}
+                          <span>{d}</span>
+                        </li>
+                      ))}
+                    </ol>
                   ) : (
-                    <p>The complete ingredient list is pending confirmation.</p>
+                    <p>
+                      Directions and wear time for this mask are awaiting
+                      confirmation. Follow the final product pack before use.
+                    </p>
                   )}
-                  <Link href="/ingredients" className="text-link">
-                    Explore the ingredients <ArrowUpRight size={16} />
-                  </Link>
-                </div>
-              </details>
-              <details>
-                <summary>
-                  {editorial?.directions.length && !product.details?.directions
-                    ? "Your 15-minute ritual"
-                    : "Directions for use"}
-                </summary>
-                {directions.length ? (
-                  <ol
-                    className={
-                      showPackagingDirections
-                        ? "packaging-directions"
-                        : undefined
-                    }
-                  >
-                    {directions.map((d, index) => (
-                      <li key={d}>
-                        {showPackagingDirections && (
-                          <Image
-                            src={`/images/ritual/${directionArtwork[index]}.webp`}
-                            alt=""
-                            width={72}
-                            height={72}
-                            sizes="72px"
-                          />
-                        )}
-                        <span>{d}</span>
-                      </li>
-                    ))}
-                  </ol>
-                ) : (
+                </details>
+                <details>
+                  <summary>A little care before you care</summary>
+                  {caution.length ? (
+                    <ul>
+                      {caution.map((c) => (
+                        <li key={c}>{c}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>
+                      Product-specific precautions are awaiting confirmation.
+                      Read the final product pack before use.
+                    </p>
+                  )}
+                </details>
+                <details>
+                  <summary>Delivery & returns</summary>
                   <p>
-                    Directions and wear time for this mask are awaiting
-                    confirmation. Follow the final product pack before use.
+                    Delivery areas, charges and returns terms will be confirmed
+                    before the store opens.{" "}
+                    <Link href="/shipping-returns">See policy status.</Link>
                   </p>
-                )}
-              </details>
-              <details>
-                <summary>A little care before you care</summary>
-                {caution.length ? (
-                  <ul>
-                    {caution.map((c) => (
-                      <li key={c}>{c}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>
-                    Product-specific precautions are awaiting confirmation. Read
-                    the final product pack before use.
-                  </p>
-                )}
-              </details>
-              <details>
-                <summary>Delivery & returns</summary>
-                <p>
-                  Delivery areas, charges and returns terms will be confirmed
-                  before the store opens.{" "}
-                  <Link href="/shipping-returns">See policy status.</Link>
-                </p>
-              </details>
+                </details>
+              </div>
             </div>
           </div>
-        </div>
+        </ProductPackSelectionProvider>
         {product.source === "demo" && (
           <p className="artwork-caption">
             Packaging artwork preview extracted from the supplied design files.
@@ -194,6 +198,10 @@ export default async function ProductPage({ params }: Props) {
           </p>
         )}
       </div>
+      <VideoTestimonials
+        videos={getProductTestimonials(handle)}
+        tone={editorial?.color || "orange"}
+      />
       <section className="section related-section">
         <div className="section-heading">
           <div>

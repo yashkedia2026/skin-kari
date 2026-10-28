@@ -9,6 +9,8 @@ export type CommerceConfig =
       token: string;
       version: string;
       checkoutDomain?: string;
+      checkoutVerified: boolean;
+      mrpVerified: boolean;
     };
 
 export function getCommerceConfig(
@@ -52,7 +54,15 @@ export function getCommerceConfig(
       "INVALID_CONFIGURATION",
     );
   }
-  return { mode: "live", domain, token, version, checkoutDomain };
+  return {
+    mode: "live",
+    domain,
+    token,
+    version,
+    checkoutDomain,
+    checkoutVerified: env.SHOPIFY_CHECKOUT_VERIFIED === "true",
+    mrpVerified: env.SHOPIFY_MRP_VERIFIED === "true",
+  };
 }
 
 export function safeCheckoutUrl(

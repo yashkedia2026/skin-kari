@@ -55,9 +55,12 @@ test("search supports Escape, restores focus and recovers from no results", asyn
   await page.goto("/shop?q=there-is-no-such-mask");
   await expect(page.getByRole("main").getByRole("article")).toHaveCount(0);
   await expect(
-    page.getByText("No masks match your search right now.", { exact: false }),
+    page
+      .getByRole("main")
+      .getByText("No masks match your search right now.", { exact: false }),
   ).toBeVisible();
   await page
+    .getByRole("main")
     .getByRole("link", { name: "Explore all masks", exact: true })
     .click();
   await expect(page).toHaveURL(/\/shop$/);

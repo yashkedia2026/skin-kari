@@ -19,12 +19,16 @@ Copy `.env.example` to `.env.local` for development. Keep secrets out of version
 | `SHOPIFY_STOREFRONT_ACCESS_TOKEN` | Public Storefront API access token for the Headless storefront. It remains server-side in this implementation.                                                                                                             |
 | `SHOPIFY_API_VERSION`             | `2026-10`, the stable version selected for this build. Review Shopify’s supported versions during maintenance.                                                                                                             |
 | `SHOPIFY_CHECKOUT_DOMAIN`         | Optional exact custom checkout hostname, without scheme or path, only if Shopify returns checkout URLs on this merchant-owned domain.                                                                                      |
+| `SHOPIFY_CHECKOUT_VERIFIED`       | Keep `false` until final pricing and Shopify setup have been verified. Only the exact value `true` enables the server checkout endpoint and cart button. This is a server-only launch gate.                                |
+| `SHOPIFY_MRP_VERIFIED`            | Keep `false` until the merchant confirms that every live variant's Shopify `compareAtPrice` is its actual per-mask MRP. Only the exact value `true` exposes those values as MRP; independent of checkout verification.     |
 | `NEXT_PUBLIC_SITE_URL`            | Final HTTPS storefront origin, such as the merchant’s verified domain. Used for canonical URLs, social/schema URLs and cart origin checks. Local development uses `http://127.0.0.1:3000`; open that exact browser origin. |
 | `NEXT_PUBLIC_INDEXING_ENABLED`    | Leave `false` during review. Set `true` only on the approved live production domain after content and commerce checks.                                                                                                     |
 
 When mode is omitted, the application defaults to demo only if both Shopify credentials are absent. Partial credentials, invalid configuration and Shopify failures do not silently become successful demo purchases. Explicit `demo` mode deliberately ignores Shopify credentials.
 
 Checkout redirects accept HTTPS URLs only, on the configured `myshopify.com` domain or the exact optional checkout domain. Confirm the actual hostname returned by your store before launch; do not use a wildcard allowlist.
+
+Connecting Shopify does **not** open checkout. With `SHOPIFY_CHECKOUT_VERIFIED=false` (or unset), products and carts can be reviewed using Shopify data, but checkout requests return `CHECKOUT_NOT_VERIFIED` without requesting or exposing a checkout URL. Complete pricing/configuration verification in the test environment, explicitly enable the gate there for the checkout tests below, and enable production only after the resulting evidence is approved. Never use a `NEXT_PUBLIC_` variable for this gate.
 
 ## 3. Create the four products
 
@@ -39,7 +43,11 @@ Use these handles so Shopify products match the editorial colour, artwork and pa
 
 Supply merchant-approved titles, plain product descriptions, product imagery with alt text, variant names/options, actual prices and currency, inventory settings, SKUs and any applicable tax/shipping settings. Live prices and availability come from Shopify variants, not the fixture file. Keep each product published to the intended Headless channel.
 
-Each approved catalogue product is labelled one sheet mask / 20 ml. A single default variant is sufficient if that is the actual merchandise. Add multipacks or discovery bundles only when the merchant has created and approved the real Shopify products/variants and their prices. Brightening Mask is excluded from the approved storefront; keep that reference product unpublished to this storefront channel.
+Each approved catalogue product is labelled one sheet mask / 20 ml. Every selectable Shopify variant must represent **one sheet mask**. The product-page pack selector sends quantities **1, 3, 6, 9 or 12 of that same variant** to the existing Cart API. Do not create corresponding multipack variants or mix-and-match bundles for this implementation: doing so would multiply the contents again. Existing cart quantity controls continue to adjust individual masks, and repeat additions merge through the existing cart behavior. Brightening Mask is excluded from the approved storefront; keep that reference product unpublished to this storefront channel.
+
+Demo mode uses the client-provided **₹499 per-mask MRP**, provisionally for all four products pending confirmation. Undiscounted reference totals are ₹499, ₹1,497, ₹2,994, ₹4,491 and ₹5,988. These are MRPs, not confirmed selling prices: demo selling price and subtotal remain unset, and checkout stays disabled. There are no locally invented discounts, savings or offers.
+
+Live selling prices always come from Shopify `price`, and cart costs/inventory adjustments remain Shopify-authoritative. Shopify describes `compareAtPrice` as a comparison price, so the storefront does **not** label it as MRP by default. Only after the merchant confirms that every live variant's comparison price is its actual per-mask MRP should `SHOPIFY_MRP_VERIFIED=true` be set. This separate server-only gate allows verified MRP to be reviewed while checkout remains disabled; enabling checkout alone never certifies comparison prices as MRP. If verification is absent or the field is missing, the product page shows “MRP awaiting confirmation,” and the demo ₹499 value is never substituted. See the [Shopify ProductVariant price fields](https://shopify.dev/docs/api/storefront/latest/objects/ProductVariant). Pack price displays multiply the unit values for the selected quantity; any actual merchant-configured cart adjustments come from Shopify's cart response.
 
 Do not copy the fixture art into Shopify as if it were finished product photography. It is extracted print artwork; replace it with approved images of the actual saleable products.
 
@@ -102,11 +110,11 @@ Use an approved development/test payment setup and test orders before accepting 
 
 1. Load all four product pages server-side. Verify Shopify titles, descriptions, images, variant IDs, INR prices and availability against admin.
 2. Change an approved metafield in Shopify. Confirm the product page reflects it, then restore the intended value. Check missing and malformed metafield fallback in a test product.
-3. Add each real variant, update quantities, remove a line, empty the bag, and reload. Confirm bag persistence and the displayed subtotal against Shopify.
+3. For each real single-mask variant, select every pack size (1, 3, 6, 9, 12), add it, update quantities, remove a line, empty the bag, and reload. Confirm the exact unit quantity, bag persistence and displayed subtotal against Shopify. Confirm all four MRPs and final selling prices with the merchant.
 4. Try an unavailable variant and a quantity greater than available inventory. Confirm the shopper receives a useful response and is not shown a false successful purchase.
 5. Change a price and availability in admin. Confirm the cart and product view handle the updated values, including cart warnings and checkout recalculation.
 6. Reload with an expired/invalid cart in a test environment. Verify recovery and clear error feedback. Simulate an API outage; it must not switch a live purchase into demo mode.
-7. Choose checkout. Verify the exact allowed HTTPS destination, line items, quantities, market/currency, shipping address eligibility, shipping charges, taxes, discounts and final payment amount.
+7. First verify that checkout is blocked with `SHOPIFY_CHECKOUT_VERIFIED=false`, including direct POST requests to the cart endpoint. After confirming prices and configuration, enable the flag in the approved test environment and choose checkout. Verify the exact allowed HTTPS destination, line items, quantities, market/currency, shipping address eligibility, shipping charges, taxes, discounts and final payment amount.
 8. Complete a test checkout, verify the order in Shopify admin, and verify the merchant’s order-confirmation/fulfilment process. Test a failed/cancelled payment and return to the storefront.
 9. Repeat the complete flow on narrow mobile and desktop viewports with keyboard navigation, reduced motion and a slow connection.
 10. Confirm merchant legal/contact details and approved shipping/returns/privacy/terms are published. Remove the preview notices only after replacing them with approved content.
@@ -116,7 +124,7 @@ Demo verification does not prove any of the Shopify-dependent steps above.
 ## Maintenance notes
 
 - Shopify cart IDs include secret material. This implementation retains the full identifier in an HttpOnly cookie; do not add cart identifiers, tokens or checkout URLs to analytics, error logs or public metadata.
-- The demo bag uses a necessary HttpOnly cookie and has no authoritative price, subtotal or live inventory. Its checkout is disabled and it never creates an order.
+- The demo bag uses a necessary HttpOnly cookie and has no authoritative selling price, subtotal or live inventory. Its provisional ₹499 MRP is a separate reference value. Its checkout is disabled and it never creates an order.
 - Cart cookies persist for up to 30 days. The app caps a line at 99 units and a bag at 40 distinct lines; these are application limits, not stock claims. Shopify still determines actual live availability.
 - Cart writes require JSON from the configured storefront origin. If local add-to-bag requests return an origin error, match the browser address to `NEXT_PUBLIC_SITE_URL`; do not weaken origin validation.
 - Recheck the API version and token permissions before Shopify retires the pinned version. Rotate tokens through the merchant’s account when required.

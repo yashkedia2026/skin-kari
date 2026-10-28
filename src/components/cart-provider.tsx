@@ -13,6 +13,7 @@ import { ArrowRight, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Cart } from "@/lib/commerce/types";
+import { multiplyMoney } from "@/lib/commerce/pricing";
 
 type CartAction = {
   action: "add" | "update" | "remove" | "checkout";
@@ -220,7 +221,13 @@ export function CartContents() {
     <div className="cart-contents" aria-busy={busy || loading}>
       {cart?.mode === "demo" && (
         <p className="demo-note">
-          Demo bag · Prices are not yet available. Checkout is disabled.
+          Demo bag · MRPs are provisional. Selling prices await confirmation.
+          Checkout is disabled.
+        </p>
+      )}
+      {cart?.mode === "live" && !cart.checkoutEnabled && (
+        <p className="demo-note">
+          Checkout is unavailable while pricing and store setup are verified.
         </p>
       )}
       {error && (
@@ -272,6 +279,14 @@ export function CartContents() {
                     <small>{line.variantTitle}</small>
                   )}
                   <span>{formatMoney(line.unitPrice)}</span>
+                  {cart.mode === "demo" && line.unitMrp && (
+                    <span>
+                      Provisional MRP{" "}
+                      {formatMoney(multiplyMoney(line.unitMrp, line.quantity))}{" "}
+                      for {line.quantity}{" "}
+                      {line.quantity === 1 ? "mask" : "masks"}
+                    </span>
+                  )}
                   <div className="cart-line-actions">
                     <div className="quantity-picker">
                       <button
@@ -331,14 +346,16 @@ export function CartContents() {
             </p>
             <button
               className="button full-width"
-              disabled={busy || cart.mode === "demo"}
+              disabled={busy || !cart.checkoutEnabled}
               onClick={() => void mutate({ action: "checkout" })}
             >
               {cart.mode === "demo"
                 ? "Checkout unavailable in demo"
-                : busy
-                  ? "Please wait…"
-                  : "Continue to checkout"}
+                : !cart.checkoutEnabled
+                  ? "Checkout pending verification"
+                  : busy
+                    ? "Please wait…"
+                    : "Continue to checkout"}
               <ArrowRight size={18} />
             </button>
           </div>

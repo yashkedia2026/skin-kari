@@ -80,11 +80,9 @@ test("demo bag adds, updates, persists and removes items without enabling checko
   await ready(page, productPath);
   await assertDemo(page);
   await expect(
-    page.getByRole("button", { name: "Decrease quantity", exact: true }),
-  ).toBeDisabled();
-  await page
-    .getByRole("button", { name: "Increase quantity", exact: true })
-    .click();
+    page.getByRole("radio", { name: "Single Mask (1)", exact: true }),
+  ).toBeChecked();
+  await page.getByRole("radio", { name: "Pack of 3", exact: true }).check();
   await page
     .getByRole("button", { name: "Add to demo bag", exact: true })
     .click();
@@ -93,7 +91,7 @@ test("demo bag adds, updates, persists and removes items without enabling checko
   await expect(
     drawer.getByRole("link", { name: vitaminC, exact: true }),
   ).toBeVisible();
-  await expect(drawer.getByLabel("Quantity", { exact: true })).toHaveText("2");
+  await expect(drawer.getByLabel("Quantity", { exact: true })).toHaveText("3");
   await expect(
     drawer.getByRole("button", { name: "Checkout unavailable in demo" }),
   ).toBeDisabled();
@@ -103,20 +101,20 @@ test("demo bag adds, updates, persists and removes items without enabling checko
   await drawer
     .getByRole("button", { name: `Increase ${vitaminC} quantity` })
     .click();
-  await expect(drawer.getByLabel("Quantity", { exact: true })).toHaveText("3");
+  await expect(drawer.getByLabel("Quantity", { exact: true })).toHaveText("4");
   await drawer
     .getByRole("button", { name: `Decrease ${vitaminC} quantity` })
     .click();
-  await expect(drawer.getByLabel("Quantity", { exact: true })).toHaveText("2");
+  await expect(drawer.getByLabel("Quantity", { exact: true })).toHaveText("3");
   await page.reload();
   await page
-    .getByRole("button", { name: "Open shopping bag, 2 items" })
+    .getByRole("button", { name: "Open shopping bag, 3 items" })
     .click();
-  await expect(drawer.getByLabel("Quantity", { exact: true })).toHaveText("2");
+  await expect(drawer.getByLabel("Quantity", { exact: true })).toHaveText("3");
   await drawer.getByRole("link", { name: "View full bag" }).click();
   await expect(page).toHaveURL("/cart");
   const main = page.getByRole("main");
-  await expect(main.getByLabel("Quantity", { exact: true })).toHaveText("2");
+  await expect(main.getByLabel("Quantity", { exact: true })).toHaveText("3");
   await expect(
     main.getByRole("button", { name: "Checkout unavailable in demo" }),
   ).toBeDisabled();

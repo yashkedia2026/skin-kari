@@ -52,7 +52,7 @@ const questions = [
   {
     question: "What does demo mode mean?",
     answer:
-      "You can explore the collection and add, remove or update items in a demo bag. Prices and stock have not been supplied for this mode. Demo checkout is disabled, and no payment or order is created.",
+      "You can explore the collection, choose packs and add, remove or update individual masks in a demo bag. The ₹499 per-mask MRP is provisional, pending confirmation for all four masks. Final selling prices and live stock are not yet available. Demo checkout is disabled, and no payment or order is created.",
   },
   {
     question: "What are the shipping and returns details?",
